@@ -1,0 +1,26 @@
+import Image from "next/image";
+
+export default function Footer() {
+  return (
+    <div className="2xl text-sm p-3 text-center text-gray-300 opacity-70">
+      <div className="pt-3 flex flex-col justify-center items-center">
+        <a href="https://www.themoviedb.org/" target="_blank">
+          <Image
+            src="/img/tmdb-logo.svg"
+            width={100}
+            height={100}
+            alt="TMDB logo"
+            className="w-20 h-auto"
+          />
+        </a>
+        <p className="pt-1 text-teal-200">
+          This website uses TMDB and the TMDB APIs but is not endorsed,
+          certified, or otherwise approved by TMDB.
+        </p>
+      </div>
+      <p className="pt-3">
+        2024 &copy; All rights reserved
+      </p>
+    </div>
+  );
+}
