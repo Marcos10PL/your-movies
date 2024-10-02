@@ -1,8 +1,9 @@
 import { fetchNowPlayingMovies } from "@/api/actions";
-import Carousel from "@/components/carousel";
+import Carousel from "@/components/carousel/carousel";
+import { Movie } from "@/lib/definitions";
 
 export default async function Movies() {
-  const movies = await fetchNowPlayingMovies();
+  const movies: Movie[] = await fetchNowPlayingMovies();
 
   return (
     <div>

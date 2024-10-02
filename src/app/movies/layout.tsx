@@ -1,17 +1,20 @@
 export default function MoviesLayout({
   children,
-  nowPlayingMovies,
-  tenMostPopular
+  nowPlaying,
+  mostPopular,
+  upcoming
 }: {
   children: React.ReactNode;
-  nowPlayingMovies: React.ReactNode;
-  tenMostPopular: React.ReactNode;
+  nowPlaying: React.ReactNode;
+  mostPopular: React.ReactNode;
+  upcoming: React.ReactNode;
 }) {
   return(
     <>
       {children}
-      {tenMostPopular}
-      {nowPlayingMovies}
+      {mostPopular}
+      {upcoming}
+      {nowPlaying}
     </>
   )
 }
