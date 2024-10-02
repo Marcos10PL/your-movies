@@ -1,4 +1,4 @@
-import { fetchTenMostPopular } from "@/app/api/actions";
+import { fetchTenMostPopular } from "@/api/actions";
 import Carousel from "@/components/carousel";
 import CarouselBox from "@/components/carousel-box";
 import { Movie } from "@/lib/definitions";
@@ -8,7 +8,7 @@ export default async function TenMostPopular() {
 
   return (
     <div>
-      <CarouselBox data={movies} title="Top 10" />
+      <CarouselBox data={movies} title="Top 10 now" />
       {/* <Carousel data={movies} title="Top 10" /> */}
     </div>
   );

@@ -6,7 +6,7 @@
   --background: #e4e4e4;
   --foreground: #0e0e0e;
   /* --primary: #18b991; */
-  --primary: rgba(24, 185, 145, 1);
+  --primary: rgb(0, 255, 191);
   --secondary: #220049;
 }
 
@@ -21,3 +21,4 @@ body {
   background-color: var(--background);
   color: var(--foreground);
 }
+

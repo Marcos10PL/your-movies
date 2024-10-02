@@ -1,4 +1,4 @@
-import { fetchNowPlayingMovies } from "@/app/api/actions";
+import { fetchNowPlayingMovies } from "@/api/actions";
 import Carousel from "@/components/carousel";
 
 export default async function Movies() {
