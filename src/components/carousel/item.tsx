@@ -1,4 +1,7 @@
 import { Movie } from "@/lib/definitions";
+import clsx from "clsx";
+import { useEffect, useState } from "react";
+import Spinner from "../spinner";
 
 type ItemProps = {
   item: Movie;
@@ -8,16 +11,32 @@ type ItemProps = {
 };
 
 export default function Item({ item, index, onClick, top10 }: ItemProps) {
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    setLoading(false);
+  }, [item.poster_path]);
+
   return (
     <div
       key={item.id}
       className="relative min-w-44 overflow-hidden cursor-pointer first:ml-2 last:mr-2"
       onClick={onClick}
     >
+      {loading && (
+        <div className="absolute inset-0 rounded-lg flex items-center justify-center bg-slate-900 border-2 border-black">
+          <Spinner />
+        </div>
+      )}
+
       <img
         src={`https://image.tmdb.org/t/p/w500${item.poster_path}`}
         alt={item.title}
-        className="object-cover w-full h-full rounded-lg border-2 border-black"
+        className={clsx(
+          "object-cover w-full h-full rounded-lg border-2 border-black transition-opacity duration-500",
+          loading ? "opacity-0" : "opacity-100"
+        )}
+        onLoad={() => setLoading(false)}
       />
 
       {/* :hover */}

@@ -9,7 +9,7 @@ const links = [
 
 export default function Navbar() {
   return (
-    <nav className="p-5 text-primary flex flex-col md:flex-row items-center gap-5 md:gap-20">
+    <nav className="p-5 text-primary flex flex-col md:flex-row items-center gap-5 md:gap-20 bg-transparent">
       <p className="uppercase text-xl">your movies</p>
       <div className="flex gap-5">
         {links.map(({ name, href, icon: Icon }) => {

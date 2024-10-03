@@ -14,3 +14,5 @@ export type Movie = {
   vote_average: number;
   vote_count: number;
 };
+
+export type TypeOfList = 'now_playing' | 'popular' | 'upcoming'; 
