@@ -6,8 +6,8 @@
   --background: #e4e4e4;
   --foreground: #0e0e0e;
   /* --primary: #18b991; */
-  --primary: rgb(0, 255, 191);
-  --secondary: #220049;
+  --primary: #69ffc5;
+  --secondary: #310861;
 }
 
 @media (prefers-color-scheme: dark) {

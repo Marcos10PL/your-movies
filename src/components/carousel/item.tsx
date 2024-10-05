@@ -33,7 +33,7 @@ export default function Item({ item, index, onClick, top10 }: ItemProps) {
         src={`https://image.tmdb.org/t/p/w500${item.poster_path}`}
         alt={item.title}
         className={clsx(
-          "object-cover w-full h-full rounded-lg border-2 border-black transition-opacity duration-500",
+          "object-cover w-full h-full rounded-lg border-2 border-slate-700 transition-opacity duration-500",
           loading ? "opacity-0" : "opacity-100"
         )}
         onLoad={() => setLoading(false)}

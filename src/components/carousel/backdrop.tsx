@@ -15,7 +15,7 @@ const Backdrop = forwardRef<HTMLDivElement, BackdropProps>(
   ({ movie, index, visible, loading, overflow }, ref) => {
     return (
       <div className="px-2 pb-3">
-        <div className="w-full h-full rounded-lg overflow-hidden border-2 border-black bg-black">
+        <div className="w-full h-full rounded-lg overflow-hidden border-2 border-slate-700 bg-black">
           <div
             className={clsx(
               "w-full h-full relative rounded-lg transition-opacity duration-500 ease-in-out",

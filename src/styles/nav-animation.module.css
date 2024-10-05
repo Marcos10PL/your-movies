@@ -1,0 +1,11 @@
+.scrollup
+{
+  transform: translateY(0);
+  transition: all 0.3s ease-in-out;
+}
+
+.scrolldown
+{
+  transform: translateY(-100%);
+  transition: all 0.3s ease-in-out;
+}

@@ -4,12 +4,7 @@ import {
 } from "@heroicons/react/24/outline";
 import clsx from "clsx";
 
-const className = `
-  absolute top-1/2 transform -translate-y-1/2 
-  py-5 px-2 mx-2 
-  bg-black bg-opacity-60 rounded-lg
-  hover:bg-opacity-100 transition-bg-opacity duration-300
-`;
+const className = `absolute top-1/2 transform -translate-y-1/2 py-5 px-2 mx-2 bg-black bg-opacity-60 rounded-lg hover:bg-opacity-100 transition-bg-opacity duration-300`;
 
 type ButtonProps = {
   position: "left" | "right";
@@ -18,7 +13,7 @@ type ButtonProps = {
 
 export default function ({ position, onClick }: ButtonProps) {
   return (
-    <button className={clsx(`${position}-0`, className)} onClick={onClick}>
+    <button className={clsx(className, `${position}-0`)} onClick={onClick}>
       {position === "left" ? (
         <ChevronDoubleLeftIcon className="w-5" />
       ) : (
@@ -26,4 +21,4 @@ export default function ({ position, onClick }: ButtonProps) {
       )}
     </button>
   );
-}
+} 
