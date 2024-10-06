@@ -5,11 +5,13 @@ import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import Item from "./item";
 import Button from "./button";
 import Backdrop from "./backdrop";
+import Title from "./title";
 
 type CarouselProps = {
   data: Movie[];
   title: string;
   top10?: boolean;
+  icon?: string;
 };
 
 type scrollFunction = (x: -1 | 1) => void;
@@ -19,6 +21,7 @@ export default function Carousel({
   data,
   title,
   top10 = false,
+  icon,
 }: CarouselProps) {
   const carouselRef = useRef<HTMLDivElement>(null!);
   const intervalId = useRef<NodeJS.Timeout>(null!);
@@ -99,7 +102,7 @@ export default function Carousel({
 
   return (
     <div className="py-2">
-      <p className="text-xl px-2 py-1">{title}</p>
+      <Title title={title} icon={icon} />
 
       {/* backdrop container */}
       {top10 && (

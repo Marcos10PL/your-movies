@@ -1,3 +1,5 @@
+import { ForwardRefExoticComponent, RefAttributes, SVGProps } from "react";
+
 export type Movie = {
   adult: boolean;
   backdrop_path: string;
@@ -15,4 +17,4 @@ export type Movie = {
   vote_count: number;
 };
 
-export type TypeOfList = 'now_playing' | 'popular' | 'upcoming'; 
+export type TypeOfList = "now_playing" | "popular" | "upcoming";
