@@ -4,16 +4,28 @@ import {
 } from "@heroicons/react/24/outline";
 import clsx from "clsx";
 
-const className = `absolute top-1/2 transform -translate-y-1/2 py-5 px-2 mx-2 bg-black bg-opacity-60 rounded-lg hover:bg-opacity-100 transition-bg-opacity duration-300`;
-
 type ButtonProps = {
   position: "left" | "right";
   onClick: () => void;
+  onlyBackdrop?: boolean;
 };
 
-export default function ({ position, onClick }: ButtonProps) {
+export default function ({
+  position,
+  onClick,
+  onlyBackdrop = false,
+}: ButtonProps) {
   return (
-    <button className={clsx(className, `${position}-0`)} onClick={onClick}>
+    <button
+      className={clsx(
+        "transition-bg-opacity duration-300",
+        `${position}-0`,
+        onlyBackdrop
+          ? "block bg-transparent hover:text-primary"
+          : "absolute top-1/2 transform -translate-y-1/2 py-5 px-2 mx-2 bg-black bg-opacity-60 rounded-lg hover:bg-opacity-100 "
+      )}
+      onClick={onClick}
+    >
       {position === "left" ? (
         <ChevronDoubleLeftIcon className="w-5" />
       ) : (
@@ -21,4 +33,4 @@ export default function ({ position, onClick }: ButtonProps) {
       )}
     </button>
   );
-} 
+}

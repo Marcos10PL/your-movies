@@ -6,6 +6,7 @@ type AsyncCarouselProps = {
   title: string;
   top10?: boolean;
   icon?: string;
+  onlyBackdrop?: boolean;
 };
 
 export default async function AsyncCarousel({
@@ -13,7 +14,8 @@ export default async function AsyncCarousel({
   title,
   top10,
   icon,
+  onlyBackdrop
 }: AsyncCarouselProps) {
   const data = await promise;
-  return <Carousel data={data} title={title} top10={top10} icon={icon} />;
+  return <Carousel data={data} title={title} top10={top10} icon={icon} onlyBackdrop={onlyBackdrop}/>;
 }

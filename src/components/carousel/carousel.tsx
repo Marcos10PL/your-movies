@@ -10,18 +10,20 @@ import Title from "./title";
 type CarouselProps = {
   data: Movie[];
   title: string;
-  top10?: boolean;
   icon?: string;
+  top10?: boolean;
+  onlyBackdrop?: boolean;
 };
 
 type scrollFunction = (x: -1 | 1) => void;
-type handleMovieChange = (newMovie: Movie, idx: number) => void;
+type handleMovieChange = (newMovie: Movie | null, idx: number) => void;
 
 export default function Carousel({
   data,
   title,
   top10 = false,
   icon,
+  onlyBackdrop = false,
 }: CarouselProps) {
   const carouselRef = useRef<HTMLDivElement>(null!);
   const intervalId = useRef<NodeJS.Timeout>(null!);
@@ -41,6 +43,13 @@ export default function Carousel({
 
   const handleMovieChange: handleMovieChange = (newMovie, idx) => {
     if (!visible) return;
+
+    if (newMovie === null) {
+      if (idx < 0) idx = data.length - 1;
+      else if (idx >= data.length) idx = 0;
+      newMovie = data[idx];
+    }
+
     setVisible(false);
     setTimeout(() => {
       setMovie(newMovie);
@@ -105,7 +114,7 @@ export default function Carousel({
       <Title title={title} icon={icon} />
 
       {/* backdrop container */}
-      {top10 && (
+      {(onlyBackdrop || top10) && (
         <Backdrop
           movie={movie}
           index={data.indexOf(movie) + 1}
@@ -113,29 +122,47 @@ export default function Carousel({
           loading={loading}
           overflow={overflow}
           ref={overflowDivRef}
+          onlyBackdrop={onlyBackdrop}
+          top10={top10}
+          handleMovieChange={handleMovieChange}
+          dataLength={data.length}
         />
       )}
 
-      {/* list */}
-      <div className="relative">
-        <div
-          className="flex overflow-x-auto gap-3 scrollbar-none"
-          ref={carouselRef}
-        >
-          {data.map((item, index) => (
-            <Item
-              key={item.id}
-              item={item}
-              index={index}
-              onClick={() => handleMovieChange(item, index)}
-              top10={top10}
-            />
-          ))}
-        </div>
+      {/* <p className="pb-2">Vote count: {movie.vote_count}</p>
+      <CircularProgressbar
+        className="w-5 rounded-full mt-5 bg-slate-900 p-2"
+        value={movie.vote_average * 10}
+        text={`${Math.round(movie.vote_average * 10)}%`}
+        styles={buildStyles({
+          textColor: "white",
+          pathColor: "white",
+          trailColor: "black",
+        })}
+      /> */}
 
-        <Button position="left" onClick={() => scroll(-1)} />
-        <Button position="right" onClick={() => scroll(1)} />
-      </div>
+      {/* list */}
+      {!onlyBackdrop && (
+        <div className="relative">
+          <div
+            className="flex overflow-x-auto gap-3 scrollbar-none"
+            ref={carouselRef}
+          >
+            {data.map((item, index) => (
+              <Item
+                key={item.id}
+                item={item}
+                index={index}
+                onClick={() => handleMovieChange(item, index)}
+                top10={top10}
+              />
+            ))}
+          </div>
+
+          <Button position="left" onClick={() => scroll(-1)} />
+          <Button position="right" onClick={() => scroll(1)} />
+        </div>
+      )}
     </div>
   );
 }

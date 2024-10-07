@@ -17,4 +17,5 @@ export type Movie = {
   vote_count: number;
 };
 
-export type TypeOfList = "now_playing" | "popular" | "upcoming";
+export type TypeOfList = "now_playing" | "popular" | "upcoming" | "top_rated";
+export type MAX_RATING = 10;
