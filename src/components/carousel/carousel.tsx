@@ -6,13 +6,10 @@ import Item from "./item";
 import Button from "./button";
 import Backdrop from "./backdrop";
 import Title from "./title";
+import { AsyncCarouselProps } from "./async-carousel";
 
-type CarouselProps = {
+type CarouselProps = Omit<AsyncCarouselProps, "promise"> & {
   data: Movie[];
-  title: string;
-  icon?: string;
-  top10?: boolean;
-  onlyBackdrop?: boolean;
 };
 
 type scrollFunction = (x: -1 | 1) => void;
@@ -21,9 +18,9 @@ type handleMovieChange = (newMovie: Movie | null, idx: number) => void;
 export default function Carousel({
   data,
   title,
-  top10 = false,
   icon,
-  onlyBackdrop = false,
+  topRated = false,
+  mostPopular = false,
 }: CarouselProps) {
   const carouselRef = useRef<HTMLDivElement>(null!);
   const intervalId = useRef<NodeJS.Timeout>(null!);
@@ -114,7 +111,7 @@ export default function Carousel({
       <Title title={title} icon={icon} />
 
       {/* backdrop container */}
-      {(onlyBackdrop || top10) && (
+      {(topRated || mostPopular) && (
         <Backdrop
           movie={movie}
           index={data.indexOf(movie) + 1}
@@ -122,27 +119,15 @@ export default function Carousel({
           loading={loading}
           overflow={overflow}
           ref={overflowDivRef}
-          onlyBackdrop={onlyBackdrop}
-          top10={top10}
+          topRated={topRated}
+          mostPopular={mostPopular}
           handleMovieChange={handleMovieChange}
           dataLength={data.length}
         />
       )}
 
-      {/* <p className="pb-2">Vote count: {movie.vote_count}</p>
-      <CircularProgressbar
-        className="w-5 rounded-full mt-5 bg-slate-900 p-2"
-        value={movie.vote_average * 10}
-        text={`${Math.round(movie.vote_average * 10)}%`}
-        styles={buildStyles({
-          textColor: "white",
-          pathColor: "white",
-          trailColor: "black",
-        })}
-      /> */}
-
       {/* list */}
-      {!onlyBackdrop && (
+      {!topRated && (
         <div className="relative">
           <div
             className="flex overflow-x-auto gap-3 scrollbar-none"
@@ -154,7 +139,7 @@ export default function Carousel({
                 item={item}
                 index={index}
                 onClick={() => handleMovieChange(item, index)}
-                top10={top10}
+                mostPopular={mostPopular}
               />
             ))}
           </div>
@@ -165,4 +150,18 @@ export default function Carousel({
       )}
     </div>
   );
+}
+
+{
+  /* <p className="pb-2">Vote count: {movie.vote_count}</p>
+<CircularProgressbar
+  className="w-5 rounded-full mt-5 bg-slate-900 p-2"
+  value={movie.vote_average * 10}
+  text={`${Math.round(movie.vote_average * 10)}%`}
+  styles={buildStyles({
+    textColor: "white",
+    pathColor: "white",
+    trailColor: "black",
+  })}
+/> */
 }

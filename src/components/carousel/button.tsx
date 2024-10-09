@@ -7,22 +7,14 @@ import clsx from "clsx";
 type ButtonProps = {
   position: "left" | "right";
   onClick: () => void;
-  onlyBackdrop?: boolean;
 };
 
-export default function ({
-  position,
-  onClick,
-  onlyBackdrop = false,
-}: ButtonProps) {
+export default function ({ position, onClick}: ButtonProps) {
   return (
     <button
       className={clsx(
-        "transition-bg-opacity duration-300",
+        "transition-bg-opacity duration-300 hover:text-primary hover:bg-opacity-100 absolute top-1/2 transform -translate-y-1/2 py-5 px-2 mx-2 bg-black bg-opacity-60 rounded-lg",
         `${position}-0`,
-        onlyBackdrop
-          ? "block bg-transparent hover:text-primary"
-          : "absolute top-1/2 transform -translate-y-1/2 py-5 px-2 mx-2 bg-black bg-opacity-60 rounded-lg hover:bg-opacity-100 "
       )}
       onClick={onClick}
     >

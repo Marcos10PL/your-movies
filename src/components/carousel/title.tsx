@@ -1,12 +1,14 @@
 import { ArrowTrendingUpIcon } from "@heroicons/react/24/outline";
 
-const iconMap: Record<string, React.FC<React.SVGProps<SVGSVGElement>>> = {
-  ArrowTrendingUpIcon: ArrowTrendingUpIcon,
-};
+const iconMap = {
+  ArrowTrendingUpIcon,
+} as const;
+
+export type IconType = keyof typeof iconMap;
 
 type TitleProps = {
   title: string;
-  icon?: string;
+  icon?: IconType;
 };
 
 export default function Title({ title, icon }: TitleProps) {

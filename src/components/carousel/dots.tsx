@@ -1,67 +1,58 @@
 import clsx from "clsx";
-import { v4 as uuidv4 } from "uuid";
-import React, { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 type DotsProps = {
   dataLength: number;
   index: number;
 };
 
+const visibleDots = 5;
+
 export default function Dots({ dataLength, index }: DotsProps) {
   if (dataLength < 3) return;
 
-  const [dots, setDots] = useState<React.ReactElement[]>([
-    <Dot key={uuidv4()} active />,
-    <Dot key={uuidv4()} />,
-    <Dot key={uuidv4()} />,
-    <Dot key={uuidv4()} />,
-    <Dot key={uuidv4()} />,
-  ]);
-  const visibleDots = 5;
-
-  useEffect(() => {
-    const newDots = [];
-    if (index - 1 >= 2 && index - 1 <= dataLength - visibleDots + 2) {
-      for (let i = 0; i < visibleDots; i++) {
-        if (i === Math.floor(visibleDots / 2)) {
-          newDots.push(<Dot key={uuidv4()} active />);
-        } else {
-          newDots.push(<Dot key={uuidv4()} />);
-        }
-      }
-    } else if (index >= dataLength - visibleDots) {
-      for (let i = 0; i < visibleDots; i++) {
-        if (i === index - 1 - (dataLength - visibleDots)) {
-          newDots.push(<Dot key={uuidv4()} active />);
-        } else {
-          newDots.push(<Dot key={uuidv4()} />);
-        }
-      }
-    } else {
-      for (let i = 0; i < visibleDots; i++) {
-        if (i === index - 1) {
-          newDots.push(<Dot key={uuidv4()} active />);
-        } else {
-          newDots.push(<Dot key={uuidv4()} />);
-        }
-      }
+  const activeDotIndex = useMemo(() => {
+    if (index > dataLength - Math.ceil(visibleDots / 2)) {
+      return visibleDots - (dataLength - index + 1);
     }
-    setDots(newDots);
-  }, [index]);
+    if (index >= Math.ceil(visibleDots / 2)) {
+      return Math.floor(visibleDots / 2);
+    }
+    return index - 1;
+  }, [index, dataLength]);
 
-  return <>{dots}</>;
+  return (
+    <div className="opacity-0 md:opacity-100 flex items-center justify-center space-x-2 transition-all duration-500 ease-in-out">
+      {Array.from({ length: visibleDots }).map((_, i) => (
+        <Dot key={i} active={i === activeDotIndex} index={index} />
+      ))}
+    </div>
+  );
 }
 
 type DotProps = {
   active?: boolean;
-} & React.ComponentProps<"div">;
+  index: number;
+};
 
-function Dot({ active = false }: DotProps) {
+function Dot({ active = false, index }: DotProps) {
+  const [triggerAnimation, setTriggerAnimation] = useState(false);
+
+  useEffect(() => {
+    setTriggerAnimation(true);
+    const timeout = setTimeout(() => {
+      setTriggerAnimation(false);
+    }, 200);
+
+    return () => clearTimeout(timeout);
+  }, [index]);
+
   return (
     <div
       className={clsx(
-        "rounded-full w-1 h-1 lg:w-2 lg:h-2 transition-transform duration-500 ease-out",
-        active ? "bg-white w-3 h-1 lg:w-5 lg:h-2" : "bg-slate-500"
+        "rounded-full w-1 h-1 lg:w-2 lg:h-2 transition-all duration-500 ease-in-out",
+        active ? "bg-white scale-125" : "bg-slate-500",
+        active && triggerAnimation && "h-5 lg:h-6"
       )}
     />
   );

@@ -1,6 +1,5 @@
 import { fetchMovies } from "@/api/actions";
 import AsyncCarousel from "@/components/carousel/async-carousel";
-import AsyncCarouselFull from "@/components/carousel/async-carousel-full";
 import { Suspense } from "react";
 
 export default async function Movies() {
@@ -12,7 +11,7 @@ export default async function Movies() {
   return (
     <>
       <Suspense fallback={<div>Loading best rated...</div>}>
-        <AsyncCarousel promise={topRated} title="Top rated" onlyBackdrop/>
+        <AsyncCarousel promise={topRated} title="Top rated" topRated/>
       </Suspense>
 
       <Suspense fallback={<div>Loading upcoming movies...</div>}>
@@ -27,8 +26,8 @@ export default async function Movies() {
         <AsyncCarousel
           promise={popular}
           title="Most Popular"
-          icon={"ArrowTrendingUpIcon"}
-          top10
+          icon="ArrowTrendingUpIcon"
+          mostPopular
         />
       </Suspense>
     </>

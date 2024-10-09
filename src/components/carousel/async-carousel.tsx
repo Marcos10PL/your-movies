@@ -1,21 +1,30 @@
 import { Movie } from "@/lib/definitions";
 import Carousel from "./carousel";
+import { IconType } from "./title";
 
-type AsyncCarouselProps = {
+export type AsyncCarouselProps = {
   promise: Promise<Movie[]>;
   title: string;
-  top10?: boolean;
-  icon?: string;
-  onlyBackdrop?: boolean;
-};
+  icon?: IconType;
+  topRated?: boolean;
+  mostPopular?: boolean;
+}
 
 export default async function AsyncCarousel({
   promise,
   title,
-  top10,
+  mostPopular,
   icon,
-  onlyBackdrop
+  topRated,
 }: AsyncCarouselProps) {
   const data = await promise;
-  return <Carousel data={data} title={title} top10={top10} icon={icon} onlyBackdrop={onlyBackdrop}/>;
+  return (
+    <Carousel
+      data={data}
+      title={title}
+      icon={icon}
+      topRated={topRated}
+      mostPopular={mostPopular}
+    />
+  );
 }

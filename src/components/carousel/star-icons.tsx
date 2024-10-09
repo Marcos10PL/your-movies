@@ -3,16 +3,19 @@ import { StarIcon as StarIconOutline } from "@heroicons/react/24/outline";
 import { StarIcon as StarIconSolid } from "@heroicons/react/24/solid";
 
 const starsIcon = {
-  StarIconOutline: StarIconOutline,
-  StarIconSolid: StarIconSolid,
-};
+  StarIconOutline,
+  StarIconSolid,
+} as const;
+
+type IconType = keyof typeof starsIcon;
 
 type StarIconProps = {
-  name: "StarIconOutline" | "StarIconSolid";
+  name: IconType;
 };
 
+const max_rating: MAX_RATING = 10;
+
 export default function StarIcons({ name }: StarIconProps) {
-  const max_rating: MAX_RATING = 10;
   const Icon = starsIcon[name];
   const stars = [];
 
