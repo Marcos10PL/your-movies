@@ -1,7 +1,7 @@
-import { Movie } from "@/lib/definitions";
-import clsx from "clsx";
 import { useEffect, useState } from "react";
+import { Movie } from "@/lib/definitions";
 import Spinner from "../spinner";
+import clsx from "clsx";
 
 type ItemProps = {
   item: Movie;
@@ -34,11 +34,10 @@ export default function Item({ item, index, onClick, mostPopular }: ItemProps) {
       />
 
       <Overlay date={item.release_date} />
-      
+
       {loading && <Loading />}
 
       {mostPopular && <Index index={index} />}
-
     </div>
   );
 }
@@ -61,7 +60,7 @@ function Overlay({ date }: { date: string }) {
 
 function Index({ index }: { index: number }) {
   return (
-    <div className="absolute top-0 left-0 rounded-br-2xl bg-black px-3 py-1 text-2xl shadow-inner shadow-slate-800 min-w-10 text-center">
+    <div className="absolute top-2 left-2 rounded-full bg-black px-3 py-1 text-2xl min-w-10 text-center shadow-inner shadow-slate-100">
       {index + 1}
     </div>
   );

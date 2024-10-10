@@ -41,9 +41,8 @@ function Button({ position, onClick }: ButtonProps) {
     <button
       onClick={onClick}
       className={clsx(
-        "absolute py-5 px-3 bg-black bg-opacity-50 md:static md:bg-opacity-0 hover:text-primary",
-        `${position}-0`,
-        position === 'left' ? 'rounded-se-lg' : 'rounded-ss-lg'
+        "absolute py-5 px-3 md:static hover:text-primary",
+        position === "left" ? "left-0" : "right-0"
       )}
     >
       {position === "left" ? (

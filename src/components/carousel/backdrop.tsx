@@ -2,10 +2,9 @@ import { Movie } from "@/lib/definitions";
 import clsx from "clsx";
 import { forwardRef } from "react";
 import Spinner from "../spinner";
-import StarIcons from "./star-icons";
-import Button from "./button";
-import Dots from "./dots";
-import Panel from "./panel";
+import AvgRating from "../avg-rating";
+import Panel from "./top-rated/panel";
+import Stars from "../stars";
 
 type BackdropProps = {
   movie: Movie;
@@ -69,7 +68,7 @@ const Backdrop = forwardRef<HTMLDivElement, BackdropProps>(
               <div className="hidden md:block md:col-span-2" />
               <div
                 className={clsx(
-                  "col-span-3 md:col-span-1 h-full *:w-full py-1 px-2 md:px-3 md:py-2 lg:px-6 bg-black md:bg-opacity-100 bg-opacity-50 text-ellipsis lg:text-xl xl:text-2xl xxl:text-3xl overflow-x-auto scrollbar-thin scrollbar-thumb-slate-900 scrollbar-track-slate-600",
+                  "col-span-3 md:col-span-1 *:w-full py-1 px-2 md:px-3 md:py-2 lg:px-6 bg-black md:bg-opacity-100 bg-opacity-50 text-ellipsis lg:text-xl xl:text-2xl xxl:text-3xl overflow-x-auto scrollbar-thin scrollbar-thumb-slate-900 scrollbar-track-transparent",
                   !overflow && "flex flex-col items-center justify-center"
                 )}
                 ref={ref}
@@ -129,27 +128,11 @@ function Overview({
 
   if (topRated) {
     return (
-      <div className="flex flex-col items-center justify-center gap-5 md:gap-6 xl:gap-12 xxl:gap-16">
-        <div className="text-white block">{date}</div>
+      <div className="flex flex-col pb-10 md:pb-0 md:justify-center gap-1 md:gap-4 xl:gap-6">
+        <div className="text-white text-center">{date}</div>
         <div className="text-primary text-center">{title}</div>
-        <div className="w-full flex flex-col items-center justify-center">
-          <div className="relative h-5 lg:h-6 xl:h-8 2xl:h-10 w-fit">
-            <div className="flex justify-center w-full">
-              <StarIcons name="StarIconOutline" />
-            </div>
-            <div
-              className="absolute left-0 top-0 flex justify-start overflow-hidden"
-              style={{
-                width: `${Math.round(voteAvg * 100) / 10}%`,
-              }}
-            >
-              <StarIcons name="StarIconSolid" />
-            </div>
-          </div>
-          <div className="text-center mt-2">
-            {Math.round(voteAvg * 100) / 100} / 10
-          </div>
-        </div>
+        <Stars voteAvg={voteAvg} />
+        <AvgRating voteAvg={voteAvg} />
       </div>
     );
   }
@@ -172,7 +155,7 @@ function Date({ date }: { date: string }) {
       </div>
 
       {/* sm */}
-      <div className="md:opacity-0 absolute top-[-4px] left-12 rounded-br-2xl rounded-bl-2xl bg-black border border-t-0 border-slate-400 text-center z-50 px-3">
+      <div className="md:opacity-0 absolute top-[-4px] left-14 rounded-br-2xl rounded-bl-2xl bg-black border border-t-0 border-slate-400 text-center z-50 px-3">
         {date}
       </div>
     </>

@@ -2,9 +2,9 @@ import type { Metadata } from "next";
 import "@/styles/globals.css";
 import { fredoka } from "@/styles/fonts";
 
-import SideNav from "@/components/side-nav";
-import Footer from "@/components/footer";
-import Navbar from "@/components/navbar";
+import SideNav from "@/components/website/side-nav";
+import Footer from "@/components/website/footer";
+import Navbar from "@/components/website/navbar";
 
 export const metadata: Metadata = {
   title: {

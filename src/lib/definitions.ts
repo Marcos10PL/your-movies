@@ -1,5 +1,3 @@
-import { ForwardRefExoticComponent, RefAttributes, SVGProps } from "react";
-
 export type Movie = {
   adult: boolean;
   backdrop_path: string;

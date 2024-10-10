@@ -22,7 +22,7 @@ export default function Dots({ dataLength, index }: DotsProps) {
   }, [index, dataLength]);
 
   return (
-    <div className="opacity-0 md:opacity-100 flex items-center justify-center space-x-2 transition-all duration-500 ease-in-out">
+    <div className="flex items-center justify-center space-x-2 transition-all duration-500 ease-in-out">
       {Array.from({ length: visibleDots }).map((_, i) => (
         <Dot key={i} active={i === activeDotIndex} index={index} />
       ))}

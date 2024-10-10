@@ -3,10 +3,14 @@
 import { Movie } from "@/lib/definitions";
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import Item from "./item";
-import Button from "./button";
 import Backdrop from "./backdrop";
 import Title from "./title";
 import { AsyncCarouselProps } from "./async-carousel";
+import {
+  ChevronDoubleRightIcon,
+  ChevronDoubleLeftIcon,
+} from "@heroicons/react/24/outline";
+import clsx from "clsx";
 
 type CarouselProps = Omit<AsyncCarouselProps, "promise"> & {
   data: Movie[];
@@ -152,16 +156,25 @@ export default function Carousel({
   );
 }
 
-{
-  /* <p className="pb-2">Vote count: {movie.vote_count}</p>
-<CircularProgressbar
-  className="w-5 rounded-full mt-5 bg-slate-900 p-2"
-  value={movie.vote_average * 10}
-  text={`${Math.round(movie.vote_average * 10)}%`}
-  styles={buildStyles({
-    textColor: "white",
-    pathColor: "white",
-    trailColor: "black",
-  })}
-/> */
+type ButtonProps = {
+  position: "left" | "right";
+  onClick: () => void;
+};
+
+function Button({ position, onClick }: ButtonProps) {
+  return (
+    <button
+      className={clsx(
+        "transition-bg-opacity duration-300 hover:text-primary hover:bg-opacity-100 absolute top-1/2 transform -translate-y-1/2 py-5 px-2 mx-4 bg-black bg-opacity-60 rounded-lg",
+        position === "left" ? "left-0" : "right-0"
+      )}
+      onClick={onClick}
+    >
+      {position === "left" ? (
+        <ChevronDoubleLeftIcon className="w-5" />
+      ) : (
+        <ChevronDoubleRightIcon className="w-5" />
+      )}
+    </button>
+  );
 }
