@@ -1,8 +1,7 @@
 import { TypeOfList } from "@/lib/definitions";
 import { optionsGET } from "./options";
 
-export async function fetchMovies(typeOfList: TypeOfList)
-{
+export async function fetchMovies(typeOfList: TypeOfList) {
   try {
     // const x = await new Promise(resolve => setTimeout(resolve, 2000));
 

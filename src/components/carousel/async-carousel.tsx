@@ -8,7 +8,7 @@ export type AsyncCarouselProps = {
   icon?: IconType;
   topRated?: boolean;
   mostPopular?: boolean;
-}
+};
 
 export default async function AsyncCarousel({
   promise,
@@ -18,6 +18,9 @@ export default async function AsyncCarousel({
   topRated,
 }: AsyncCarouselProps) {
   const data = await promise;
+
+  if (!data || data.length === 0) return <div>No data available</div>;
+
   return (
     <Carousel
       data={data}
