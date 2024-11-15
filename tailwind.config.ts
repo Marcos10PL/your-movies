@@ -14,6 +14,9 @@ const config: Config = {
         primary: "var(--primary)",
         secondary: "var(--secondary)",
       },
+      boxShadow: {
+        'primary': '0 0 4px 2px var(--primary)',
+      }
     },
   },
   plugins: [

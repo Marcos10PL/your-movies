@@ -7,7 +7,10 @@ export async function fetchMovies(typeOfList: TypeOfList) {
 
     const response = await fetch(
       `https://api.themoviedb.org/3/movie/${typeOfList}?language=en-US&page=1`,
-      optionsGET
+      {
+        ...optionsGET,
+        cache: "no-store",
+      }
     );
 
     if (!response.ok)
@@ -16,9 +19,12 @@ export async function fetchMovies(typeOfList: TypeOfList) {
       );
 
     const data = await response.json();
+    
+    if (data.length) 
+      throw new Error("No available data");
+
     return data.results;
   } catch (e) {
-    console.error(e);
-    throw new Error("Uknown error");
+    console.error("Error: " + e);
   }
 }

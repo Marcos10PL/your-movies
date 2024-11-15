@@ -59,7 +59,7 @@ const Backdrop = forwardRef<HTMLDivElement, BackdropProps>(
             {mostPopular && (
               <>
                 <Index index={index} />
-                <Date date={movie.release_date} />
+                <More />
               </>
             )}
 
@@ -131,7 +131,7 @@ function Overview({
       <div className="flex flex-col pb-10 md:pb-0 md:justify-center gap-1 md:gap-4 xl:gap-6">
         <div className="text-white text-center">{date}</div>
         <div className="text-primary text-center">{title}</div>
-        <Stars voteAvg={voteAvg} />
+        <Stars voteAvg={voteAvg} responsive={true} />
         <AvgRating voteAvg={voteAvg} />
       </div>
     );
@@ -146,17 +146,17 @@ function Loading() {
   );
 }
 
-function Date({ date }: { date: string }) {
+function More() {
   return (
     <>
       {/* md */}
       <div className="opacity-0 md:opacity-100 absolute bottom-0 md:left-2 px-2 py-1 z-50 bg-gradient-to-t from-black to-trasparent lg:text-xl">
-        Release date: {date}
+        Show more...
       </div>
 
       {/* sm */}
       <div className="md:opacity-0 absolute top-[-4px] left-14 rounded-br-2xl rounded-bl-2xl bg-black border border-t-0 border-slate-400 text-center z-50 px-3">
-        {date}
+        Show more
       </div>
     </>
   );

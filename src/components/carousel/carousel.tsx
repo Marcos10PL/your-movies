@@ -137,13 +137,14 @@ export default function Carousel({
             className="flex overflow-x-auto gap-3 scrollbar-none"
             ref={carouselRef}
           >
-            {data.map((item, index) => (
+            {data.map((item, idx) => (
               <Item
                 key={item.id}
                 item={item}
-                index={index}
-                onClick={() => handleMovieChange(item, index)}
+                index={idx}
+                onClick={() => handleMovieChange(item, idx)}
                 mostPopular={mostPopular}
+                chosen={(idx === index) && mostPopular}
               />
             ))}
           </div>
