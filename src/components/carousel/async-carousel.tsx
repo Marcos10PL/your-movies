@@ -1,14 +1,16 @@
-import { Movie } from "@/lib/definitions";
+import { Movie, TvSeries } from "@/lib/definitions";
 import Carousel from "./carousel";
 import { IconType } from "./title";
 
 export type AsyncCarouselProps = {
-  promise: Promise<Movie[]>;
+  promise: Promise<Movie[]> | Promise<TvSeries[]>;
   title: string;
   icon?: IconType;
-  topRated?: boolean;
-  mostPopular?: boolean;
-};
+} & (
+  | { topRated: true; mostPopular?: false }
+  | { mostPopular: true; topRated?: false }
+  | { topRated?: false; mostPopular?: false }
+);
 
 export default async function AsyncCarousel({
   promise,

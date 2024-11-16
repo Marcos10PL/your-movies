@@ -1,6 +1,6 @@
 "use client";
 
-import { Movie } from "@/lib/definitions";
+import { Movie, TvSeries } from "@/lib/definitions";
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import Item from "./item";
 import Backdrop from "./backdrop";
@@ -13,11 +13,11 @@ import {
 import clsx from "clsx";
 
 type CarouselProps = Omit<AsyncCarouselProps, "promise"> & {
-  data: Movie[];
+  data: Movie[] | TvSeries[];
 };
 
 type scrollFunction = (x: -1 | 1) => void;
-type handleMovieChange = (newMovie: Movie | null, idx: number) => void;
+export type handleItemChange = (newMovie: Movie | TvSeries | null, idx: number) => void;
 
 export default function Carousel({
   data,
@@ -31,7 +31,7 @@ export default function Carousel({
   const overflowDivRef = useRef<HTMLDivElement>(null!);
   const [index, setIndex] = useState(0);
   const [overflow, setOverflow] = useState(false);
-  const [movie, setMovie] = useState(data[index]);
+  const [item, setItem] = useState<Movie | TvSeries>(data[index]);
   const [visible, setVisible] = useState(true);
   const [loading, setLoading] = useState(true);
 
@@ -42,18 +42,18 @@ export default function Carousel({
     });
   };
 
-  const handleMovieChange: handleMovieChange = (newMovie, idx) => {
+  const handleItemChange: handleItemChange = (newItem, idx) => {
     if (!visible) return;
 
-    if (newMovie === null) {
+    if (newItem === null) {
       if (idx < 0) idx = data.length - 1;
       else if (idx >= data.length) idx = 0;
-      newMovie = data[idx];
+      newItem = data[idx];
     }
 
     setVisible(false);
     setTimeout(() => {
-      setMovie(newMovie);
+      setItem(newItem);
       setIndex(idx);
       setVisible(true);
     }, 400);
@@ -67,7 +67,7 @@ export default function Carousel({
     intervalId.current = setInterval(() => {
       setIndex(prevIndex => {
         const nextIndex = (prevIndex + 1) % data.length;
-        handleMovieChange(data[nextIndex], nextIndex);
+        handleItemChange(item, index);
         return nextIndex;
       });
     }, 7000);
@@ -104,11 +104,11 @@ export default function Carousel({
     return () => {
       window.removeEventListener("resize", handleResize);
     };
-  }, [movie]);
+  }, [item]);
 
   useEffect(() => {
     setLoading(false);
-  }, [movie.poster_path]);
+  }, [item.poster_path]);
 
   return (
     <div className="py-2">
@@ -117,15 +117,15 @@ export default function Carousel({
       {/* backdrop container */}
       {(topRated || mostPopular) && (
         <Backdrop
-          movie={movie}
-          index={data.indexOf(movie) + 1}
-          visible={visible}
+          item={item}
+          index={index + 1}
+          visible={visible} 
           loading={loading}
           overflow={overflow}
           ref={overflowDivRef}
           topRated={topRated}
           mostPopular={mostPopular}
-          handleMovieChange={handleMovieChange}
+          handleItemChange={handleItemChange}
           dataLength={data.length}
         />
       )}
@@ -137,12 +137,12 @@ export default function Carousel({
             className="flex overflow-x-auto gap-3 scrollbar-none"
             ref={carouselRef}
           >
-            {data.map((item, idx) => (
+            {data.map((itm, idx) => (
               <Item
-                key={item.id}
-                item={item}
+                key={itm.id}
+                item={itm}
                 index={idx}
-                onClick={() => handleMovieChange(item, idx)}
+                onClick={() => handleItemChange(itm, idx)}
                 mostPopular={mostPopular}
                 chosen={(idx === index) && mostPopular}
               />

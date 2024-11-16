@@ -1,13 +1,14 @@
-import { Movie } from "@/lib/definitions";
+import { Movie, TvSeries } from "@/lib/definitions";
 import clsx from "clsx";
 import { forwardRef } from "react";
 import Spinner from "../spinner";
 import AvgRating from "../avg-rating";
 import Panel from "./top-rated/panel";
 import Stars from "../stars";
+import { handleItemChange } from "./carousel";
 
 type BackdropProps = {
-  movie: Movie;
+  item: Movie | TvSeries;
   index: number;
   visible: boolean;
   loading: boolean;
@@ -15,20 +16,20 @@ type BackdropProps = {
   topRated: boolean;
   mostPopular: boolean;
   dataLength: number;
-  handleMovieChange: (newMovie: Movie | null, idx: number) => void;
+  handleItemChange: handleItemChange;
 } & React.ComponentProps<"div">;
 
 const Backdrop = forwardRef<HTMLDivElement, BackdropProps>(
   (
     {
-      movie,
+      item,
       index,
       visible,
       loading,
       overflow,
       topRated,
       mostPopular,
-      handleMovieChange,
+      handleItemChange,
       dataLength,
     },
     ref
@@ -43,8 +44,8 @@ const Backdrop = forwardRef<HTMLDivElement, BackdropProps>(
             )}
           >
             <img
-              src={`https://image.tmdb.org/t/p/w1280${movie.backdrop_path}`}
-              alt={movie.title}
+              src={`https://image.tmdb.org/t/p/w1280${item.backdrop_path}`}
+              alt={'title' in item ? item.title : item.name}
               className={clsx(
                 "w-full md:w-2/3 h-full transition-opacity duration-700 ease-in-out",
                 loading ? "opacity-0" : "opacity-100"
@@ -74,10 +75,10 @@ const Backdrop = forwardRef<HTMLDivElement, BackdropProps>(
                 ref={ref}
               >
                 <Overview
-                  title={movie.title}
-                  description={movie.overview}
-                  date={movie.release_date}
-                  voteAvg={movie.vote_average}
+                  title={'title' in item ? item.title : item.name}
+                  description={item.overview}
+                  date={'first_air_date' in item ? item.first_air_date : item.release_date}
+                  voteAvg={item.vote_average}
                   topRated={topRated}
                   mostPopular={mostPopular}
                 />
@@ -87,7 +88,7 @@ const Backdrop = forwardRef<HTMLDivElement, BackdropProps>(
 
           {topRated && (
             <Panel
-              handleMovieChange={handleMovieChange}
+              handleItemChange={handleItemChange}
               dataLength={dataLength}
               index={index}
             />

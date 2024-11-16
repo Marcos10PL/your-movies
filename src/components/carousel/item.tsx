@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
-import { Movie } from "@/lib/definitions";
+import { Movie, TvSeries } from "@/lib/definitions";
 import Spinner from "../spinner";
 import clsx from "clsx";
 import AvgRating from "../avg-rating";
 import Stars from "../stars";
 
 type ItemProps = {
-  item: Movie;
+  item: Movie | TvSeries;
   index: number;
   onClick: () => void;
   mostPopular: boolean;
@@ -37,10 +37,11 @@ export default function Item({
     >
       <img
         src={`https://image.tmdb.org/t/p/w500${item.poster_path}`}
-        alt={item.title}
+        alt={"title" in item ? item.title : item.name}
         className={clsx(
           "object-cover w-full h-full transition-all duration-500 group-hover:scale-105",
-          loading ? "opacity-0" : "opacity-100"
+          loading ? "opacity-0" : "opacity-100",
+          chosen && "scale-105" 
         )}
         onLoad={() => setLoading(false)}
       />
@@ -62,13 +63,13 @@ function Loading() {
   );
 }
 
-function Overlay({ item, chosen }: { item: Movie, chosen: boolean }) {
+function Overlay({ item, chosen }: { item: Movie | TvSeries, chosen: boolean }) {
   return (
     <div className={clsx('absolute inset-0 opacity-0 hover:opacity-100 transition-opacity duration-300', chosen && 'opacity-100')}>
       <div className="relative w-full h-full">
         <div className="flex flex-col text-white  justify-between items-center *:w-full text-center">
           <div className="absolute top-0 bg-gradient-to-b from-black to-transparent pb-5">
-            {item.release_date}
+            {"first_air_date" in item ? item.first_air_date : item.release_date}
           </div>
           <div className="absolute bottom-0 bg-gradient-to-t from-black to-transparent pt-10">
             <AvgRating voteAvg={item.vote_average} />

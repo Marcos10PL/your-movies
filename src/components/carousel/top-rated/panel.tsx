@@ -1,16 +1,17 @@
-import { Movie } from "@/lib/definitions";
+import { Movie, TvSeries } from "@/lib/definitions";
 import { ChevronRightIcon, ChevronLeftIcon } from "@heroicons/react/24/outline";
 import Dots from "./dots";
 import clsx from "clsx";
+import { handleItemChange } from "../carousel";
 
 type PanelProps = {
-  handleMovieChange: (movie: Movie | null, index: number) => void;
+  handleItemChange: handleItemChange;
   dataLength: number;
   index: number;
 };
 
 export default function Panel({
-  handleMovieChange,
+  handleItemChange,
   dataLength,
   index,
 }: PanelProps) {
@@ -19,12 +20,12 @@ export default function Panel({
       <div className="relative flex justify-center items-center gap-3 w-full">
         <Button
           position="left"
-          onClick={() => handleMovieChange(null, index - 2)}
+          onClick={() => handleItemChange(null, index - 2)}
         />
         <Dots dataLength={dataLength} index={index} />
         <Button
           position="right"
-          onClick={() => handleMovieChange(null, index)}
+          onClick={() => handleItemChange(null, index)}
         />
       </div>
     </div>
