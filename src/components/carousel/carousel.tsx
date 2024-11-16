@@ -67,7 +67,7 @@ export default function Carousel({
     intervalId.current = setInterval(() => {
       setIndex(prevIndex => {
         const nextIndex = (prevIndex + 1) % data.length;
-        handleItemChange(item, index);
+        handleItemChange(data[nextIndex], nextIndex);
         return nextIndex;
       });
     }, 7000);
