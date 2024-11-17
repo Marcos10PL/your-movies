@@ -50,16 +50,28 @@ type SortOption =
 
 export type LanguageOption = "en-US";
 
-export type SearchOptions = {
-  include_adult?: boolean;
+type SearchOptionsMovie = {
+  "release_date.lte"?: string;
+  "release_date.gte"?: string;
+  with_release_type?: 2 | 3 | "2|3";
+};
+type SearchOptionsTV = {
   include_null_first_air_dates?: boolean;
+  "air_date.lte"?: string;
+  "air_date.gte"?: string;
+};
+
+type SearchOptionsCommon = {
+  include_adult?: boolean;
   include_video?: boolean;
   screened_theatrically?: boolean;
   sort_by?: SortOption;
   page?: number;
-  'vote_count.gte'?: number;
-  'air_date.lte'?: string;
-  'air_date.gte'?: string;
+  "vote_count.gte"?: number;
 };
+
+export type SearchOptions =
+  | (SearchOptionsCommon & SearchOptionsMovie)
+  | (SearchOptionsTV & SearchOptionsCommon);
 
 export type MAX_RATING = 10;
