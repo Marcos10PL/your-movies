@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Movie, TvSeries } from "@/lib/definitions";
-import Spinner from "../spinner";
 import clsx from "clsx";
+import Spinner from "../spinner";
 import AvgRating from "../avg-rating";
 import Stars from "../stars";
 
@@ -21,7 +21,7 @@ export default function Item({
   chosen,
 }: ItemProps) {
   const [loading, setLoading] = useState(true);
-
+  
   useEffect(() => {
     setLoading(false);
   }, [item.poster_path]);
@@ -41,12 +41,12 @@ export default function Item({
         className={clsx(
           "object-cover w-full h-full transition-all duration-500 group-hover:scale-105",
           loading ? "opacity-0" : "opacity-100",
-          chosen && "scale-105" 
+          chosen && "scale-105"
         )}
         onLoad={() => setLoading(false)}
       />
 
-      <Overlay item={item} chosen={chosen}/>
+      <Overlay item={item} chosen={chosen} />
 
       {loading && <Loading />}
 
@@ -63,9 +63,20 @@ function Loading() {
   );
 }
 
-function Overlay({ item, chosen }: { item: Movie | TvSeries, chosen: boolean }) {
+function Overlay({
+  item,
+  chosen,
+}: {
+  item: Movie | TvSeries;
+  chosen: boolean;
+}) {
   return (
-    <div className={clsx('absolute inset-0 opacity-0 hover:opacity-100 transition-opacity duration-300', chosen && 'opacity-100')}>
+    <div
+      className={clsx(
+        "absolute inset-0 opacity-0 hover:opacity-100 transition-opacity duration-300",
+        chosen && "opacity-100"
+      )}
+    >
       <div className="relative w-full h-full">
         <div className="flex flex-col text-white  justify-between items-center *:w-full text-center">
           <div className="absolute top-0 bg-gradient-to-b from-black to-transparent pb-5">

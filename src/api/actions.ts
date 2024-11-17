@@ -1,12 +1,32 @@
-import { TypeOfMovieLists, TypeOfTvSeriesLists } from "@/lib/definitions";
+import { LanguageOption, SearchOptions, TypeOfList } from "@/lib/definitions";
 import { optionsGET } from "./options";
 
-export async function fetchMovies(type: TypeOfMovieLists) {
+export async function fetchData(
+  type: TypeOfList,
+  searchOptions: SearchOptions,
+  language: LanguageOption = "en-US"
+) {
   try {
-    // const x = await new Promise(resolve => setTimeout(resolve, 2000));
+    searchOptions = {
+      include_adult: false,
+      "vote_count.gte": 300,
+      page: 1,
+      ...searchOptions,
+    };
+
+
+    const queryParams = new URLSearchParams();
+    
+    Object.entries(searchOptions).forEach(([key, value]) => {
+      if (value !== undefined) {
+        queryParams.append(key, String(value)); 
+      }
+    });
+
+    console.log(queryParams.toString());
 
     const response = await fetch(
-      `https://api.themoviedb.org/3/movie/${type}?language=en-US&page=1`,
+      `https://api.themoviedb.org/3/discover/${type}?${language}&${queryParams.toString()}`,
       {
         ...optionsGET,
         cache: "no-store",
@@ -19,37 +39,8 @@ export async function fetchMovies(type: TypeOfMovieLists) {
       );
 
     const data = await response.json();
-    
-    if (data.length) 
-      throw new Error("No available data");
 
-    return data.results;
-  } catch (e) {
-    console.error(e);
-  }
-}
-
-export async function fetchTvSeries(type: TypeOfTvSeriesLists) {
-  try {
-    // const x = await new Promise(resolve => setTimeout(resolve, 2000));
-
-    const response = await fetch(
-      `https://api.themoviedb.org/3/tv/${type}?language=en-US&page=1`,
-      {
-        ...optionsGET,
-        cache: "no-store",
-      }
-    );
-
-    if (!response.ok)
-      throw new Error(
-        `Failed to fetch data: ${response.status} ${response.statusText}`
-      );
-
-    const data = await response.json();
-    
-    if (data.length) 
-      throw new Error("No available data");
+    if (data.length) throw new Error("No available data");
 
     return data.results;
   } catch (e) {

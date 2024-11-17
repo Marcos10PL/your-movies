@@ -35,7 +35,7 @@ const Backdrop = forwardRef<HTMLDivElement, BackdropProps>(
     ref
   ) => {
     return (
-      <div className={clsx("px-2", !topRated && "pb-3")}>
+      <div className={clsx("px-2", !topRated && "pb-2")}>
         <div className="relative w-full h-full rounded-lg overflow-hidden border-2 border-slate-700 bg-black">
           <div
             className={clsx(

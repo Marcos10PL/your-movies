@@ -1,17 +1,18 @@
-import { fetchMovies } from "@/api/actions";
+import { fetchData } from "@/api/actions";
 import AsyncCarousel from "@/components/carousel/async-carousel";
 import { Suspense } from "react";
 
 export default async function Movies() {
-  const upcoming = fetchMovies("upcoming");
-  const popular = fetchMovies("popular");
-  const nowPlaying = fetchMovies("now_playing");
-  const topRated = fetchMovies("top_rated");
+  const topRated = fetchData("movie", { sort_by: "vote_average.desc" });
+  const popular = fetchData("movie", { sort_by: "popularity.desc" });
+
+  const upcoming = fetchData("movie", { sort_by: "popularity.desc" });
+  const nowPlaying = fetchData("movie", { sort_by: "popularity.desc" });
 
   return (
     <>
       <Suspense fallback={<div>Loading best rated...</div>}>
-        <AsyncCarousel promise={topRated} title="Top rated" topRated/>
+        <AsyncCarousel promise={topRated} title="Top rated" topRated />
       </Suspense>
 
       <Suspense fallback={<div>Loading upcoming movies...</div>}>

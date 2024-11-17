@@ -68,7 +68,7 @@ export default function Carousel({
       setIndex(prevIndex => {
         const nextIndex = (prevIndex + 1) % data.length;
         handleItemChange(data[nextIndex], nextIndex);
-        return nextIndex;
+        return prevIndex;
       });
     }, 7000);
   };
