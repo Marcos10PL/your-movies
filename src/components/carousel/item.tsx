@@ -21,7 +21,7 @@ export default function Item({
   chosen,
 }: ItemProps) {
   const [loading, setLoading] = useState(true);
-  
+
   useEffect(() => {
     setLoading(false);
   }, [item.poster_path]);
@@ -80,11 +80,21 @@ function Overlay({
       <div className="relative w-full h-full">
         <div className="flex flex-col text-white  justify-between items-center *:w-full text-center">
           <div className="absolute top-0 bg-gradient-to-b from-black to-transparent pb-5">
-            {"first_air_date" in item ? item.first_air_date : item.release_date}
+            {"first_air_date" in item && item.first_air_date
+              ? item.first_air_date
+              : "release_date" in item && item.release_date
+                ? item.release_date
+                : "No date"}
           </div>
           <div className="absolute bottom-0 bg-gradient-to-t from-black to-transparent pt-10">
-            <AvgRating voteAvg={item.vote_average} />
-            <Stars voteAvg={item.vote_average} responsive={false} />
+            {item.vote_count ? (
+              <div>
+                <AvgRating voteAvg={item.vote_average} />
+                <Stars voteAvg={item.vote_average} responsive={false} />
+              </div>
+            ) : (
+              <div className="pb-2">No ratings</div>
+            )}
           </div>
         </div>
       </div>

@@ -1,12 +1,13 @@
 import { LanguageOption, SearchOptions, TypeOfList } from "@/lib/definitions";
 import { optionsGET } from "./options";
 
-export async function fetchData(
-  type: TypeOfList,
-  searchOptions: SearchOptions,
+export async function fetchData<T extends TypeOfList>(
+  type: T,
+  searchOptions: SearchOptions<T>,
   language: LanguageOption = "en-US"
 ) {
   try {
+    
     searchOptions = {
       include_adult: false,
       "vote_count.gte": 300,
@@ -14,16 +15,13 @@ export async function fetchData(
       ...searchOptions,
     };
 
-
     const queryParams = new URLSearchParams();
-    
+
     Object.entries(searchOptions).forEach(([key, value]) => {
       if (value !== undefined) {
-        queryParams.append(key, String(value)); 
+        queryParams.append(key, String(value));
       }
     });
-
-    console.log(queryParams.toString());
 
     const response = await fetch(
       `https://api.themoviedb.org/3/discover/${type}?${language}&${queryParams.toString()}`,
