@@ -43,17 +43,34 @@ const Backdrop = forwardRef<HTMLDivElement, BackdropProps>(
               visible ? "opacity-100" : "opacity-0"
             )}
           >
-            <img
-              src={`https://image.tmdb.org/t/p/w1280${item.backdrop_path}`}
-              alt={'title' in item ? item.title : item.name}
-              className={clsx(
-                "w-full md:w-2/3 h-full transition-opacity duration-700 ease-in-out",
-                loading ? "opacity-0" : "opacity-100"
-              )}
-            />
+            {item.backdrop_path ? (
+              <img
+                src={`https://image.tmdb.org/t/p/w1280${item.backdrop_path}`}
+                alt={"title" in item ? item.title : item.name}
+                className={clsx(
+                  "md:w-2/3 aspect-video transition-opacity duration-700",
+                  loading ? "opacity-0" : "opacity-100"
+                )}
+              />
+            ) : (
+              <div
+                className={clsx(
+                  "relative md:w-2/3 aspect-video transition-opacity duration-700 text-center",
+                  loading ? "opacity-0" : "opacity-100"
+                )}
+              >
+                <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 ">
+                  <span className="opacity-0 md:opacity-100">
+                    No image for this one
+                  </span>
+                </div>
+              </div>
+            )}
 
             {/* gradient */}
-            <div className="opacity-0 md:opacity-100 absolute inset-0 z-100 w-2/3 bg-gradient-to-l from-black to-transparent" />
+            {item.backdrop_path && (
+              <div className="opacity-0 md:opacity-100 absolute inset-0 z-100 w-2/3 bg-gradient-to-l from-black to-transparent" />
+            )}
 
             {loading && <Loading />}
 
@@ -75,9 +92,13 @@ const Backdrop = forwardRef<HTMLDivElement, BackdropProps>(
                 ref={ref}
               >
                 <Overview
-                  title={'title' in item ? item.title : item.name}
+                  title={"title" in item ? item.title : item.name}
                   description={item.overview}
-                  date={'first_air_date' in item ? item.first_air_date : item.release_date}
+                  date={
+                    "first_air_date" in item
+                      ? item.first_air_date
+                      : item.release_date
+                  }
                   voteAvg={item.vote_average}
                   topRated={topRated}
                   mostPopular={mostPopular}
