@@ -11,7 +11,7 @@ export default async function Series() {
     sort_by: "popularity.desc",
     "air_date.gte": today,
     "air_date.lte": today,
-    "vote_count.gte": 250,
+    "vote_count.gte": 150,
   });
 
   const onTheAir = fetchData("tv", {
