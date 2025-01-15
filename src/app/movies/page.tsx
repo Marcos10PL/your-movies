@@ -1,7 +1,12 @@
 import { fetchData } from "@/api/actions";
 import AsyncCarousel from "@/components/carousel/async-carousel";
 import { halfYearAgo, nextMonth, today } from "@/lib/utils";
+import { Metadata } from "next";
 import { Suspense } from "react";
+
+export const metadata: Metadata = {
+  title: 'Movies',
+};
 
 export default async function Movies() {
   const topRated = fetchData("movie", { sort_by: "vote_average.desc" });

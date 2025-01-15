@@ -4,6 +4,7 @@ import clsx from "clsx";
 import Spinner from "../spinner";
 import AvgRating from "../avg-rating";
 import Stars from "../stars";
+import { useRouter } from "next/navigation";
 
 type ItemProps = {
   item: Movie | TvSeries;
@@ -21,19 +22,32 @@ export default function Item({
   chosen,
 }: ItemProps) {
   const [loading, setLoading] = useState(true);
+  const router = useRouter();
 
   useEffect(() => {
     setLoading(false);
   }, [item.poster_path]);
 
+  const href = `${"title" in item ? 'movies' : 'series'}/${item.id}`;
+
   return (
-    <div
+    <button
       key={item.id}
       className={clsx(
         "relative min-w-44 overflow-hidden cursor-pointer first:ml-2 last:mr-2 rounded-lg border-2 border-slate-700 my-1 transition-all duration-200 group",
         chosen && "pointer-events-none shadow-primary shadow-emerald-400"
       )}
-      onClick={onClick}
+      onClick={(e) => {
+        if(mostPopular)
+        {
+          e.preventDefault(); 
+        }
+        else
+        {
+          router.push(href)
+        }
+        onClick && onClick(); 
+      }}
     >
       {item.poster_path ? (
         <img
@@ -63,7 +77,7 @@ export default function Item({
       {loading && <Loading />}
 
       {mostPopular && <Index index={index} />}
-    </div>
+    </button>
   );
 }
 

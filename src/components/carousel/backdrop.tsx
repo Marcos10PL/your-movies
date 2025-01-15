@@ -59,7 +59,7 @@ const Backdrop = forwardRef<HTMLDivElement, BackdropProps>(
                   loading ? "opacity-0" : "opacity-100"
                 )}
               >
-                <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 ">
+                <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
                   <span className="opacity-0 md:opacity-100">
                     No image for this one
                   </span>

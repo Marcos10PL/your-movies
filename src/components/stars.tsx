@@ -10,7 +10,7 @@ type StarsProps = {
 
 export default function Stars({ voteAvg, responsive }: StarsProps) {
   return (
-    <div className="flex flex-col items-center justify-center pt-1">
+    <div className="flex flex-col items-center pt-1">
       <div
         className={clsx("relative h-5", responsive && "lg:h-6 xl:h-8 2xl:h-10")}
       >
