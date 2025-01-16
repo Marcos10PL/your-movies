@@ -23,7 +23,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${fredoka.className} antialiased flex flex-col h-screen bg-gradient-to-b from-slate-500 to-slate-400 dark:from-slate-950 dark:to-black`}
+        className={`${fredoka.className} antialiased flex flex-col h-screen md:bg-gradient-to-b from-slate-500 to-slate-400 dark:from-slate-950 dark:to-black bg-slate-950`}
       >
         <header>
           <Navbar />
@@ -41,7 +41,7 @@ export default function RootLayout({
             {children}
           </section>
         </main>
-
+        
         <footer className="md:hidden">
           <Footer />
         </footer>

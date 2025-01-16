@@ -70,6 +70,6 @@ export async function findById<T extends TypeOfList>(
 
     return data;
   } catch (e) {
-    console.error(e);
+    //console.error(e);
   }
 }

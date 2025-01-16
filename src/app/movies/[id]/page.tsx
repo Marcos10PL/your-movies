@@ -4,6 +4,7 @@ import Layout from "@/components/item-details/layout";
 import Stars from "@/components/stars";
 import type { Movie } from "@/lib/definitions";
 import { Metadata } from "next";
+import { notFound } from "next/navigation";
 
 export const metadata: Metadata = {
   title: "Movies",
@@ -17,20 +18,28 @@ type MovieProps = {
 
 export default async function Movie({ params }: MovieProps) {
   const { id } = await params;
-  const movie: Movie = await findById("movie", parseInt(id));
+  const movie: Movie = await findById("movie", parseInt(id, 10));
+
+  if (!movie) {
+    notFound();
+  }
 
   return (
     <Layout>
       <div className="relative flex items-center justify-center">
-        <img
-          src={`https://image.tmdb.org/t/p/w1280${movie.backdrop_path}`}
-          alt={movie.title}
-          className="w-full h-full opacity-50 rounded-xl"
-        />
-        <div className="absolute inset-0 bg-gradient-to-r from-gray-950 to-transparent" />
-        <div className="absolute inset-0 bg-gradient-to-t from-black to-transparent" />
+        <div className="absolute top-0 w-full z-0">
+          {movie.backdrop_path && (
+            <img
+              src={`https://image.tmdb.org/t/p/w1280${movie.backdrop_path}`}
+              alt={movie.title}
+              className="w-full h-full opacity-50 rounded-xl"
+            />
+          )}
+          <div className="absolute inset-0 bg-gradient-to-r md:from-gray-950 from-slate-950 to-transparent " />
+          <div className="absolute inset-0 bg-gradient-to-t md:from-black from-slate-950 to-transparent" />
+        </div>
 
-        <div className="absolute inset-0 px-2 text-xl *:pt-2 *:pb-2">
+        <div className="z-20 px-2 text-xl *:pt-2 *:pb-2">
           <h1 className="text-3xl text-primary">{movie.title}</h1>
           <p className="md:w-2/3 xl:w-1/2">{movie.overview}</p>
           <p className="py-4">{movie.release_date}</p>
@@ -42,10 +51,10 @@ export default async function Movie({ params }: MovieProps) {
               <div>
                 <Stars voteAvg={movie.vote_average} responsive={false} />
               </div>
-              Votes: {movie.vote_count}
+              {movie.vote_count} votes
             </div>
           ) : (
-            "No ratings yet"
+            "No ratings"
           )}
         </div>
       </div>
