@@ -1,8 +1,8 @@
-import { findById } from "@/api/actions";
+import { fetchCast, findById } from "@/api/actions";
 import AvgRating from "@/components/avg-rating";
 import Layout from "@/components/item-details/layout";
 import Stars from "@/components/stars";
-import type { Movie } from "@/lib/definitions";
+import type { Credits, CrewMember, Movie } from "@/lib/definitions";
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
 
@@ -20,13 +20,16 @@ export default async function Movie({ params }: MovieProps) {
   const { id } = await params;
   const movie: Movie = await findById("movie", parseInt(id, 10));
 
-  if (!movie) {
-    notFound();
-  }
+  if (!movie) notFound();
+
+  const credits: Credits = await fetchCast("movie", parseInt(id, 10));
+  const director: CrewMember = credits.crew.find(
+    member => member.job === "Director"
+  )!;
 
   return (
     <Layout>
-      <div className="relative flex items-center justify-center">
+      <div className="relative flex items-center">
         <div className="absolute top-0 w-full z-0">
           {movie.backdrop_path && (
             <img
@@ -39,12 +42,16 @@ export default async function Movie({ params }: MovieProps) {
           <div className="absolute inset-0 bg-gradient-to-t md:from-black from-slate-950 to-transparent" />
         </div>
 
-        <div className="z-20 px-2 text-xl *:pt-2 *:pb-2">
+        <div className="z-20 px-4 text-xl gap-3 py-2 *:pb-3">
           <h1 className="text-3xl text-primary">{movie.title}</h1>
-          <p className="md:w-2/3 xl:w-1/2">{movie.overview}</p>
-          <p className="py-4">{movie.release_date}</p>
+          {movie.original_title !== movie.title && (
+            <p> && Orginal title: {movie.original_title}</p>
+          )}
+          <p className="xl:w-2/3">{movie.overview}</p>
+          <p className="text-emerald-100">Release date: {movie.release_date}</p>
           {movie.vote_average ? (
             <div className="*:flex *:py-1">
+              User rating:
               <div>
                 <AvgRating voteAvg={movie.vote_average} />
               </div>
@@ -54,8 +61,11 @@ export default async function Movie({ params }: MovieProps) {
               {movie.vote_count} votes
             </div>
           ) : (
-            "No ratings"
+            <p>No ratings yet</p>
           )}
+          <p className="text-emerald-100">Director: {director.name}</p>
+          {movie.adult && <p>Not for children</p>}
+          <p>Orginal language: {movie.original_language}</p>
         </div>
       </div>
     </Layout>

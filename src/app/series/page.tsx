@@ -1,5 +1,5 @@
 import { fetchData } from "@/api/actions";
-import AsyncCarousel from "@/components/carousel/async-carousel";
+import AsyncCarousel from "@/components/carousel/movie-or-tv/async-carousel";
 import { today } from "@/lib/utils";
 import { Suspense } from "react";
 

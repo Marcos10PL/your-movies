@@ -1,17 +1,17 @@
 import { fetchData } from "@/api/actions";
-import AsyncCarousel from "@/components/carousel/async-carousel";
-import { halfYearAgo, nextMonth, today } from "@/lib/utils";
+import AsyncCarousel from "@/components/carousel/movie-or-tv/async-carousel";
+import { today, nextMonth, halfYearAgo } from "@/lib/utils";
 import { Metadata } from "next";
 import { Suspense } from "react";
 
 export const metadata: Metadata = {
-  title: 'Movies',
+  title: "Movies",
 };
 
 export default async function Movies() {
   const topRated = fetchData("movie", { sort_by: "vote_average.desc" });
   const popular = fetchData("movie", { sort_by: "popularity.desc" });
-
+  console.log(today);
   const upcoming = fetchData("movie", {
     sort_by: "popularity.desc",
     with_release_type: "2|3",

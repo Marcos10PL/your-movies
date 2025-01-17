@@ -17,7 +17,10 @@ type CarouselProps = Omit<AsyncCarouselProps, "promise"> & {
 };
 
 type scrollFunction = (x: -1 | 1) => void;
-export type handleItemChange = (newMovie: Movie | TvSeries | null, idx: number) => void;
+export type handleItemChange = (
+  newMovie: Movie | TvSeries | null,
+  idx: number
+) => void;
 
 export default function Carousel({
   data,
@@ -119,7 +122,7 @@ export default function Carousel({
         <Backdrop
           item={item}
           index={index + 1}
-          visible={visible} 
+          visible={visible}
           loading={loading}
           overflow={overflow}
           ref={overflowDivRef}
@@ -144,7 +147,7 @@ export default function Carousel({
                 index={idx}
                 onClick={() => handleItemChange(itm, idx)}
                 mostPopular={mostPopular}
-                chosen={(idx === index) && mostPopular}
+                chosen={idx === index && mostPopular}
               />
             ))}
           </div>

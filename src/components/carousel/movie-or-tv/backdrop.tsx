@@ -1,11 +1,12 @@
 import { Movie, TvSeries } from "@/lib/definitions";
 import clsx from "clsx";
 import { forwardRef } from "react";
-import Spinner from "../spinner";
-import AvgRating from "../avg-rating";
-import Panel from "./top-rated/panel";
-import Stars from "../stars";
+
 import { handleItemChange } from "./carousel";
+import Panel from "./top-rated/panel";
+import Stars from "@/components/stars";
+import AvgRating from "@/components/avg-rating";
+import Spinner from "@/components/spinner";
 
 type BackdropProps = {
   item: Movie | TvSeries;

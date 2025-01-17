@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
 import { Movie, TvSeries } from "@/lib/definitions";
 import clsx from "clsx";
-import Spinner from "../spinner";
-import AvgRating from "../avg-rating";
-import Stars from "../stars";
 import { useRouter } from "next/navigation";
+import AvgRating from "@/components/avg-rating";
+import Stars from "@/components/stars";
+import Spinner from "@/components/spinner";
 
 type ItemProps = {
   item: Movie | TvSeries;

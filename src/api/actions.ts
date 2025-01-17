@@ -41,7 +41,7 @@ export async function fetchData<T extends TypeOfList>(
 
     return data.results;
   } catch (e) {
-    console.error(e);
+    //console.error(e);
   }
 }
 
@@ -53,6 +53,35 @@ export async function findById<T extends TypeOfList>(
   try {
     const response = await fetch(
       `https://api.themoviedb.org/3/${type}/${id}?language=${language}}`,
+      {
+        ...optionsGET,
+        cache: "no-store",
+      }
+    );
+
+    if (!response.ok)
+      throw new Error(
+        `Failed to fetch data: ${response.status} ${response.statusText}`
+      );
+
+    const data = await response.json();
+
+    if (!data) throw new Error("No available data");
+
+    return data;
+  } catch (e) {
+    //console.error(e);
+  }
+}
+
+export async function fetchCast<T extends TypeOfList>(
+  type: T,
+  id: number,
+  language: LanguageOption = "en-US"
+) {
+  try {
+    const response = await fetch(
+      `https://api.themoviedb.org/3/${type}/${id}/credits?language=${language}}`,
       {
         ...optionsGET,
         cache: "no-store",

@@ -35,6 +35,43 @@ export type TvSeries = {
   vote_count: number;
 };
 
+//-------------- credits ----------------//
+
+export type Credits = {
+  id: number;
+  cast: CastMember[];
+  crew: CrewMember[];
+};
+
+export type CrewMember = {
+  id: number;
+  name: string;
+  job: Job;
+  department: string;
+  profile_path: string | null;
+  adult: false;
+  gender: number;
+  known_for_department: string;
+  original_name: string;
+  popularity: number;
+  credit_id: string;
+};
+
+export type CastMember = {
+  id: number;
+  name: string;
+  character: string;
+  profile_path: string | null;
+  order: number;
+  adult: boolean;
+  cast_id: number;
+  credit_id: number;
+  gender: number;
+  known_for_department: string;
+  original_name: string;
+  popularity: number;
+};
+
 //----------- to the fetchData (url params) -----------------//
 
 export type TypeOfList = "movie" | "tv";
@@ -66,14 +103,14 @@ type SearchOptionsCommon = {
   sort_by?: SortOption;
   page?: number;
   "vote_count.gte"?: number;
-  "with_genres"?: string;
+  with_genres?: string;
 };
 
 type SearchOptionsMovie = {
   "release_date.lte"?: string;
   "release_date.gte"?: string;
   with_release_type?: "3|2" | "2|3" | 3 | 2;
-  "primary_release_year"?: number;
+  primary_release_year?: number;
   "primary_release_date.gte"?: string;
   "primary_release_date.lte"?: string;
 } & SearchOptionsCommon;
@@ -91,3 +128,41 @@ export type SearchOptions<T extends TypeOfList> = T extends "movie"
 //--------------------------- others ------------------------//
 
 export type MAX_RATING = 10;
+
+export type Job =
+  | "Director"
+  | "Assistant Director"
+  | "Second Unit Director"
+  | "Script Supervisor"
+  | "Writer"
+  | "Screenplay"
+  | "Story"
+  | "Dialogue"
+  | "Novel"
+  | "Actor"
+  | "Stunt Double"
+  | "Voice Actor"
+  | "Producer"
+  | "Executive Producer"
+  | "Co-Producer"
+  | "Line Producer"
+  | "Production Manager"
+  | "Director of Photography"
+  | "Camera Operator"
+  | "Steadicam Operator"
+  | "Editor"
+  | "Assistant Editor"
+  | "Production Designer"
+  | "Art Director"
+  | "Set Designer"
+  | "Props"
+  | "Sound Designer"
+  | "Sound Editor"
+  | "Composer"
+  | "Music Supervisor"
+  | "Visual Effects Supervisor"
+  | "VFX Artist"
+  | "Costume Designer"
+  | "Makeup Artist"
+  | "Special Effects Supervisor"
+  | "Casting Director";
