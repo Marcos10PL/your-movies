@@ -4,7 +4,7 @@ import { Movie, TvSeries } from "@/lib/definitions";
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import Item from "./item";
 import Backdrop from "./backdrop";
-import Title from "./title";
+import Title from "../title";
 import { AsyncCarouselProps } from "./async-carousel";
 import {
   ChevronDoubleRightIcon,

@@ -23,7 +23,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${fredoka.className} antialiased flex flex-col h-screen md:bg-gradient-to-b from-slate-500 to-slate-400 dark:from-slate-950 dark:to-black bg-slate-950`}
+        className={`${fredoka.className} antialiased flex flex-col h-screen bg-gray-950`}
       >
         <header>
           <Navbar />

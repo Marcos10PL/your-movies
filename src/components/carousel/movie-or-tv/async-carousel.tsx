@@ -1,6 +1,6 @@
 import { Movie, TvSeries } from "@/lib/definitions";
 import Carousel from "./carousel";
-import { IconType } from "./title";
+import { IconType } from "../title";
 
 export type AsyncCarouselProps = {
   promise: Promise<Movie[]> | Promise<TvSeries[]>;

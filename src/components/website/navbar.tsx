@@ -15,7 +15,7 @@ export default function Navbar() {
   const pathname = usePathname();
 
   return (
-    <nav className="text-white flex flex-col md:flex-row items-center justify-center gap-10 bg-gradient-to-b from-slate-800 to-slate-950 h-12">
+    <nav className="text-white flex flex-col md:flex-row items-center justify-center gap-10 bg-gradient-to-b from-slate-800 to-gray-950 h-12">
       <p className="uppercase text-xl text-primary">your movies</p>
       <div className="flex gap-2 ">
         {links.map(({ name, href, icon: Icon }) => {

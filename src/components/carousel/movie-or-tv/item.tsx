@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
 import { Movie, TvSeries } from "@/lib/definitions";
 import clsx from "clsx";
-import { useRouter } from "next/navigation";
 import AvgRating from "@/components/avg-rating";
 import Stars from "@/components/stars";
 import Spinner from "@/components/spinner";
+import Link from "next/link";
 
 type ItemProps = {
   item: Movie | TvSeries;
@@ -22,31 +22,25 @@ export default function Item({
   chosen,
 }: ItemProps) {
   const [loading, setLoading] = useState(true);
-  const router = useRouter();
 
   useEffect(() => {
     setLoading(false);
   }, [item.poster_path]);
 
-  const href = `${"title" in item ? 'movies' : 'series'}/${item.id}`;
+  const href = `${"title" in item ? "movies" : "series"}/${item.id}`;
 
   return (
-    <button
+    <Link
+      href={href}
+      scroll={true}
       key={item.id}
       className={clsx(
         "relative min-w-44 overflow-hidden cursor-pointer first:ml-2 last:mr-2 rounded-lg border-2 border-slate-700 my-1 transition-all duration-200 group",
         chosen && "pointer-events-none shadow-primary shadow-emerald-400"
       )}
-      onClick={(e) => {
-        if(mostPopular)
-        {
-          e.preventDefault(); 
-        }
-        else
-        {
-          router.push(href)
-        }
-        onClick && onClick(); 
+      onClick={e => {
+        if (mostPopular) e.preventDefault();
+        onClick && onClick();
       }}
     >
       {item.poster_path ? (
@@ -77,7 +71,7 @@ export default function Item({
       {loading && <Loading />}
 
       {mostPopular && <Index index={index} />}
-    </button>
+    </Link>
   );
 }
 
