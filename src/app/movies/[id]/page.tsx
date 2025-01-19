@@ -1,12 +1,10 @@
 import { fetchCast, findById } from "@/api/actions";
-import AvgRating from "@/components/avg-rating";
 import AsyncCarousel from "@/components/carousel/people/async-carousel";
 import { Backdrop } from "@/components/item-details/backdrop";
 import { Details } from "@/components/item-details/details";
 import Director from "@/components/item-details/director";
 import Layout from "@/components/item-details/layout";
-import Stars from "@/components/stars";
-import type { Credits, CrewMember, Movie } from "@/lib/definitions";
+import type { Movie } from "@/lib/definitions";
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
@@ -16,13 +14,12 @@ export const metadata: Metadata = {
 };
 
 type MovieProps = {
-  params: {
-    id: string;
-  };
+  params: Promise<{ id: string }>;
 };
 
 export default async function Movie({ params }: MovieProps) {
-  const { id } = await params;
+  const id = (await params).id;
+
   const movie: Movie = await findById("movie", parseInt(id, 10));
 
   if (!movie) notFound();
@@ -32,7 +29,7 @@ export default async function Movie({ params }: MovieProps) {
   return (
     <Layout>
       <Backdrop title={movie.title} backdropPath={movie.backdrop_path} />
-      <div className="z-30 px-2"> 
+      <div className="z-30 px-2">
         <Details item={movie}>
           <Suspense>
             <Director promise={credits} />
@@ -47,4 +44,3 @@ export default async function Movie({ params }: MovieProps) {
     </Layout>
   );
 }
-// pt-48 md:pt-0"

@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
-import { CastMember, CrewMember } from "@/lib/definitions";
+import { CastMember} from "@/lib/definitions";
 import clsx from "clsx";
 import Spinner from "@/components/spinner";
-import Link from "next/link";
+import Image from "next/image";
 
 type ItemProps = {
   item: CastMember;
@@ -15,25 +15,22 @@ export default function Item({ item }: ItemProps) {
     setLoading(false);
   }, [item.profile_path]);
 
-  const href = `${"title" in item ? "movies" : "series"}/${item.id}`;
-
   return (
-    <Link
-      href={href}
+    <div
       key={item.id}
       className={clsx(
         "relative min-w-44 overflow-hidden cursor-pointer first:ml-2 last:mr-2 rounded-lg border-2 border-slate-700 my-1 transition-all duration-200 group"
       )}
     >
       {item.profile_path ? (
-        <img
+        <Image
           src={`https://image.tmdb.org/t/p/w500${item.profile_path}`}
           alt={item.name}
+          fill
           className={clsx(
             "w-full h-full transition-all will-change-transform duration-500 group-hover:scale-105",
             loading ? "opacity-0" : "opacity-100"
           )}
-          onLoad={() => setLoading(false)}
         />
       ) : (
         <div
@@ -48,7 +45,7 @@ export default function Item({ item }: ItemProps) {
       )}
 
       {loading && <Loading />}
-    </Link>
+    </div>
   );
 }
 

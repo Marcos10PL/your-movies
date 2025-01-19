@@ -1,7 +1,7 @@
 "use client";
 
 import { Movie, TvSeries } from "@/lib/definitions";
-import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
 import Item from "./item";
 import Backdrop from "./backdrop";
 import Title from "../title";
@@ -63,7 +63,7 @@ export default function Carousel({
     resetInterval();
   };
 
-  const resetInterval = () => {
+  const resetInterval = useCallback(() => {
     if (intervalId.current) {
       clearInterval(intervalId.current);
     }
@@ -74,14 +74,14 @@ export default function Carousel({
         return prevIndex;
       });
     }, 7000);
-  };
+  }, [intervalId, data, handleItemChange]);
 
   useEffect(() => {
     resetInterval();
     return () => {
       if (intervalId.current) clearInterval(intervalId.current);
     };
-  }, []);
+  }, [resetInterval]);
 
   useLayoutEffect(() => {
     const isOverflowing = (element: HTMLElement) => {

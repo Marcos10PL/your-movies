@@ -10,10 +10,11 @@ export const metadata: Metadata = {
 };
 
 export default async function Movies() {
-  const topRated = fetchData("movie", { sort_by: "vote_average.desc" });
-  const popular = fetchData("movie", { sort_by: "popularity.desc" });
+  const topRated = await fetchData("movie", { sort_by: "vote_average.desc" });
 
-  const upcoming = fetchData("movie", {
+  const popular = await fetchData("movie", { sort_by: "popularity.desc" });
+
+  const upcoming = await fetchData("movie", {
     sort_by: "popularity.desc",
     with_release_type: "2|3",
     "primary_release_date.gte": today,
@@ -21,7 +22,7 @@ export default async function Movies() {
     "vote_count.gte": 0,
   });
 
-  const recentlyReleased = fetchData("movie", {
+  const recentlyReleased = await fetchData("movie", {
     sort_by: "primary_release_date.desc",
     with_release_type: "2|3",
     "primary_release_date.gte": halfYearAgo,
@@ -31,9 +32,13 @@ export default async function Movies() {
 
   return (
     <>
-      <Suspense fallback={<div>Loading best rated...</div>}>
-        <AsyncCarousel promise={topRated} title="Top rated" topRated />
-      </Suspense>
+      {topRated.length === 0 ? (
+        <Suspense fallback={<div>Loading best rated...</div>}>
+          <AsyncCarousel promise={topRated} title="Top rated" topRated />
+        </Suspense>
+      ) : (
+        <div>Loading top rated failed</div>
+      )}
 
       <Suspense fallback={<div>Loading upcoming movies...</div>}>
         <AsyncCarousel promise={upcoming} title="Upcoming" />

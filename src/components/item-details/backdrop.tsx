@@ -1,8 +1,9 @@
 "use client";
 
-import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import { useState } from "react";
 import Spinner from "../spinner";
 import clsx from "clsx";
+import Image from "next/image";
 
 type BackdropProps = {
   title: string;
@@ -12,13 +13,12 @@ type BackdropProps = {
 export function Backdrop({ title, backdropPath }: BackdropProps) {
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    setLoading(false);
-  }, [backdropPath]);
-
   return (
     <div
-      className={clsx(`relative md:absolute top-0 w-full z-0 opacity-70`, backdropPath && 'aspect-video') }
+      className={clsx(
+        `relative md:absolute top-0 w-full z-0 opacity-70`,
+        backdropPath && "aspect-video"
+      )}
     >
       {backdropPath && (
         <>
@@ -27,17 +27,18 @@ export function Backdrop({ title, backdropPath }: BackdropProps) {
               <Spinner />
             </div>
           )}
-          <img
-            src={`https://image.tmdb.org/t/p/w1280${backdropPath}/`}
+
+          <Image
+            src={`https://image.tmdb.org/t/p/w1280${backdropPath}`}
             alt={title}
-            className={clsx(
-              "w-full h-full transition-opacity duration-500",
-              loading ? "opacity-0" : "opacity-100"
-            )}
+            fill
+            className={"w-full h-full"}
             onLoad={() => setLoading(false)}
+            priority
           />
         </>
       )}
+
       {/* bottom */}
       <div className="absolute bottom-0 w-full h-2/3 bg-gradient-to-t from-gray-950 to-transparent" />
       {/* left */}

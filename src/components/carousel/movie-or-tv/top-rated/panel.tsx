@@ -1,4 +1,3 @@
-import { Movie, TvSeries } from "@/lib/definitions";
 import { ChevronRightIcon, ChevronLeftIcon } from "@heroicons/react/24/outline";
 import Dots from "./dots";
 import clsx from "clsx";

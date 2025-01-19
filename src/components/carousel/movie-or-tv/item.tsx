@@ -5,6 +5,7 @@ import AvgRating from "@/components/avg-rating";
 import Stars from "@/components/stars";
 import Spinner from "@/components/spinner";
 import Link from "next/link";
+import Image from "next/image";
 
 type ItemProps = {
   item: Movie | TvSeries;
@@ -40,13 +41,14 @@ export default function Item({
       )}
       onClick={e => {
         if (mostPopular) e.preventDefault();
-        onClick && onClick();
+        onClick();
       }}
     >
       {item.poster_path ? (
-        <img
+        <Image
           src={`https://image.tmdb.org/t/p/w500${item.poster_path}`}
           alt={"title" in item ? item.title : item.name}
+          fill
           className={clsx(
             "w-full h-full transition-all will-change-transform duration-500 group-hover:scale-105",
             loading ? "opacity-0" : "opacity-100",

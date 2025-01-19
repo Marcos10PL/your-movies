@@ -1,11 +1,17 @@
-import { LanguageOption, SearchOptions, TypeOfList } from "@/lib/definitions";
+import {
+  LanguageOption,
+  Movie,
+  SearchOptions,
+  TvSeries,
+  TypeOfList,
+} from "@/lib/definitions";
 import { optionsGET } from "./options";
 
 export async function fetchData<T extends TypeOfList>(
   type: T,
   searchOptions: SearchOptions<T>,
   language: LanguageOption = "en-US"
-) {
+): Promise<Movie[] | TvSeries[]> {
   try {
     searchOptions = {
       include_adult: false,
@@ -26,7 +32,9 @@ export async function fetchData<T extends TypeOfList>(
       `https://api.themoviedb.org/3/discover/${type}?${language}&${queryParams.toString()}`,
       {
         ...optionsGET,
-        cache: "no-store",
+        next: {
+          revalidate: 24 * 60 * 60,
+        },
       }
     );
 
@@ -37,11 +45,14 @@ export async function fetchData<T extends TypeOfList>(
 
     const data = await response.json();
 
-    if (data.length) throw new Error("No available data");
+    if (!data.results || data.results.length === 0) {
+      throw new Error("No available data");
+    }
 
     return data.results;
   } catch (e) {
-    //console.error(e);
+    console.error(e);
+    return [];
   }
 }
 
@@ -56,6 +67,9 @@ export async function findById<T extends TypeOfList>(
       {
         ...optionsGET,
         cache: "no-store",
+        next: {
+          revalidate: 24 * 60 * 60,
+        },
       }
     );
 
@@ -70,7 +84,7 @@ export async function findById<T extends TypeOfList>(
 
     return data;
   } catch (e) {
-    //console.error(e);
+    console.error(e);
   }
 }
 
@@ -85,6 +99,9 @@ export async function fetchCast<T extends TypeOfList>(
       {
         ...optionsGET,
         cache: "no-store",
+        next: {
+          revalidate: 24 * 60 * 60,
+        },
       }
     );
 
@@ -99,6 +116,6 @@ export async function fetchCast<T extends TypeOfList>(
 
     return data;
   } catch (e) {
-    //console.error(e);
+    console.error(e);
   }
 }

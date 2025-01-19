@@ -7,6 +7,7 @@ import Panel from "./top-rated/panel";
 import Stars from "@/components/stars";
 import AvgRating from "@/components/avg-rating";
 import Spinner from "@/components/spinner";
+import Image from "next/image";
 
 type BackdropProps = {
   item: Movie | TvSeries;
@@ -45,9 +46,10 @@ const Backdrop = forwardRef<HTMLDivElement, BackdropProps>(
             )}
           >
             {item.backdrop_path ? (
-              <img
+              <Image
                 src={`https://image.tmdb.org/t/p/w1280${item.backdrop_path}`}
                 alt={"title" in item ? item.title : item.name}
+                fill
                 className={clsx(
                   "md:w-2/3 aspect-video transition-opacity duration-700",
                   loading ? "opacity-0" : "opacity-100"
@@ -201,4 +203,5 @@ function Index({ index }: { index: number }) {
   );
 }
 
+Backdrop.displayName = "Backdrop";
 export default Backdrop;

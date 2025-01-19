@@ -1,6 +1,6 @@
 "use client";
 
-import { CastMember, CrewMember } from "@/lib/definitions";
+import { CastMember } from "@/lib/definitions";
 import { useRef } from "react";
 import clsx from "clsx";
 import Title from "../title";

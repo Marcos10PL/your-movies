@@ -3,7 +3,7 @@ import Carousel from "./carousel";
 import { IconType } from "../title";
 
 export type AsyncCarouselProps = {
-  promise: Promise<Movie[]> | Promise<TvSeries[]>;
+  promise: Movie[] | TvSeries[];
   title: string;
   icon?: IconType;
 } & (
@@ -19,7 +19,7 @@ export default async function AsyncCarousel({
   icon,
   topRated,
 }: AsyncCarouselProps) {
-  const data = await promise;
+  const data = promise;
 
   if (!data || data.length === 0) return <div>No data available</div>;
 
