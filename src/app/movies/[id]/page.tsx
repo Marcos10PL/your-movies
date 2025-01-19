@@ -32,7 +32,7 @@ export default async function Movie({ params }: MovieProps) {
   return (
     <Layout>
       <Backdrop title={movie.title} backdropPath={movie.backdrop_path} />
-      <div className="z-30 px-2 pt-48 md:pt-0">
+      <div className="z-30 px-2"> 
         <Details item={movie}>
           <Suspense>
             <Director promise={credits} />
@@ -47,3 +47,4 @@ export default async function Movie({ params }: MovieProps) {
     </Layout>
   );
 }
+// pt-48 md:pt-0"

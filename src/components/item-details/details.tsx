@@ -14,7 +14,7 @@ export function Details({ item, children }: DetailsProps) {
     "title" in item ? item.original_title : item.original_name;
 
   return (
-    <div className="z-30 gap-3 pt-2 *:pb-3">
+    <div className="z-30 gap-3 *:pb-3">
       <h1 className="text-3xl text-primary">
         {title}{" "}
         <span className="opacity-60 text-2xl">
@@ -23,7 +23,7 @@ export function Details({ item, children }: DetailsProps) {
       </h1>
 
       {originalTitle !== title && <p> Orginal title: {originalTitle}</p>}
-      <p className="xl:w-2/3">{item.overview}</p>
+      <p className="md:w-3/5 xl:w-2/6">{item.overview}</p>
       <p>Release date: {releaseDate}</p>
 
       {item.vote_average ? (
