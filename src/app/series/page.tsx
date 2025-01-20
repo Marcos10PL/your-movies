@@ -1,5 +1,4 @@
 import { fetchData } from "@/api/actions";
-import AsyncCarousel from "@/components/carousel/movie-or-tv/async-carousel";
 import { today } from "@/lib/utils";
 import { Suspense } from "react";
 
@@ -21,7 +20,7 @@ export default async function Series() {
 
   return (
     <>
-      <Suspense fallback={<div>Loading top rated</div>}>
+      {/* <Suspense fallback={<div>Loading top rated</div>}>
         <AsyncCarousel promise={topRated} title="Top rated" topRated />
       </Suspense>
       <Suspense fallback={<div>Loading airing today...</div>}>
@@ -32,7 +31,7 @@ export default async function Series() {
       </Suspense>
       <Suspense fallback={<div>Loading popular...</div>}>
         <AsyncCarousel promise={popular} title="Most popular" mostPopular />
-      </Suspense>
+      </Suspense> */}
     </>
   );
 }

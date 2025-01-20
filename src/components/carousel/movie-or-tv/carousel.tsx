@@ -9,7 +9,6 @@ import {
   useState,
 } from "react";
 import Item from "./item";
-import Backdrop from "./backdrop";
 import Title, { IconType } from "../title";
 import {
   ChevronDoubleRightIcon,
@@ -21,11 +20,7 @@ type CarouselProps = {
   data: Movie[] | TvSeries[];
   title: string;
   icon?: IconType;
-} & (
-  | { topRated: true; mostPopular?: false }
-  | { mostPopular: true; topRated?: false }
-  | { topRated?: false; mostPopular?: false }
-);
+}
 
 type scrollFunction = (x: -1 | 1) => void;
 export type handleItemChange = (
@@ -37,17 +32,8 @@ export default function Carousel({
   data,
   title,
   icon,
-  topRated = false,
-  mostPopular = false,
 }: CarouselProps) {
   const carouselRef = useRef<HTMLDivElement>(null!);
-  const intervalId = useRef<NodeJS.Timeout>(null!);
-  const overflowDivRef = useRef<HTMLDivElement>(null!);
-  const [index, setIndex] = useState(0);
-  const [overflow, setOverflow] = useState(false);
-  const [item, setItem] = useState<Movie | TvSeries>(data[index]);
-  const [visible, setVisible] = useState(true);
-  const [loading, setLoading] = useState(true);
 
   const scroll: scrollFunction = x => {
     carouselRef.current.scrollBy({
@@ -56,96 +42,10 @@ export default function Carousel({
     });
   };
 
-  const handleItemChange: handleItemChange = (newItem, idx) => {
-    if (!visible) return;
-
-    if (newItem === null) {
-      if (idx < 0) idx = data.length - 1;
-      else if (idx >= data.length) idx = 0;
-      newItem = data[idx];
-    }
-
-    setVisible(false);
-    setTimeout(() => {
-      setItem(newItem);
-      setIndex(idx);
-      setVisible(true);
-    }, 400);
-    resetInterval();
-  };
-
-  const resetInterval = useCallback(() => {
-    if (intervalId.current) {
-      clearInterval(intervalId.current);
-    }
-    intervalId.current = setInterval(() => {
-      setIndex(prevIndex => {
-        const nextIndex = (prevIndex + 1) % data.length;
-        handleItemChange(data[nextIndex], nextIndex);
-        return prevIndex;
-      });
-    }, 7000);
-  }, [intervalId, data, handleItemChange]);
-
-  useEffect(() => {
-    resetInterval();
-    return () => {
-      if (intervalId.current) clearInterval(intervalId.current);
-    };
-  }, [resetInterval]);
-
-  useLayoutEffect(() => {
-    const isOverflowing = (element: HTMLElement) => {
-      return (
-        element.scrollWidth > element.clientWidth ||
-        element.scrollHeight > element.clientHeight
-      );
-    };
-
-    const handleResize = () => {
-      const div = overflowDivRef.current;
-      if (div) {
-        if (isOverflowing(div)) {
-          setOverflow(true);
-        } else {
-          setOverflow(false);
-        }
-      }
-    };
-    handleResize();
-
-    window.addEventListener("resize", handleResize);
-    return () => {
-      window.removeEventListener("resize", handleResize);
-    };
-  }, [item]);
-
-  useEffect(() => {
-    setLoading(false);
-  }, [item.poster_path]);
-
   return (
     <div className="py-2">
       <Title title={title} icon={icon} />
 
-      {/* backdrop container */}
-      {(topRated || mostPopular) && (
-        <Backdrop
-          item={item}
-          index={index + 1}
-          visible={visible}
-          loading={loading}
-          overflow={overflow}
-          ref={overflowDivRef}
-          topRated={topRated}
-          mostPopular={mostPopular}
-          handleItemChange={handleItemChange}
-          dataLength={data.length}
-        />
-      )}
-
-      {/* list */}
-      {!topRated && (
         <div className="relative">
           <div
             className="flex overflow-x-auto gap-3 scrollbar-none"
@@ -155,10 +55,7 @@ export default function Carousel({
               <Item
                 key={itm.id}
                 item={itm}
-                index={idx}
-                onClick={() => handleItemChange(itm, idx)}
-                mostPopular={mostPopular}
-                chosen={idx === index && mostPopular}
+                index={idx}           
               />
             ))}
           </div>
@@ -166,7 +63,6 @@ export default function Carousel({
           <Button position="left" onClick={() => scroll(-1)} />
           <Button position="right" onClick={() => scroll(1)} />
         </div>
-      )}
     </div>
   );
 }

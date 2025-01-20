@@ -1,10 +1,8 @@
 import { ChevronRightIcon, ChevronLeftIcon } from "@heroicons/react/24/outline";
-import Dots from "./dots";
 import clsx from "clsx";
-import { handleItemChange } from "../carousel";
 
 type PanelProps = {
-  handleItemChange: handleItemChange;
+  handleItemChange: (index: number) => void;
   dataLength: number;
   index: number;
 };
@@ -15,16 +13,16 @@ export default function Panel({
   index,
 }: PanelProps) {
   return (
-    <div className="absolute bottom-0 w-full bg-gradient-to-t from-black to-transparent h-12 flex justify-center items-center z-50">
-      <div className="relative flex justify-center items-center gap-3 w-full">
+    <div className="absolute bottom-0 w-full bg-gradient-to-t from-black to-transparent z-50 py-2">
+      <div className="relative flex justify-center items-center w-full">
         <Button
           position="left"
-          onClick={() => handleItemChange(null, index - 2)}
+          onClick={() => handleItemChange(index - 1)}
         />
-        <Dots dataLength={dataLength} index={index} />
+        <Number index={index} dataLength={dataLength} />
         <Button
           position="right"
-          onClick={() => handleItemChange(null, index)}
+          onClick={() => handleItemChange(index + 1)}
         />
       </div>
     </div>
@@ -41,15 +39,27 @@ function Button({ position, onClick }: ButtonProps) {
     <button
       onClick={onClick}
       className={clsx(
-        "absolute py-5 px-3 md:static hover:text-primary",
-        position === "left" ? "left-0" : "right-0"
+        "hover:text-primary flex-grow p-2 flex justify-center md:flex-none xl:p-5",
       )}
     >
       {position === "left" ? (
-        <ChevronLeftIcon className="w-5" />
+        <ChevronLeftIcon className="w-5 xl:w-10" />
       ) : (
-        <ChevronRightIcon className="w-5" />
+        <ChevronRightIcon className="w-5 xl:w-10" />
       )}
     </button>
   );
+}
+
+type NumberProps = {
+  index: number;
+  dataLength: number;
+}
+
+function Number({index, dataLength}: NumberProps){
+  return(
+    <div className="w-24 text-center xl:text-xl">
+      {`${index + 1} / ${dataLength}`}
+    </div>
+  )
 }

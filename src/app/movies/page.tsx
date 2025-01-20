@@ -1,5 +1,7 @@
 import { fetchData } from "@/api/actions";
 import Carousel from "@/components/carousel/movie-or-tv/carousel";
+import Popular from "@/components/carousel/movie-or-tv/popular/popular";
+import TopRated from "@/components/carousel/movie-or-tv/top-rated/top-rated";
 
 import { today, nextMonth, halfYearAgo } from "@/lib/utils";
 import { Metadata } from "next";
@@ -38,12 +40,12 @@ export default async function Movies() {
 
   return (
     <>
-      {topRated ? (
-        <Suspense fallback={<div>Loading best rated...</div>}>
-          <Carousel data={topRated} title={TITLES.topRated} topRated />
+      {popular ? (
+        <Suspense fallback={<div>Loading most popular...</div>}>
+          <Popular data={popular} title={TITLES.popular} />
         </Suspense>
       ) : (
-        <Error title={TITLES.topRated} />
+        <Error title={TITLES.popular} />
       )}
 
       {upcoming ? (
@@ -62,17 +64,12 @@ export default async function Movies() {
         <Error title={TITLES.recentlyReleased} />
       )}
 
-      {popular ? (
-        <Suspense fallback={<div>Loading most popular...</div>}>
-          <Carousel
-            data={popular}
-            title={TITLES.popular}
-            icon="ArrowTrendingUpIcon"
-            mostPopular
-          />
+      {topRated ? (
+        <Suspense fallback={<div>Loading best rated...</div>}>
+          <TopRated data={topRated} title={TITLES.topRated} />
         </Suspense>
       ) : (
-        <Error title={TITLES.popular} />
+        <Error title={TITLES.topRated} />
       )}
     </>
   );

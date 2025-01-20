@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Movie, TvSeries } from "@/lib/definitions";
 import clsx from "clsx";
 import AvgRating from "@/components/avg-rating";
@@ -10,18 +10,9 @@ import Image from "next/image";
 type ItemProps = {
   item: Movie | TvSeries;
   index: number;
-  onClick: () => void;
-  mostPopular: boolean;
-  chosen: boolean;
 };
 
-export default function Item({
-  item,
-  index,
-  onClick,
-  mostPopular,
-  chosen,
-}: ItemProps) {
+export default function Item({ item, index }: ItemProps) {
   const [loading, setLoading] = useState(true);
 
   const href = `${"title" in item ? "movies" : "series"}/${item.id}`;
@@ -32,13 +23,8 @@ export default function Item({
       scroll={true}
       key={item.id}
       className={clsx(
-        "relative min-w-44 overflow-hidden cursor-pointer first:ml-2 last:mr-2 rounded-lg border-2 border-slate-700 my-1 duration-300 group h-64",
-        chosen && "pointer-events-none shadow-primary shadow-emerald-400"
+        "relative min-w-44 overflow-hidden cursor-pointer first:ml-2 last:mr-2 rounded-lg border-2 border-slate-700 my-1 duration-300 group h-64"
       )}
-      onClick={e => {
-        if (mostPopular) e.preventDefault();
-        onClick();
-      }}
     >
       {item.poster_path ? (
         <>
@@ -47,7 +33,7 @@ export default function Item({
             src={`https://image.tmdb.org/t/p/w500${item.poster_path}`}
             alt={"title" in item ? item.title : item.name}
             fill
-            className={clsx("group-hover:scale-105 duration-500", chosen && "scale-105")}
+            className={clsx("group-hover:scale-105 duration-500")}
             onLoad={() => setLoading(false)}
           />
         </>
@@ -62,9 +48,7 @@ export default function Item({
         </div>
       )}
 
-      <Overlay item={item} chosen={chosen} />
-
-      {mostPopular && <Index index={index} />}
+      <Overlay item={item} />
     </Link>
   );
 }
@@ -77,18 +61,11 @@ function Loading() {
   );
 }
 
-function Overlay({
-  item,
-  chosen,
-}: {
-  item: Movie | TvSeries;
-  chosen: boolean;
-}) {
+function Overlay({ item }: { item: Movie | TvSeries }) {
   return (
     <div
       className={clsx(
-        "absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300",
-        chosen && "opacity-100"
+        "absolute inset-0 opacity-0 group-hover:opacity-100 duration-500",
       )}
     >
       <div className="relative w-full h-full">
@@ -116,10 +93,3 @@ function Overlay({
   );
 }
 
-function Index({ index }: { index: number }) {
-  return (
-    <div className="absolute top-6 rounded-tr-full rounded-br-full bg-black px-3 py-1 text-2xl min-w-10 text-center border-2 border-slate-700 border-l-0">
-      {index + 1}
-    </div>
-  );
-}
