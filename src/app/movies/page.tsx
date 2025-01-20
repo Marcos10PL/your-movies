@@ -1,5 +1,5 @@
 import { fetchData } from "@/api/actions";
-import AsyncCarousel from "@/components/carousel/movie-or-tv/async-carousel";
+import Carousel from "@/components/carousel/movie-or-tv/carousel";
 
 import { today, nextMonth, halfYearAgo } from "@/lib/utils";
 import { Metadata } from "next";
@@ -11,7 +11,6 @@ export const metadata: Metadata = {
 
 export default async function Movies() {
   const topRated = await fetchData("movie", { sort_by: "vote_average.desc" });
-
   const popular = await fetchData("movie", { sort_by: "popularity.desc" });
 
   const upcoming = await fetchData("movie", {
@@ -30,34 +29,57 @@ export default async function Movies() {
     "vote_count.gte": 200,
   });
 
+  const TITLES = {
+    topRated: "Top Rated",
+    upcoming: "Upcoming",
+    recentlyReleased: "Recently Released",
+    popular: "Most Popular",
+  };
+
   return (
     <>
-      {topRated.length === 0 ? (
+      {topRated ? (
         <Suspense fallback={<div>Loading best rated...</div>}>
-          <AsyncCarousel promise={topRated} title="Top rated" topRated />
+          <Carousel data={topRated} title={TITLES.topRated} topRated />
         </Suspense>
       ) : (
-        <div>Loading top rated failed</div>
+        <Error title={TITLES.topRated} />
       )}
 
-      <Suspense fallback={<div>Loading upcoming movies...</div>}>
-        <AsyncCarousel promise={upcoming} title="Upcoming" />
-      </Suspense>
+      {upcoming ? (
+        <Suspense fallback={<div>Loading upcoming movies...</div>}>
+          <Carousel data={upcoming} title={TITLES.upcoming} />
+        </Suspense>
+      ) : (
+        <div>Lodaing upcoming </div>
+      )}
 
-      <Suspense fallback={<div>Loading recently released...</div>}>
-        <AsyncCarousel promise={recentlyReleased} title="Recently released" />
-      </Suspense>
+      {recentlyReleased ? (
+        <Suspense fallback={<div>Loading recently released...</div>}>
+          <Carousel data={recentlyReleased} title={TITLES.recentlyReleased} />
+        </Suspense>
+      ) : (
+        <Error title={TITLES.recentlyReleased} />
+      )}
 
-      <Suspense fallback={<div>Loading most popular...</div>}>
-        <AsyncCarousel
-          promise={popular}
-          title="Most Popular"
-          icon="ArrowTrendingUpIcon"
-          mostPopular
-        />
-      </Suspense>
+      {popular ? (
+        <Suspense fallback={<div>Loading most popular...</div>}>
+          <Carousel
+            data={popular}
+            title={TITLES.popular}
+            icon="ArrowTrendingUpIcon"
+            mostPopular
+          />
+        </Suspense>
+      ) : (
+        <Error title={TITLES.popular} />
+      )}
     </>
   );
 }
 
-// https://api.themoviedb.org/3/discover/movie?include_adult=false&include_video=false&language=en-US&page=1&sort_by=popularity.desc&with_release_type=2|3&release_date.gte={min_date}&release_date.lte={max_date}
+function Error({ title }: { title: string }) {
+  return (
+    <div>{title} movies - loading failed. This is a server error, sorry.</div>
+  );
+}

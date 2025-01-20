@@ -1,20 +1,31 @@
 "use client";
 
 import { Movie, TvSeries } from "@/lib/definitions";
-import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
+import {
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  useState,
+} from "react";
 import Item from "./item";
 import Backdrop from "./backdrop";
-import Title from "../title";
-import { AsyncCarouselProps } from "./async-carousel";
+import Title, { IconType } from "../title";
 import {
   ChevronDoubleRightIcon,
   ChevronDoubleLeftIcon,
 } from "@heroicons/react/24/outline";
 import clsx from "clsx";
 
-type CarouselProps = Omit<AsyncCarouselProps, "promise"> & {
+type CarouselProps = {
   data: Movie[] | TvSeries[];
-};
+  title: string;
+  icon?: IconType;
+} & (
+  | { topRated: true; mostPopular?: false }
+  | { mostPopular: true; topRated?: false }
+  | { topRated?: false; mostPopular?: false }
+);
 
 type scrollFunction = (x: -1 | 1) => void;
 export type handleItemChange = (

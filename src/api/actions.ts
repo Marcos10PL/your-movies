@@ -11,7 +11,7 @@ export async function fetchData<T extends TypeOfList>(
   type: T,
   searchOptions: SearchOptions<T>,
   language: LanguageOption = "en-US"
-): Promise<Movie[] | TvSeries[]> {
+): Promise<Movie[] | TvSeries[] | undefined> {
   try {
     searchOptions = {
       include_adult: false,
@@ -52,7 +52,7 @@ export async function fetchData<T extends TypeOfList>(
     return data.results;
   } catch (e) {
     console.error(e);
-    return [];
+    return undefined;
   }
 }
 

@@ -24,10 +24,6 @@ export default function Item({
 }: ItemProps) {
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    setLoading(false);
-  }, [item.poster_path]);
-
   const href = `${"title" in item ? "movies" : "series"}/${item.id}`;
 
   return (
@@ -36,7 +32,7 @@ export default function Item({
       scroll={true}
       key={item.id}
       className={clsx(
-        "relative min-w-44 overflow-hidden cursor-pointer first:ml-2 last:mr-2 rounded-lg border-2 border-slate-700 my-1 transition-all duration-200 group",
+        "relative min-w-44 overflow-hidden cursor-pointer first:ml-2 last:mr-2 rounded-lg border-2 border-slate-700 my-1 duration-300 group h-64",
         chosen && "pointer-events-none shadow-primary shadow-emerald-400"
       )}
       onClick={e => {
@@ -45,32 +41,28 @@ export default function Item({
       }}
     >
       {item.poster_path ? (
-        <Image
-          src={`https://image.tmdb.org/t/p/w500${item.poster_path}`}
-          alt={"title" in item ? item.title : item.name}
-          fill
-          className={clsx(
-            "w-full h-full transition-all will-change-transform duration-500 group-hover:scale-105",
-            loading ? "opacity-0" : "opacity-100",
-            chosen && "scale-105"
-          )}
-          onLoad={() => setLoading(false)}
-        />
+        <>
+          {loading && <Loading />}
+          <Image
+            src={`https://image.tmdb.org/t/p/w500${item.poster_path}`}
+            alt={"title" in item ? item.title : item.name}
+            fill
+            className={clsx("group-hover:scale-105 duration-500", chosen && "scale-105")}
+            onLoad={() => setLoading(false)}
+          />
+        </>
       ) : (
         <div
           className={clsx(
-            "text-center absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 transition-transform will-change-transform duration-500 group-hover:scale-105",
+            "text-center absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 transition-transform will-change-transform duration-300 group-hover:scale-105",
             loading ? "opacity-0" : "opacity-100"
           )}
-          onLoad={() => setLoading(false)}
         >
           {"title" in item ? item.title : item.name}
         </div>
       )}
 
       <Overlay item={item} chosen={chosen} />
-
-      {loading && <Loading />}
 
       {mostPopular && <Index index={index} />}
     </Link>

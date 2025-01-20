@@ -41,7 +41,7 @@ const Backdrop = forwardRef<HTMLDivElement, BackdropProps>(
         <div className="relative w-full h-full rounded-lg overflow-hidden border-2 border-slate-700 bg-black">
           <div
             className={clsx(
-              "w-full h-full relative rounded-lg transition-opacity duration-500 ease-in-out",
+              "w-full h-full relative rounded-lg transition-opacity duration-500 ease-in-out aspect-video",
               visible ? "opacity-100" : "opacity-0"
             )}
           >
@@ -49,12 +49,12 @@ const Backdrop = forwardRef<HTMLDivElement, BackdropProps>(
               <Image
                 src={`https://image.tmdb.org/t/p/w1280${item.backdrop_path}`}
                 alt={"title" in item ? item.title : item.name}
-                fill
                 className={clsx(
-                  "md:w-2/3 aspect-video transition-opacity duration-700",
+                  "md:w-2/3 transition-opacity duration-700 aspect-video",
                   loading ? "opacity-0" : "opacity-100"
                 )}
-              />
+                fill
+                />
             ) : (
               <div
                 className={clsx(
