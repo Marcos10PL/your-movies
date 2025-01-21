@@ -48,7 +48,6 @@ export async function fetchData<T extends TypeOfList>(
     if (!data.results || data.results.length === 0) {
       throw new Error("No available data");
     }
-
     return data.results;
   } catch (e) {
     console.error(e);

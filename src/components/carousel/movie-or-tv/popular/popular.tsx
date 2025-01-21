@@ -1,27 +1,29 @@
 "use client";
 
-import { Movie, TvSeries } from "@/lib/definitions";
+import { Backdrop, Movie, TvSeries } from "@/lib/definitions";
 import Title from "../../title";
-import { useLayoutEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import Image from "next/image";
 import clsx from "clsx";
 import Spinner from "@/components/spinner";
 import Link from "next/link";
-import Carousel from "../carousel";
+import Carousel from "./carousel";
+import { optionsGET } from "@/api/options";
 
 type BackdropProps = {
   data: TvSeries[] | Movie[];
   title: string;
 };
 
-export default function TopRated({ data, title }: BackdropProps) {
+export default function Popular({ data, title }: BackdropProps) {
   const [index, setIndex] = useState(0);
   const [item, setItem] = useState(data[index]);
   const [loading, setLoading] = useState(true);
   const [overflow, setOverflow] = useState(false);
   const ref = useRef<HTMLDivElement | null>(null);
   const [visible, setVisible] = useState(true);
-
+  const [backdrops, setBackdrops] = useState<Backdrop[]>([]);
+  const apiKey = process.env.NEXT_PUBLIC_TMDB_API_KEY;
   useLayoutEffect(() => {
     const isOverflowing = (element: HTMLElement) => {
       return (
@@ -46,6 +48,33 @@ export default function TopRated({ data, title }: BackdropProps) {
     return () => {
       window.removeEventListener("resize", handleResize);
     };
+  }, [item]);
+
+  useEffect(() => {
+    const fetchBackdrops = async (): Promise<Backdrop[]> => {
+      try {
+        console.log(item.id);
+        const response = await fetch(
+          `https://api.themoviedb.org/3/movie/${item.id}/images?api_key=${apiKey}`,
+        );
+
+        if (!response.ok) {
+          throw new Error(`Failed to fetch: ${response.statusText}`);
+        }
+
+        const data = await response.json();
+
+        if (data.backdrops && data.backdrops.length > 0)
+          setBackdrops(data.backdrops.slice(0, 2));
+
+        return [];
+      } catch (error) {
+        console.error("Error fetching backdrops:", error);
+        return [];
+      }
+    };
+
+    fetchBackdrops();
   }, [item]);
 
   const href = `${"title" in item ? "movies" : "series"}/${item.id}`;
@@ -118,7 +147,7 @@ export default function TopRated({ data, title }: BackdropProps) {
             </div>
           </Link>
         </div>
-        <Carousel data={data} title="" />
+        <Carousel data={data} backdrops={backdrops} title="" />
       </div>
     </>
   );

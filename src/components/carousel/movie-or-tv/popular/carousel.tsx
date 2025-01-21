@@ -1,19 +1,20 @@
 "use client";
 
-import { Movie, TvSeries } from "@/lib/definitions";
+import { Backdrop, Movie, TvSeries } from "@/lib/definitions";
 import { useRef } from "react";
-import Item from "./item";
-import Title, { IconType } from "../title";
 import {
   ChevronDoubleRightIcon,
   ChevronDoubleLeftIcon,
 } from "@heroicons/react/24/outline";
 import clsx from "clsx";
+import Title, { IconType } from "../../title";
+import Item from "./item";
 
 type CarouselProps = {
   data: Movie[] | TvSeries[];
   title: string;
   icon?: IconType;
+  backdrops: Backdrop[];
 };
 
 type scrollFunction = (x: -1 | 1) => void;
@@ -22,7 +23,7 @@ export type handleItemChange = (
   idx: number
 ) => void;
 
-export default function Carousel({ data, title, icon }: CarouselProps) {
+export default function Carousel({ data, title, icon, backdrops }: CarouselProps) {
   const carouselRef = useRef<HTMLDivElement>(null!);
 
   const scroll: scrollFunction = x => {

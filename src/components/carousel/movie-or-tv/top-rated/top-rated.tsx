@@ -73,13 +73,13 @@ export default function TopRated({ data, title }: BackdropProps) {
     <>
       <Title title={title} />
 
-      <div className="px-2 pb-2">
-        <div className="relative w-full h-full rounded-lg overflow-hidden border-2 border-slate-700 bg-black">
+      <div className="md:px-2 py-1">
+        <div className="relative w-full h-full md:rounded-lg overflow-hidden md:border-2 border-t-2 border-b-2 border-slate-700 bg-black">
           <Link
             href={href}
             className={clsx(
               visible ? "opacity-1" : "opacity-0",
-              "duration-500 will-change-contents group"
+              "duration-300 group"
             )}
           >
             {item.backdrop_path ? (
@@ -89,19 +89,18 @@ export default function TopRated({ data, title }: BackdropProps) {
                 <Image
                   src={`https://image.tmdb.org/t/p/w1280${item.backdrop_path}`}
                   alt={"title" in item ? item.title : item.name}
+                  key={item.backdrop_path}
                   width={1280}
                   height={720}
                   className={clsx(
-                    "duration-300 will-change-transform ease-in-out md:max-w-[66%] group-hover:scale-105"
+                    "duration-300 will-change-transform md:max-w-[66%] group-hover:scale-105 z-30"
                   )}
                   onLoad={() => setLoading(false)}
                 />
               </>
             ) : (
               <div
-                className={clsx(
-                  "relative md:w-2/3 aspect-video text-center"
-                )}
+                className={clsx("relative md:w-2/3 aspect-video text-center")}
               >
                 <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
                   <span className="opacity-0 md:opacity-100">
@@ -136,12 +135,15 @@ export default function TopRated({ data, title }: BackdropProps) {
               </div>
             </div>
           </Link>
+          {/* bottom */}
+          {/* top */}
 
           <Panel
             dataLength={data.length}
             index={index}
             handleItemChange={handleItemChange}
           />
+
         </div>
       </div>
     </>
