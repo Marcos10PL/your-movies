@@ -10,9 +10,10 @@ import Image from "next/image";
 type ItemProps = {
   item: Movie | TvSeries;
   index: number;
+  popular?: true;
 };
 
-export default function Item({ item, index }: ItemProps) {
+export default function Item({ item, index, popular }: ItemProps) {
   const [loading, setLoading] = useState(true);
 
   const href = `${"title" in item ? "movies" : "series"}/${item.id}`;
@@ -48,8 +49,17 @@ export default function Item({ item, index }: ItemProps) {
         </div>
       )}
 
-      <Overlay item={item} />
+      <Overlay item={item} popular={popular} />
+      {popular && <Index index={index} />}
     </Link>
+  );
+}
+
+function Index({ index }: { index: number }) {
+  return (
+    <div className="absolute top-0 left-0 text-2xl min-w-10 text-center py-1 bg-black border-r-2 border-b-2 rounded-br-lg border-slate-700">
+      {index + 1}
+    </div>
   );
 }
 
@@ -61,16 +71,24 @@ function Loading() {
   );
 }
 
-function Overlay({ item }: { item: Movie | TvSeries }) {
+function Overlay({
+  item,
+  popular,
+}: {
+  item: Movie | TvSeries;
+  popular?: true;
+}) {
   return (
     <div
       className={clsx(
-        "absolute inset-0 opacity-0 group-hover:opacity-100 duration-500",
+        "absolute inset-0 opacity-0 group-hover:opacity-100 duration-500"
       )}
     >
       <div className="relative w-full h-full">
-        <div className="flex flex-col text-white justify-between items-center *:w-full text-center">
-          <div className="absolute top-0 bg-gradient-to-b from-black to-transparent pb-5">
+        <div
+          className="*:w-full"
+        >
+          <div className={clsx("absolute top-0 bg-gradient-to-b from-black to-transparent pb-5",  popular ? "text-right pr-3" : "text-center")}>
             {"first_air_date" in item && item.first_air_date
               ? item.first_air_date
               : "release_date" in item && item.release_date
@@ -92,4 +110,3 @@ function Overlay({ item }: { item: Movie | TvSeries }) {
     </div>
   );
 }
-

@@ -40,12 +40,12 @@ export default async function Movies() {
 
   return (
     <>
-      {popular ? (
-        <Suspense fallback={<div>Loading most popular...</div>}>
-          <Popular data={popular} title={TITLES.popular} />
+      {topRated ? (
+        <Suspense fallback={<div>Loading best rated...</div>}>
+          <TopRated data={topRated} title={TITLES.topRated} />
         </Suspense>
       ) : (
-        <Error title={TITLES.popular} />
+        <Error title={TITLES.topRated} />
       )}
 
       {upcoming ? (
@@ -56,20 +56,20 @@ export default async function Movies() {
         <div>Lodaing upcoming </div>
       )}
 
-      {topRated ? (
-        <Suspense fallback={<div>Loading best rated...</div>}>
-          <TopRated data={topRated} title={TITLES.topRated} />
-        </Suspense>
-      ) : (
-        <Error title={TITLES.topRated} />
-      )}
-
       {recentlyReleased ? (
         <Suspense fallback={<div>Loading recently released...</div>}>
           <Carousel data={recentlyReleased} title={TITLES.recentlyReleased} />
         </Suspense>
       ) : (
         <Error title={TITLES.recentlyReleased} />
+      )}
+
+      {popular ? (
+        <Suspense fallback={<div>Loading most popular...</div>}>
+          <Carousel data={popular} title={TITLES.popular} popular />
+        </Suspense>
+      ) : (
+        <Error title={TITLES.popular} />
       )}
     </>
   );

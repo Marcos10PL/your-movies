@@ -12,8 +12,9 @@ import clsx from "clsx";
 
 type CarouselProps = {
   data: Movie[] | TvSeries[];
-  title: string;
+  title?: string;
   icon?: IconType;
+  popular?: true;
 };
 
 type scrollFunction = (x: -1 | 1) => void;
@@ -22,7 +23,7 @@ export type handleItemChange = (
   idx: number
 ) => void;
 
-export default function Carousel({ data, title, icon }: CarouselProps) {
+export default function Carousel({ data, title, icon, popular }: CarouselProps) {
   const carouselRef = useRef<HTMLDivElement>(null!);
 
   const scroll: scrollFunction = x => {
@@ -34,7 +35,7 @@ export default function Carousel({ data, title, icon }: CarouselProps) {
 
   return (
     <div className="py-2">
-      <Title title={title} icon={icon} />
+      {title && <Title title={title} icon={icon} />}
 
       <div className="relative">
         <div
@@ -42,7 +43,7 @@ export default function Carousel({ data, title, icon }: CarouselProps) {
           ref={carouselRef}
         >
           {data.map((itm, idx) => (
-            <Item key={itm.id} item={itm} index={idx} />
+            <Item key={itm.id} item={itm} index={idx} popular={popular}/>
           ))}
         </div>
 

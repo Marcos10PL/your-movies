@@ -73,8 +73,8 @@ export default function TopRated({ data, title }: BackdropProps) {
     <>
       <Title title={title} />
 
-      <div className="md:px-2 py-1">
-        <div className="relative w-full h-full md:rounded-lg overflow-hidden md:border-2 border-t-2 border-b-2 border-slate-700 bg-black">
+      <div className="md:pl-2 py-1">
+        <div className="relative w-full h-full overflow-hidden md:border-0 border-t-2 border-b-2 border-slate-700 bg-black">
           <Link
             href={href}
             className={clsx(
@@ -93,7 +93,7 @@ export default function TopRated({ data, title }: BackdropProps) {
                   width={1280}
                   height={720}
                   className={clsx(
-                    "duration-300 will-change-transform md:max-w-[66%] group-hover:scale-105 z-30"
+                    "duration-300 will-change-transform md:max-w-[67%] group-hover:scale-105 z-30"
                   )}
                   onLoad={() => setLoading(false)}
                 />
@@ -111,7 +111,10 @@ export default function TopRated({ data, title }: BackdropProps) {
             )}
 
             {item.backdrop_path && (
-              <div className="opacity-0 md:opacity-100 absolute inset-0 w-2/3 bg-gradient-to-l from-black to-transparent" />
+              <>
+                <div className="hidden md:block absolute bg-gradient-to-l from-black to-transparent right-[33%] top-0 w-1/12 h-full" />
+                <div className="hidden md:block absolute bg-gradient-to-l from-black to-transparent right-[33%] top-0 w-1/12 h-full" />
+              </>
             )}
 
             <div className="absolute inset-0 z-20 text-white grid grid-cols-3">
@@ -135,8 +138,6 @@ export default function TopRated({ data, title }: BackdropProps) {
               </div>
             </div>
           </Link>
-          {/* bottom */}
-          {/* top */}
 
           <Panel
             dataLength={data.length}
@@ -144,6 +145,10 @@ export default function TopRated({ data, title }: BackdropProps) {
             handleItemChange={handleItemChange}
           />
 
+          {/* left */}
+          <div className="hidden md:block absolute top-0 left-0 w-[1%] h-full bg-gradient-to-r from-gray-950 to-transparent z-50" />
+          {/* top */}
+          <div className="hidden md:block absolute top-0 w-full h-[8%] bg-gradient-to-b from-gray-950 to-transparent z-50" />
         </div>
       </div>
     </>

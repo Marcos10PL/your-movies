@@ -15,16 +15,13 @@ export default function Panel({
   return (
     <div className="absolute bottom-0 w-full bg-gradient-to-t from-black to-transparent z-50 py-2">
       <div className="relative flex justify-center items-center w-full">
-        <Button
-          position="left"
-          onClick={() => handleItemChange(index - 1)}
-        />
+        <Button position="left" onClick={() => handleItemChange(index - 1)} />
         <Number index={index} dataLength={dataLength} />
-        <Button
-          position="right"
-          onClick={() => handleItemChange(index + 1)}
-        />
+        <Button position="right" onClick={() => handleItemChange(index + 1)} />
       </div>
+
+      {/* bottom */}
+      <div className="hidden md:block absolute bottom-0 w-full h-[25%] bg-gradient-to-t from-gray-950 to-transparent z-40" />
     </div>
   );
 }
@@ -39,7 +36,7 @@ function Button({ position, onClick }: ButtonProps) {
     <button
       onClick={onClick}
       className={clsx(
-        "hover:text-primary flex-grow p-2 flex justify-center md:flex-none xl:p-5",
+        "hover:text-primary flex-grow p-2 flex justify-center md:flex-none xl:p-5"
       )}
     >
       {position === "left" ? (
@@ -54,12 +51,12 @@ function Button({ position, onClick }: ButtonProps) {
 type NumberProps = {
   index: number;
   dataLength: number;
-}
+};
 
-function Number({index, dataLength}: NumberProps){
-  return(
+function Number({ index, dataLength }: NumberProps) {
+  return (
     <div className="w-24 text-center xl:text-xl">
       {`${index + 1} / ${dataLength}`}
     </div>
-  )
+  );
 }

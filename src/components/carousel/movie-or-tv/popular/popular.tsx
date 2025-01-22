@@ -7,8 +7,7 @@ import Image from "next/image";
 import clsx from "clsx";
 import Spinner from "@/components/spinner";
 import Link from "next/link";
-import Carousel from "./carousel";
-import { optionsGET } from "@/api/options";
+import Carousel from "../carousel";
 
 type BackdropProps = {
   data: TvSeries[] | Movie[];
@@ -24,6 +23,34 @@ export default function Popular({ data, title }: BackdropProps) {
   const [visible, setVisible] = useState(true);
   const [backdrops, setBackdrops] = useState<Backdrop[]>([]);
   const apiKey = process.env.NEXT_PUBLIC_TMDB_API_KEY;
+
+  useEffect(() => {
+    const fetchBackdrops = async (): Promise<Backdrop[]> => {
+      try {
+        console.log(item.id);
+        const response = await fetch(
+          `https://api.themoviedb.org/3/movie/${item.id}/images?api_key=${apiKey}`
+        );
+
+        if (!response.ok) {
+          throw new Error(`Failed to fetch: ${response.statusText}`);
+        }
+
+        const data = await response.json();
+
+        if (data.backdrops && data.backdrops.length > 0)
+          setBackdrops(data.backdrops.slice(0, 2));
+
+        return [];
+      } catch (error) {
+        console.error("Error fetching backdrops:", error);
+        return [];
+      }
+    };
+
+    fetchBackdrops();
+  }, [item]);
+
   useLayoutEffect(() => {
     const isOverflowing = (element: HTMLElement) => {
       return (
@@ -48,33 +75,6 @@ export default function Popular({ data, title }: BackdropProps) {
     return () => {
       window.removeEventListener("resize", handleResize);
     };
-  }, [item]);
-
-  useEffect(() => {
-    const fetchBackdrops = async (): Promise<Backdrop[]> => {
-      try {
-        console.log(item.id);
-        const response = await fetch(
-          `https://api.themoviedb.org/3/movie/${item.id}/images?api_key=${apiKey}`,
-        );
-
-        if (!response.ok) {
-          throw new Error(`Failed to fetch: ${response.statusText}`);
-        }
-
-        const data = await response.json();
-
-        if (data.backdrops && data.backdrops.length > 0)
-          setBackdrops(data.backdrops.slice(0, 2));
-
-        return [];
-      } catch (error) {
-        console.error("Error fetching backdrops:", error);
-        return [];
-      }
-    };
-
-    fetchBackdrops();
   }, [item]);
 
   const href = `${"title" in item ? "movies" : "series"}/${item.id}`;
@@ -138,16 +138,11 @@ export default function Popular({ data, title }: BackdropProps) {
                 />
               </div>
 
-              {/* bottom */}
-              <div className="absolute bottom-0 w-full h-[9%] bg-gradient-to-t from-gray-950 to-transparent" />
-              {/* left */}
-              <div className="hidden md:block absolute w-1/12  left-0 inset-0 bg-gradient-to-r from-gray-950 to-transparent" />
-              {/* top */}
-              <div className="absolute top-0 w-full h-[9%] bg-gradient-to-b from-gray-950 to-transparent" />
+
             </div>
           </Link>
         </div>
-        <Carousel data={data} backdrops={backdrops} title="" />
+        <Carousel data={data} popular />
       </div>
     </>
   );
