@@ -27,7 +27,7 @@ export default function Item({ item, index, popular }: ItemProps) {
       scroll={true}
       key={item.id}
       className={clsx(
-        "relative min-w-44 overflow-hidden cursor-default first:ml-2 last:mr-2 rounded-lg border-2 border-slate-700 my-1 duration-300 group h-64",
+        "relative min-w-[calc(50%-1rem)] md:min-w-[calc(33.3%-1rem)] lg:min-w-[calc(25%-1rem)] xl:min-w-[calc(16.66%-1rem)] xxl:min-w-[calc(12.5%-1rem)] aspect-[2/3] overflow-hidden cursor-default rounded-lg border-2 border-slate-700 my-1 duration-300 group mx-2",
         !isCastMemeber && "cursor-pointer"
       )}
       onClick={e => isCastMemeber && e.preventDefault()}
@@ -40,7 +40,7 @@ export default function Item({ item, index, popular }: ItemProps) {
             alt={"title" in item ? item.title : item.name}
             fill
             sizes="1x"
-            className={clsx("group-hover:scale-105 duration-500")}
+            className="group-hover:scale-105 will-change-transform duration-500"
             onLoad={() => setLoading(false)}
           />
         </>
@@ -86,7 +86,7 @@ function Overlay({ item, popular }: OverlayProps) {
   return (
     <div
       className={clsx(
-        "absolute inset-0 opacity-0 group-hover:opacity-100 duration-500"
+        "absolute inset-0 opacity-0 group-hover:opacity-100 duration-500 text-lg"
       )}
     >
       <div className="relative w-full h-full">

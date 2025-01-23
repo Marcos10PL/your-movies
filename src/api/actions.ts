@@ -1,5 +1,6 @@
 import {
   Credits,
+  Language,
   LanguageOption,
   Movie,
   SearchOptions,
@@ -61,7 +62,7 @@ export async function findById<T extends TypeOfList>(
   type: T,
   id: number,
   language: LanguageOption = "en-US"
-): Promise<Movie| undefined> {
+): Promise<Movie | undefined> {
   try {
     const response = await fetch(
       `https://api.themoviedb.org/3/${type}/${id}?language=${language}}`,
@@ -129,6 +130,34 @@ export async function fetchVideos<T extends TypeOfList>(
   try {
     const response = await fetch(
       `https://api.themoviedb.org/3/${type}/${id}/videos?language=${language}}`,
+      {
+        ...optionsGET,
+        next: {
+          revalidate: 24 * 60 * 60,
+        },
+      }
+    );
+
+    if (!response.ok)
+      throw new Error(
+        `Failed to fetch data: ${response.status} ${response.statusText}`
+      );
+
+    const data = await response.json();
+
+    if (!data) throw new Error("No available data");
+
+    return data;
+  } catch (e) {
+    console.error(e);
+    return undefined;
+  }
+}
+
+export async function fetchLanguages(): Promise<Language[] | undefined> {
+  try {
+    const response = await fetch(
+      `https://api.themoviedb.org/3/configuration/languages`,
       {
         ...optionsGET,
         next: {

@@ -32,7 +32,7 @@ export function Backdrop({ title, backdropPath }: BackdropProps) {
             src={`https://image.tmdb.org/t/p/w1280${backdropPath}`}
             alt={title}
             fill
-            className={"w-full h-full"}
+            sizes='1x'
             onLoad={() => setLoading(false)}
             priority
           />

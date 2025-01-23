@@ -1,4 +1,9 @@
-import { fetchCredits, fetchVideos, findById } from "@/api/actions";
+import {
+  fetchCredits,
+  fetchLanguages,
+  fetchVideos,
+  findById,
+} from "@/api/actions";
 import Carousel from "@/components/carousel/carousel";
 import { Backdrop } from "@/components/item-details/backdrop";
 import Crew from "@/components/item-details/crew";
@@ -26,21 +31,29 @@ export default async function Movie({ params }: MovieProps) {
   const credits = await fetchCredits("movie", parseInt(id, 10));
   if (!credits) notFound();
 
+  // cast
   const others = credits.cast.filter(item => !item.profile_path); // without profile path
   const cast = credits.cast.filter(item => item.profile_path); // with profile path
 
+  // crew
   const crew = credits.crew;
-
   const directors = crew.filter(member => member.job === "Director");
   const writers = crew.filter(member => member.job === "Writer");
   const screenwriters = crew.filter(member => member.job === "Screenplay");
   const novel = crew.filter(member => member.job === "Novel");
 
+  // trailers and teasers
   const videos = await fetchVideos("movie", parseInt(id));
-  const trailersAndTeasers = videos?.results.filter(
-    item => item.type === "Trailer" || item.type === "Teaser"
+  const trailers =
+    videos?.results.filter(item => item.type === "Trailer") || [];
+  const teasers = videos?.results.filter(item => item.type === "Teaser") || [];
+  const trailersAndTeasers = [...trailers, ...teasers];
+
+  // language
+  const languages = await fetchLanguages();
+  const language = languages?.find(
+    lang => lang.iso_639_1 === movie.original_language
   );
-  if (!trailersAndTeasers) notFound();
 
   return (
     <Layout>
@@ -55,6 +68,7 @@ export default async function Movie({ params }: MovieProps) {
             header1="Screenwriter: "
             header2="Screenwriters: "
           />
+          {language && <p>Orginal language: {language.name}</p>}
         </Details>
       </div>
       <div className="z-30">
@@ -66,10 +80,12 @@ export default async function Movie({ params }: MovieProps) {
           <Others array={others} />
         </div>
         <hr className="my-6 mx-2 border-dashed opacity-50" />
-        <div className="px-2">
-          <h2>Teasers and trailers: </h2>
-          <VideoCarousel videos={trailersAndTeasers} />
-        </div>
+        {trailersAndTeasers && (
+          <div>
+            <h2 className="px-2">Trailers and teasers: </h2>
+            <VideoCarousel videos={trailersAndTeasers} />
+          </div>
+        )}
       </div>
     </Layout>
   );

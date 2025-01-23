@@ -42,8 +42,7 @@ export function Details({ item, children }: DetailsProps) {
       )}
 
       {item.adult && <p>Not for children</p>}
-
-      <p>Orginal language: {item.original_language}</p>
+      
       {children}
     </div>
   );
