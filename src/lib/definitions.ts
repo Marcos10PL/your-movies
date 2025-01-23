@@ -72,6 +72,26 @@ export type CastMember = {
   popularity: number;
 };
 
+// ----------------------- videos ---------------------------//
+
+export type Videos = {
+  id: number;
+  results: Video[];
+};
+
+export type Video = {
+  iso_639_1: string;
+  iso_3166_1: string;
+  name: string;
+  key: string;
+  site: string;
+  size: number;
+  type: VideoType;
+  official: boolean;
+  published_at: string;
+  id: string;
+};
+
 //----------- to the fetchData (url params) -----------------//
 
 export type TypeOfList = "movie" | "tv";
@@ -166,6 +186,14 @@ export type Job =
   | "Makeup Artist"
   | "Special Effects Supervisor"
   | "Casting Director";
+
+export type VideoType =
+  | "Trailer"
+  | "Teaser"
+  | "Clip"
+  | "Featurette"
+  | "Behind the Scenes"
+  | "Bloopers";
 
 export type Backdrop = {
   aspect_ratio: number;
