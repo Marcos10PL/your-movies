@@ -2,7 +2,7 @@
 
 import { Movie, TvSeries } from "@/lib/definitions";
 import Title from "../carousel/title";
-import { useLayoutEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import Image from "next/image";
 import clsx from "clsx";
 import Panel from "./panel";
@@ -21,8 +21,12 @@ export default function Slider({ data, title }: BackdropProps) {
   const [item, setItem] = useState(data[index]);
   const [loading, setLoading] = useState(true);
   const [overflow, setOverflow] = useState(false);
-  const ref = useRef<HTMLDivElement | null>(null);
   const [visible, setVisible] = useState(true);
+  const divRef = useRef<HTMLDivElement | null>(null);
+  const timerRef = useRef<NodeJS.Timeout | null>(null);
+
+  const changeAnimationDuration = 7000; // 7s
+  const fadeAnimationDuration = 400; // 0.4s
 
   useLayoutEffect(() => {
     const isOverflowing = (element: HTMLElement) => {
@@ -33,7 +37,7 @@ export default function Slider({ data, title }: BackdropProps) {
     };
 
     const handleResize = () => {
-      const div = ref.current;
+      const div = divRef.current;
       if (div) {
         if (isOverflowing(div)) {
           setOverflow(true);
@@ -61,11 +65,24 @@ export default function Slider({ data, title }: BackdropProps) {
 
     setVisible(false);
     setTimeout(() => {
-      setVisible(true);
       setIndex(nextIndex);
       setItem(data[nextIndex]);
-    }, 400);
+      setVisible(true);
+    }, fadeAnimationDuration);
   };
+
+  const itemChange = (nextIndex: number) => {
+    if (timerRef.current) {
+      clearTimeout(timerRef.current);
+    }
+    timerRef.current = setTimeout(() => {
+      handleItemChange(nextIndex + 1);
+    }, changeAnimationDuration);
+  };
+
+  useEffect(() => {
+    itemChange(index);
+  }, [index]);
 
   const href = `${"title" in item ? "movies" : "series"}/${item.id}`;
 
@@ -96,6 +113,7 @@ export default function Slider({ data, title }: BackdropProps) {
                     "duration-300 will-change-transform md:max-w-[67%] group-hover:scale-105 z-30"
                   )}
                   onLoad={() => setLoading(false)}
+                  priority
                 />
               </>
             ) : (
@@ -124,7 +142,7 @@ export default function Slider({ data, title }: BackdropProps) {
                   "col-span-3 md:col-span-1 *:w-full py-1 px-2 md:px-3 md:py-2 lg:px-6 bg-black md:bg-opacity-100 bg-opacity-50 text-ellipsis lg:text-xl xl:text-2xl xxl:text-3xl overflow-x-auto scrollbar-thin scrollbar-thumb-slate-900 scrollbar-track-transparent",
                   !overflow && "flex flex-col items-center justify-center"
                 )}
-                ref={ref}
+                ref={divRef}
               >
                 <Overview
                   title={"title" in item ? item.title : item.name}
