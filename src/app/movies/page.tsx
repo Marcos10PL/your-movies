@@ -76,6 +76,8 @@ export default async function Movies() {
 
 function Error({ title }: { title: string }) {
   return (
-    <div>{title} movies - loading failed. This is a server error, sorry.</div>
+    <div className="px-2 py-2 text-lg">
+      {title} movies - loading failed. This is a server error, sorry.
+    </div>
   );
 }
