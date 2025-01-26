@@ -4,15 +4,12 @@ import {
   fetchVideos,
   findById,
 } from "@/api/actions";
-import Carousel from "@/components/carousel/carousel";
-import { Backdrop } from "@/components/item-details/backdrop";
-import Crew from "@/components/item-details/crew";
 import { Details } from "@/components/item-details/details";
 import Layout from "@/components/item-details/layout";
-import VideoCarousel from "@/components/carousel/video-carousel";
-import type { CastMember, Movie } from "@/lib/definitions";
+import type { Movie } from "@/lib/definitions";
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
+import Carousels from "@/components/item-details/carousels";
 
 export const metadata: Metadata = {
   title: "Movies",
@@ -32,8 +29,8 @@ export default async function Movie({ params }: MovieProps) {
   if (!credits) notFound();
 
   // cast
-  const others = credits.cast.filter(item => !item.profile_path); // without profile path
   const cast = credits.cast.filter(item => item.profile_path); // with profile path
+  const restOfCast = credits.cast.filter(item => !item.profile_path); // without profile path
 
   // crew
   const crew = credits.crew;
@@ -56,54 +53,21 @@ export default async function Movie({ params }: MovieProps) {
   );
 
   return (
-    <Layout>
-      <Backdrop title={movie.title} backdropPath={movie.backdrop_path} />
-      <div className="z-30 px-2 pb-2">
-        <Details item={movie}>
-          <Crew array={directors} header1="Director: " header2="Directors: " />
-          <Crew array={writers} header1="Writer: " header2="Writers: " />
-          <Crew array={novel} header1="Novel: " />
-          <Crew
-            array={screenwriters}
-            header1="Screenwriter: "
-            header2="Screenwriters: "
-          />
-          {language && <p>Orginal language: {language.name}</p>}
-        </Details>
-      </div>
-      <div className="z-30">
-        <h2 className="px-2">Cast:</h2>
-        <div className="text-xl">
-          <Carousel data={cast} />
-        </div>
-        <div className="px-2">
-          <Others array={others} />
-        </div>
-        <hr className="my-6 mx-2 border-dashed opacity-50" />
-        {trailersAndTeasers && (
-          <div>
-            <h2 className="px-2">Trailers and teasers: </h2>
-            <VideoCarousel videos={trailersAndTeasers} />
-          </div>
-        )}
-      </div>
+    <Layout title={movie.title} backdropPath={movie.backdrop_path}>
+      <Details
+        item={movie}
+        directors={directors}
+        writers={writers}
+        screenwriters={screenwriters}
+        novel={novel}
+        language={language}
+      />
+      <Carousels
+        trailersAndTeasers={trailersAndTeasers}
+        cast={cast}
+        restOfCast={restOfCast}
+        crew={crew}
+      />
     </Layout>
-  );
-}
-
-function Others({ array }: { array: CastMember[] }) {
-  if (array.length === 0) return;
-
-  return (
-    <div>
-      <span>Others: </span>
-      {array.map((item, index) => (
-        <span key={item.id}>
-          {item.name} -{" "}
-          <span className="text-emerald-200">{item.character}</span>
-          {array.length - 1 !== index && ", "}
-        </span>
-      ))}
-    </div>
   );
 }

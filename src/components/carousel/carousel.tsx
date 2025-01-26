@@ -56,7 +56,7 @@ export default function Carousel({
     <div className="py-2">
       {title && <Title title={title} icon={icon} />}
 
-      <div className="relative">
+      <div className="relative pt-1">
         <div className="flex overflow-x-auto scrollbar-none" ref={carouselRef}>
           {data.map((itm, idx) => (
             <Item key={itm.id} item={itm} index={idx} popular={popular} />

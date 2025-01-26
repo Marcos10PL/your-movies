@@ -38,7 +38,7 @@ export default async function Movies() {
   };
 
   return (
-    <>
+    <div className="text-lg md:text-xl xl:text-2xl py-2">
       {topRated ? (
         <Suspense fallback={<div>Loading best rated...</div>}>
           <Slider data={topRated} title={TITLES.topRated} />
@@ -70,7 +70,7 @@ export default async function Movies() {
       ) : (
         <Error title={TITLES.popular} />
       )}
-    </>
+    </div>
   );
 }
 

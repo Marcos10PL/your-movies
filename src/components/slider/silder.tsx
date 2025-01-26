@@ -13,7 +13,7 @@ import Link from "next/link";
 
 type BackdropProps = {
   data: TvSeries[] | Movie[];
-  title: string;
+  title?: string;
 };
 
 export default function Slider({ data, title }: BackdropProps) {
@@ -88,9 +88,9 @@ export default function Slider({ data, title }: BackdropProps) {
 
   return (
     <>
-      <Title title={title} />
+      {title && <Title title={title} />}
 
-      <div className="md:pl-2 py-1">
+      <div className="md:pl-2 py-1 md:text-lg">
         <div className="relative w-full h-full overflow-hidden md:border-0 border-t-2 border-b-2 border-slate-700 bg-black">
           <Link
             href={href}

@@ -93,8 +93,8 @@ function Overlay({ item, popular }: OverlayProps) {
         <div className="*:w-full *:absolute">
           <div
             className={clsx(
-              "top-0 bg-gradient-to-b from-black to-transparent pb-5",
-              popular ? "text-right pr-6" : "text-center"
+              "top-0 bg-gradient-to-b from-black to-transparent pb-5 text-center",
+              popular && "max-w-[calc(100%-2.5rem)] right-0" 
             )}
           >
             <Description item={item} />
