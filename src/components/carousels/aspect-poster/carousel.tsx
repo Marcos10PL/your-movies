@@ -2,9 +2,11 @@
 
 import { CastMember, Movie, TvSeries } from "@/lib/definitions";
 import { useEffect, useRef, useState } from "react";
-import Item from "./item";
-import Title, { IconType } from "./title";
-import Button from "./button";
+import Title, { IconType } from "../title";
+import Button from "../button";
+import Item from "../item";
+
+
 
 type CarouselProps = {
   data: Movie[] | TvSeries[] | CastMember[];

@@ -1,6 +1,6 @@
 import { fetchData } from "@/api/actions";
-import Carousel from "@/components/carousel/carousel";
-import Error from "@/components/main/error";
+import Carousel from "@/components/carousels/aspect-poster/carousel";
+import Error from "@/components/error";
 import Slider from "@/components/slider/silder";
 import { today } from "@/lib/utils";
 import { Suspense } from "react";

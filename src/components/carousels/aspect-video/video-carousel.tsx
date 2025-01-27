@@ -2,8 +2,9 @@
 
 import type { Video } from "@/lib/definitions";
 import { useEffect, useRef, useState } from "react";
-import { scrollFunction } from "./carousel";
-import Button from "./button";
+import { scrollFunction } from "../aspect-poster/carousel";
+import Button from "../button";
+
 
 type VideoCarouselProps = {
   videos: Video[];

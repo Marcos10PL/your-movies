@@ -8,7 +8,6 @@ import { Details } from "@/components/item-details/details";
 import Layout from "@/components/item-details/layout";
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
-import Carousels from "@/components/item-details/carousels";
 import { filterCast, filterCrew, filterVideos } from "@/lib/utils";
 
 export const metadata: Metadata = {
@@ -49,8 +48,6 @@ export default async function Movie({ params }: MovieProps) {
         screenwriters={screenwriters}
         novel={novel}
         language={language}
-      />
-      <Carousels
         trailersAndTeasers={trailersAndTeasers}
         cast={cast}
         restOfCast={restOfCast}

@@ -34,6 +34,7 @@ export type TvSeries = {
   vote_average: number;
   vote_count: number;
   created_by: CrewMember[];
+  seasons: Season[];
 };
 
 //-------------- credits ----------------//
@@ -215,3 +216,14 @@ export type Language = {
   english_name: string;
   name: string;
 };
+
+export type Season = {
+  air_date: string;
+  episode_count: number;
+  id: number;
+  name: string;
+  overview: string;
+  poster_path: string;
+  season_number: number;
+  vote_average: number;
+}

@@ -8,7 +8,6 @@ import { Details } from "@/components/item-details/details";
 import Layout from "@/components/item-details/layout";
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
-import Carousels from "@/components/item-details/carousels";
 import { filterCast, filterCrew, filterVideos } from "@/lib/utils";
 
 export const metadata: Metadata = {
@@ -42,6 +41,8 @@ export default async function TvSeries({ params }: TvSeriesProps) {
     lang => lang.iso_639_1 === tvSeries.original_language
   );
 
+  const seasons = tvSeries.seasons;
+
   return (
     <Layout title={tvSeries.name} backdropPath={tvSeries.backdrop_path}>
       <Details
@@ -51,8 +52,6 @@ export default async function TvSeries({ params }: TvSeriesProps) {
         screenwriters={screenwriters}
         novel={novel}
         language={language}
-      />
-      <Carousels
         trailersAndTeasers={trailersAndTeasers}
         cast={cast}
         restOfCast={restOfCast}

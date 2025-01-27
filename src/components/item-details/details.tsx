@@ -1,6 +1,16 @@
-import { CrewMember, Language, Movie, TvSeries } from "@/lib/definitions";
+import {
+  CastMember,
+  CrewMember,
+  Language,
+  Movie,
+  TvSeries,
+  Video,
+} from "@/lib/definitions";
 import Stars from "../stars";
 import AvgRating from "../avg-rating";
+import VideoCarousel from "../carousels/aspect-video/video-carousel";
+import Carousel from "../carousels/aspect-poster/carousel";
+import { Crew, List } from "./lists";
 
 type DetailsProps = {
   item: Movie | TvSeries;
@@ -9,6 +19,10 @@ type DetailsProps = {
   screenwriters: CrewMember[];
   novel: CrewMember[];
   language: Language | undefined;
+  trailersAndTeasers: Video[];
+  cast: CastMember[];
+  restOfCast: CastMember[];
+  crew: CrewMember[];
 };
 
 export function Details({
@@ -18,6 +32,10 @@ export function Details({
   screenwriters,
   novel,
   language,
+  trailersAndTeasers,
+  cast,
+  restOfCast,
+  crew,
 }: DetailsProps) {
   const title = "title" in item ? item.title : item.name;
   const releaseDate = "title" in item ? item.release_date : item.first_air_date;
@@ -67,33 +85,35 @@ export function Details({
         header1="Screenwriter: "
         header2="Screenwriters: "
       />
-      <div className="py-2">
-        
+      <div className="py-2"></div>
+
+      <div>
+        {trailersAndTeasers.length > 0 && (
+          <>
+            <Hr />
+            <h2 className="px-2">Trailers and teasers: </h2>
+            <VideoCarousel videos={trailersAndTeasers} />
+          </>
+        )}
+        {cast.length > 0 && (
+          <>
+            <Hr />
+            <h2 className="px-2">Cast: </h2>
+            <Carousel data={cast} />
+          </>
+        )}
+        {(restOfCast.length > 0 || crew.length > 0) && (
+          <>
+            <Hr />
+            <List array={restOfCast} title="Rest of the cast" />
+            <List array={crew} title="Crew" />
+          </>
+        )}
       </div>
     </div>
   );
 }
 
-type CrewProps = {
-  array: CrewMember[];
-  header1: string;
-  header2?: string;
-};
-
-function Crew({ array, header1, header2 }: CrewProps) {
-  if (array.length === 0) return;
-
-  if (!header2) header2 = header1;
-
-  return (
-    <div>
-      {array.length == 1 ? header1 : header2}
-      {array.map((item, index) => (
-        <span key={item.id}>
-          {item.name}
-          {array.length - 1 !== index && ", "}
-        </span>
-      ))}
-    </div>
-  );
+function Hr() {
+  return <hr className="border-dashed opacity-30 mx-2 my-6" />;
 }

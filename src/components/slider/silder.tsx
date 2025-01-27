@@ -1,7 +1,7 @@
 "use client";
 
 import { Movie, TvSeries } from "@/lib/definitions";
-import Title from "../carousel/title";
+
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import Image from "next/image";
 import clsx from "clsx";
@@ -10,6 +10,7 @@ import AvgRating from "@/components/avg-rating";
 import Stars from "@/components/stars";
 import Spinner from "@/components/spinner";
 import Link from "next/link";
+import Title from "../carousels/title";
 
 type BackdropProps = {
   data: TvSeries[] | Movie[];
