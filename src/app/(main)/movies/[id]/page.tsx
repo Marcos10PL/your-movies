@@ -6,10 +6,10 @@ import {
 } from "@/api/actions";
 import { Details } from "@/components/item-details/details";
 import Layout from "@/components/item-details/layout";
-import type { Movie } from "@/lib/definitions";
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Carousels from "@/components/item-details/carousels";
+import { filterCast, filterCrew, filterVideos } from "@/lib/utils";
 
 export const metadata: Metadata = {
   title: "Movies",
@@ -28,23 +28,11 @@ export default async function Movie({ params }: MovieProps) {
   const credits = await fetchCredits("movie", parseInt(id, 10));
   if (!credits) notFound();
 
-  // cast
-  const cast = credits.cast.filter(item => item.profile_path); // with profile path
-  const restOfCast = credits.cast.filter(item => !item.profile_path); // without profile path
+  const { cast, restOfCast } = filterCast(credits.cast);
+  const { directors, writers, screenwriters, novel } = filterCrew(credits.crew);
 
-  // crew
-  const crew = credits.crew;
-  const directors = crew.filter(member => member.job === "Director");
-  const writers = crew.filter(member => member.job === "Writer");
-  const screenwriters = crew.filter(member => member.job === "Screenplay");
-  const novel = crew.filter(member => member.job === "Novel");
-
-  // trailers and teasers
   const videos = await fetchVideos("movie", parseInt(id));
-  const trailers =
-    videos?.results.filter(item => item.type === "Trailer") || [];
-  const teasers = videos?.results.filter(item => item.type === "Teaser") || [];
-  const trailersAndTeasers = [...trailers, ...teasers];
+  const { trailersAndTeasers } = filterVideos(videos?.results || []);
 
   // language
   const languages = await fetchLanguages();
@@ -66,7 +54,7 @@ export default async function Movie({ params }: MovieProps) {
         trailersAndTeasers={trailersAndTeasers}
         cast={cast}
         restOfCast={restOfCast}
-        crew={crew}
+        crew={credits.crew}
       />
     </Layout>
   );

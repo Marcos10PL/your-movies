@@ -33,6 +33,7 @@ export type TvSeries = {
   name: string;
   vote_average: number;
   vote_count: number;
+  created_by: CrewMember[];
 };
 
 //-------------- credits ----------------//
@@ -185,7 +186,11 @@ export type Job =
   | "Costume Designer"
   | "Makeup Artist"
   | "Special Effects Supervisor"
-  | "Casting Director";
+  | "Casting Director"
+  | "Series Director"    
+  | "Showrunner"         
+  | "Head Writer"        
+  | "Series Writer"      
 
 export type VideoType =
   | "Trailer"

@@ -14,7 +14,7 @@ export async function fetchData<T extends TypeOfList>(
   type: T,
   searchOptions: SearchOptions<T>,
   language: LanguageOption = "en-US"
-): Promise<Movie[] | TvSeries[] | undefined> {
+): Promise<(T extends 'tv' ? TvSeries : Movie) | undefined> {
   try {
     searchOptions = {
       include_adult: false,
@@ -62,7 +62,7 @@ export async function findById<T extends TypeOfList>(
   type: T,
   id: number,
   language: LanguageOption = "en-US"
-): Promise<Movie | undefined> {
+): Promise<(T extends 'tv' ? TvSeries : Movie) | undefined> {
   try {
     const response = await fetch(
       `https://api.themoviedb.org/3/${type}/${id}?language=${language}}`,
@@ -149,7 +149,7 @@ export async function fetchVideos<T extends TypeOfList>(
 
     return data;
   } catch (e) {
-    console.error(e);
+    // console.error(e);
     return undefined;
   }
 }

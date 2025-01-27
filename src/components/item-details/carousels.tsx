@@ -17,19 +17,27 @@ export default function Carousels({
 }: CarouselsProps) {
   return (
     <div>
-      <Hr />
       {trailersAndTeasers.length > 0 && (
-        <div>
+        <>
+          <Hr />
           <h2 className="px-2">Trailers and teasers: </h2>
           <VideoCarousel videos={trailersAndTeasers} />
-        </div>
+        </>
       )}
-      <Hr />
-      <h2 className="px-2">Cast: </h2>
-      <Carousel data={cast} />
-      <Hr />
-      <List array={restOfCast} title="Rest of the cast" />
-      <List array={crew} title="Crew" />
+      {cast.length > 0 && (
+        <>
+          <Hr />
+          <h2 className="px-2">Cast: </h2>
+          <Carousel data={cast} />
+        </>
+      )}
+      {(restOfCast.length > 0 || crew.length > 0) && (
+        <>
+          <Hr />
+          <List array={restOfCast} title="Rest of the cast" />
+          <List array={crew} title="Crew" />
+        </>
+      )}
     </div>
   );
 }
@@ -43,8 +51,10 @@ function List({ array, title }: ListProps) {
 
   return (
     <details>
-      <summary className="py-2">{title} - click here </summary>
-      <p>
+      <summary className="px-2 py-2 cursor-pointer hover:bg-gray-900 hover:text-primary">
+        {title} - click here to expand{" "}
+      </summary>
+      <p className="px-2">
         {array.map((item, index) => (
           <span key={index}>
             {item.name}

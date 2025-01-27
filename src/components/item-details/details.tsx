@@ -58,6 +58,7 @@ export function Details({
         {item.adult && <p>Not for children</p>}
       </div>
 
+      {language?.name && <p>Orginal language: {language.name}</p>}
       <Crew array={directors} header1="Director: " header2="Directors: " />
       <Crew array={writers} header1="Writer: " header2="Writers: " />
       <Crew array={novel} header1="Novel: " />
@@ -66,7 +67,9 @@ export function Details({
         header1="Screenwriter: "
         header2="Screenwriters: "
       />
-      {language?.name && <p>Orginal language: {language.name}</p>}
+      <div className="py-2">
+        
+      </div>
     </div>
   );
 }
