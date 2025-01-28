@@ -1,15 +1,15 @@
 "use client";
 
-import { CastMember, Movie, TvSeries } from "@/lib/definitions";
+import { CastMember, Movie, Season, TvSeries } from "@/lib/definitions";
 import { useEffect, useRef, useState } from "react";
 import Title, { IconType } from "../title";
 import Button from "../button";
-import Item from "../item";
+import Item from "./item";
 
-
+export type Item = Movie | TvSeries | CastMember | Season;
 
 type CarouselProps = {
-  data: Movie[] | TvSeries[] | CastMember[];
+  data: Item[];
   title?: string;
   icon?: IconType;
   popular?: true;
@@ -55,10 +55,10 @@ export default function Carousel({
   }, []);
 
   return (
-    <div className="py-2">
+    <div>
       {title && <Title title={title} icon={icon} />}
 
-      <div className="relative pt-1">
+      <div className="relative pt-2">
         <div className="flex overflow-x-auto scrollbar-none" ref={carouselRef}>
           {data.map((itm, idx) => (
             <Item key={itm.id} item={itm} index={idx} popular={popular} />

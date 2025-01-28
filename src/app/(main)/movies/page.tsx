@@ -61,19 +61,23 @@ export default async function Movies() {
       {SECTIONS.map(({ key, title, component: Component, popular }) => {
         const data = dataMap[key];
 
-        return data ? (
-          <Suspense
-            key={key}
-            fallback={<div>Loading {title.toLowerCase()}...</div>}
-          >
-            <Component
-              data={data}
-              title={title}
-              {...(popular && { popular })}
-            />
-          </Suspense>
-        ) : (
-          <Error key={key} title={title} />
+        return (
+          <div className="py-2" key={key}>
+            {data ? (
+              <Suspense
+                key={key}
+                fallback={<div>Loading {title.toLowerCase()}...</div>}
+              >
+                <Component
+                  data={data}
+                  title={title}
+                  {...(popular && { popular })}
+                />
+              </Suspense>
+            ) : (
+              <Error key={key} title={title} />
+            )}
+          </div>
         );
       })}
     </div>

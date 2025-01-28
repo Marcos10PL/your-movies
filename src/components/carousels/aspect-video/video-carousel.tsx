@@ -1,16 +1,18 @@
 "use client";
 
-import type { Video } from "@/lib/definitions";
 import { useEffect, useRef, useState } from "react";
 import { scrollFunction } from "../aspect-poster/carousel";
 import Button from "../button";
-
+import type { Video } from "@/lib/definitions";
+import VideoItem from "./video";
+import Title from "../title";
 
 type VideoCarouselProps = {
   videos: Video[];
+  title?: string;
 };
 
-export default function VideoCarousel({ videos }: VideoCarouselProps) {
+export default function VideoCarousel({ videos, title }: VideoCarouselProps) {
   const carouselRef = useRef<HTMLDivElement>(null!);
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(false);
@@ -43,11 +45,13 @@ export default function VideoCarousel({ videos }: VideoCarouselProps) {
   }, []);
 
   return (
-    <div className="py-3">
-      <div className="relative">
+    <div>
+      {title && <Title title={title} />}
+
+      <div className="relative pt-2">
         <div className="flex overflow-x-auto scrollbar-none" ref={carouselRef}>
           {videos.map(video => (
-            <Video key={video.key} videoKey={video.key} site={video.site} />
+            <VideoItem key={video.key} videoKey={video.key} site={video.site} />
           ))}
         </div>
 
@@ -56,57 +60,6 @@ export default function VideoCarousel({ videos }: VideoCarouselProps) {
           <Button position="right" onClick={() => scroll(1)} />
         )}
       </div>
-    </div>
-  );
-}
-
-type VideoProps = {
-  videoKey: string;
-  site: string;
-};
-
-function Video({ videoKey, site }: VideoProps) {
-  const [isPlaying, setIsPlaying] = useState(false);
-
-  const thumbnailUrl =
-    site === "YouTube"
-      ? `https://img.youtube.com/vi/${videoKey}/hqdefault.jpg`
-      : null;
-
-  if (!thumbnailUrl) return <p>Video not supported</p>;
-
-  return (
-    <div
-      className="relative min-w-[calc(100%-1rem)] lg:min-w-[calc(50%-1rem)] xl:min-w-[calc(33.33%-1rem)] xxl:min-w-[calc(25%-1rem)] mx-2 aspect-video rounded-lg border-2 border-slate-700 cursor-pointer overflow-hidden"
-      onClick={() => setIsPlaying(true)}
-    >
-      {isPlaying ? (
-        <iframe
-          src={`https://www.youtube-nocookie.com/embed/${videoKey}?autoplay=1`}
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-          allowFullScreen
-          className="w-full h-full"
-        ></iframe>
-      ) : (
-        <div className="relative w-full h-full">
-          <img
-            src={thumbnailUrl}
-            alt="Video thumbnail"
-            className="w-full h-full object-cover"
-          />
-          <div className="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="white"
-              viewBox="0 0 24 24"
-              width="64px"
-              height="64px"
-            >
-              <path d="M8 5v14l11-7z" />
-            </svg>
-          </div>
-        </div>
-      )}
     </div>
   );
 }

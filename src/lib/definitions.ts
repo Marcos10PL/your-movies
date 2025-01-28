@@ -1,4 +1,4 @@
-//-------------- movie and tv series ----------------//
+//-------------- movie ----------------//
 
 export type Movie = {
   adult: boolean;
@@ -18,6 +18,8 @@ export type Movie = {
   media_type: string;
 };
 
+//-------------- tv series ----------------//
+
 export type TvSeries = {
   adult: boolean;
   backdrop_path: string;
@@ -36,6 +38,45 @@ export type TvSeries = {
   created_by: CrewMember[];
   seasons: Season[];
 };
+
+export type Season = {
+  air_date: string;
+  episode_count: number;
+  id: number;
+  name: string;
+  overview: string;
+  poster_path: string;
+  season_number: number;
+  vote_average: number;
+}
+
+export type SeasonDetails = {
+  _id: string;
+  air_date: string;
+  episodes: Episode[];
+  name: string;
+  overview: string;
+  id: number;
+  poster_path: string;
+  season_number: number;
+  vote_average: number;
+}
+
+export type Episode = {
+  air_date: string;
+  episode_number: number;
+  id: number;
+  name: string;
+  overview: string;
+  production_code: string;
+  season_number: number;
+  show_id: number;
+  still_path: string;
+  vote_average: number;
+  vote_count: number;
+  crew: CrewMember[];
+  guest_stars: CastMember[];
+}
 
 //-------------- credits ----------------//
 
@@ -216,14 +257,3 @@ export type Language = {
   english_name: string;
   name: string;
 };
-
-export type Season = {
-  air_date: string;
-  episode_count: number;
-  id: number;
-  name: string;
-  overview: string;
-  poster_path: string;
-  season_number: number;
-  vote_average: number;
-}

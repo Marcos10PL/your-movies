@@ -3,7 +3,12 @@ import Carousel from "@/components/carousels/aspect-poster/carousel";
 import Error from "@/components/error";
 import Slider from "@/components/slider/silder";
 import { today } from "@/lib/utils";
+import { Metadata } from "next";
 import { Suspense } from "react";
+
+export const metadata: Metadata = {
+  title: "TV Series",
+};
 
 export default async function Series() {
   const dataMap = {
@@ -47,19 +52,20 @@ export default async function Series() {
       {SECTIONS.map(({ key, title, component: Component, popular }) => {
         const data = dataMap[key];
 
-        return data ? (
-          <Suspense
-            key={key}
-            fallback={<div>Loading {title.toLowerCase()}...</div>}
-          >
-            <Component
-              data={data}
-              title={title}
-              {...(popular && { popular })}
-            />
-          </Suspense>
-        ) : (
-          <Error key={key} title={title} />
+        return (
+          <div key={key} className="py-2">
+            {data ? (
+              <Suspense fallback={<div>Loading {title.toLowerCase()}...</div>}>
+                <Component
+                  data={data}
+                  title={title}
+                  {...(popular && { popular })}
+                />
+              </Suspense>
+            ) : (
+              <Error title={title} />
+            )}
+          </div>
         );
       })}
     </div>

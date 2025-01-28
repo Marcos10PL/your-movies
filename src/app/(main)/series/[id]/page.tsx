@@ -9,6 +9,7 @@ import Layout from "@/components/item-details/layout";
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { filterCast, filterCrew, filterVideos } from "@/lib/utils";
+import Carousel from "@/components/carousels/aspect-poster/carousel";
 
 export const metadata: Metadata = {
   title: "TV Series",
@@ -56,7 +57,9 @@ export default async function TvSeries({ params }: TvSeriesProps) {
         cast={cast}
         restOfCast={restOfCast}
         crew={credits.crew}
-      />
+      >
+        <Carousel data={seasons} title="Seasons"/>
+      </Details>
     </Layout>
   );
 }

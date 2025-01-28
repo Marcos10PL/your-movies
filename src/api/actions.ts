@@ -4,6 +4,7 @@ import {
   LanguageOption,
   Movie,
   SearchOptions,
+  SeasonDetails,
   TvSeries,
   TypeOfList,
   Videos,
@@ -182,3 +183,34 @@ export async function fetchLanguages(): Promise<Language[] | undefined> {
   }
 }
 
+export async function fetchSeasonDetails(
+  seriesId: number,
+  seasonNr: number,
+  language: LanguageOption = "en-US"
+): Promise<SeasonDetails | undefined> {
+  try {
+    const response = await fetch(
+      `https://api.themoviedb.org/3/tv/${seriesId}/season/${seasonNr}?language=${language}}`,
+      {
+        ...optionsGET,
+        next: {
+          revalidate: 24 * 60 * 60,
+        },
+      }
+    );
+
+    if (!response.ok)
+      throw new Error(
+        `Failed to fetch data: ${response.status} ${response.statusText}`
+      );
+
+    const data = await response.json();
+
+    if (!data) throw new Error("No available data");
+
+    return data;
+  } catch (e) {
+    console.error(e);
+    return undefined;
+  }
+}
