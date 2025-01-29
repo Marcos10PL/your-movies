@@ -25,8 +25,6 @@ export default async function TvSeries({ params }: TvSeriesProps) {
   const tvSeries = await findById("tv", parseInt(id, 10));
   if (!tvSeries) notFound();
 
-  console.log(tvSeries);
-
   const credits = await fetchCredits("tv", parseInt(id, 10));
   if (!credits) notFound();
 
@@ -45,7 +43,11 @@ export default async function TvSeries({ params }: TvSeriesProps) {
   const seasons = tvSeries.seasons;
 
   return (
-    <Layout title={tvSeries.name} backdropPath={tvSeries.backdrop_path}>
+    <Layout
+      title={tvSeries.name}
+      backdropPath={tvSeries.backdrop_path}
+      href="/series"
+    >
       <Details
         item={tvSeries}
         directors={createdBy}
@@ -58,7 +60,7 @@ export default async function TvSeries({ params }: TvSeriesProps) {
         restOfCast={restOfCast}
         crew={credits.crew}
       >
-        <Carousel data={seasons} title="Seasons"/>
+        <Carousel data={seasons} title="Seasons" overlayAlwaysVisible />
       </Details>
     </Layout>
   );

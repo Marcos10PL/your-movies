@@ -27,7 +27,7 @@ export default function Slider({ data, title }: BackdropProps) {
   const timerRef = useRef<NodeJS.Timeout | null>(null);
 
   const changeAnimationDuration = 7000; // 7s
-  const fadeAnimationDuration = 400; // 0.4s
+  const fadeAnimationDuration = 700; // 0.4s
 
   useLayoutEffect(() => {
     const isOverflowing = (element: HTMLElement) => {

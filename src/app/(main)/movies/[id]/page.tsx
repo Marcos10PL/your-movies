@@ -40,7 +40,11 @@ export default async function Movie({ params }: MovieProps) {
   );
 
   return (
-    <Layout title={movie.title} backdropPath={movie.backdrop_path}>
+    <Layout
+      title={movie.title}
+      backdropPath={movie.backdrop_path}
+      href="/movies"
+    >
       <Details
         item={movie}
         directors={directors}

@@ -11,9 +11,17 @@ type ItemProps = {
   item: Item;
   index: number;
   popular?: true;
+  noLink?: true;
+  overlayAlwaysVisible?: true;
 };
 
-export default function Item({ item, index, popular }: ItemProps) {
+export default function Item({
+  item,
+  index,
+  popular,
+  noLink,
+  overlayAlwaysVisible,
+}: ItemProps) {
   const [loading, setLoading] = useState(true);
   const { id: seriesId } = useParams();
 
@@ -24,7 +32,6 @@ export default function Item({ item, index, popular }: ItemProps) {
   if ("episode_count" in item)
     href = `${seriesId}/season/${item.season_number}`;
 
-  const isCastMemeber = "character" in item ? true : false;
   const posterPath =
     "profile_path" in item ? item.profile_path : item.poster_path;
 
@@ -34,10 +41,10 @@ export default function Item({ item, index, popular }: ItemProps) {
       scroll={true}
       key={item.id}
       className={clsx(
-        "relative min-w-[calc(50%-1rem)] md:min-w-[calc(33.3%-1rem)] lg:min-w-[calc(25%-1rem)] xl:min-w-[calc(16.66%-1rem)] xxl:min-w-[calc(12.5%-1rem)] aspect-[2/3] overflow-hidden cursor-default rounded-lg border-2 border-slate-700 duration-300 group mx-2",
-        !isCastMemeber && "cursor-pointer"
+        "relative min-w-[calc(50%-1rem)] md:min-w-[calc(33.3%-1rem)] lg:min-w-[calc(25%-1rem)] xl:min-w-[calc(16.66%-1rem)] xxl:min-w-[calc(12.5%-1rem)] aspect-[2/3] overflow-hidden rounded-lg border-2 border-slate-700 duration-300 mx-2",
+        noLink ? "cursor-default" : "cursor-pointer group"
       )}
-      onClick={e => isCastMemeber && e.preventDefault()}
+      onClick={e => noLink && e.preventDefault()}
     >
       {posterPath ? (
         <>
@@ -46,8 +53,7 @@ export default function Item({ item, index, popular }: ItemProps) {
             src={`https://image.tmdb.org/t/p/w500${posterPath}/`}
             alt={"title" in item ? item.title : item.name}
             fill
-            sizes="1x"
-            className="group-hover:scale-105 will-change-transform duration-500"
+            className="group-hover:scale-105 will-change-transform duration-500 object-cover"
             onLoad={() => setLoading(false)}
           />
         </>
@@ -57,7 +63,12 @@ export default function Item({ item, index, popular }: ItemProps) {
         </div>
       )}
 
-      <Overlay item={item} popular={popular} />
+      <Overlay
+        item={item}
+        popular={popular}
+        overlayAlwaysVisible={overlayAlwaysVisible}
+      />
+
       {popular && <Index index={index + 1} />}
     </Link>
   );

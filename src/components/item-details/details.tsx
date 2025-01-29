@@ -11,6 +11,7 @@ import AvgRating from "../avg-rating";
 import VideoCarousel from "../carousels/aspect-video/video-carousel";
 import Carousel from "../carousels/aspect-poster/carousel";
 import { Crew, List } from "./lists";
+import Hr from "../hr";
 
 type DetailsProps = {
   item: Movie | TvSeries;
@@ -59,8 +60,8 @@ export function Details({
         )}
 
         <div className="md:w-3/5 xl:w-2/6 *:py-2">
-          <p>{item.overview}</p>
-          <p>Release date: {releaseDate}</p>
+          {item.overview && <p>{item.overview}</p>}
+          {releaseDate && <p>Release date: {releaseDate}</p>}
           {item.vote_average ? (
             <div className="*:flex *:py-1">
               <div>
@@ -80,6 +81,7 @@ export function Details({
         </div>
 
         {language?.name && <p>Orginal language: {language.name}</p>}
+
         <Crew array={directors} header1="Director: " header2="Directors: " />
         <Crew array={writers} header1="Writer: " header2="Writers: " />
         <Crew array={novel} header1="Novel: " />
@@ -110,7 +112,7 @@ export function Details({
         {cast.length > 0 && (
           <>
             <Hr />
-            <Carousel data={cast} title="Cast" />
+            <Carousel data={cast} title="Cast" noLink overlayAlwaysVisible />
           </>
         )}
         {(restOfCast.length > 0 || crew.length > 0) && (
@@ -123,8 +125,4 @@ export function Details({
       </div>
     </div>
   );
-}
-
-function Hr() {
-  return <hr className="border-dashed opacity-30 mx-2 my-6" />;
 }

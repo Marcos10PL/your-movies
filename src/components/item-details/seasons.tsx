@@ -1,10 +1,12 @@
 import { Season } from "@/lib/definitions";
-import VideoCarousel from "../carousel/video-carousel";
+import Layout from "./layout";
 
 type SeasonProps = {
   seasons: Season[];
 }
 
 export default function Seasons({ seasons }: SeasonProps) {
-  
+  return(
+
+  )
 }

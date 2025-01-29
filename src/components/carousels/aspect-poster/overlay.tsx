@@ -6,27 +6,34 @@ import AvgRating from "@/components/avg-rating";
 type OverlayProps = {
   item: Item;
   popular?: true;
+  overlayAlwaysVisible?: true;
 };
 
-export default function Overlay({ item, popular }: OverlayProps) {
+export default function Overlay({
+  item,
+  popular,
+  overlayAlwaysVisible,
+}: OverlayProps) {
   return (
     <div
       className={clsx(
-        "absolute inset-0 opacity-0 group-hover:opacity-100 duration-500 text-lg",
-        "episode_count" in item && "opacity-100"
+        "absolute inset-0 text-lg",
+        overlayAlwaysVisible
+          ? "opacity-100"
+          : "md:opacity-0 group-hover:opacity-100 duration-500"
       )}
     >
       <div className="relative w-full h-full">
-        <div className="*:w-full *:absolute">
+        <div className="*:w-full *:absolute *:text-center">
           <div
             className={clsx(
-              "top-0 bg-gradient-to-b from-black to-transparent pb-5 text-center",
+              "top-0 bg-gradient-to-b from-black to-transparent pb-5",
               popular && "max-w-[calc(100%-2.5rem)] right-0"
             )}
           >
             <TopDescription item={item} />
           </div>
-          <div className="bottom-0 bg-gradient-to-t from-black to-transparent pt-20 px-2 pb-1 text-center">
+          <div className="bottom-0 bg-gradient-to-t from-black to-transparent pt-20 pb-1 px-2">
             <BottomDescription item={item} />
           </div>
         </div>

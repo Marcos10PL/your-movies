@@ -13,6 +13,8 @@ type CarouselProps = {
   title?: string;
   icon?: IconType;
   popular?: true;
+  noLink?: true;
+  overlayAlwaysVisible?: true;
 };
 
 export type scrollFunction = (x: -1 | 1) => void;
@@ -22,6 +24,8 @@ export default function Carousel({
   title,
   icon,
   popular,
+  noLink,
+  overlayAlwaysVisible,
 }: CarouselProps) {
   const carouselRef = useRef<HTMLDivElement>(null!);
   const [canScrollLeft, setCanScrollLeft] = useState(false);
@@ -61,7 +65,14 @@ export default function Carousel({
       <div className="relative pt-2">
         <div className="flex overflow-x-auto scrollbar-none" ref={carouselRef}>
           {data.map((itm, idx) => (
-            <Item key={itm.id} item={itm} index={idx} popular={popular} />
+            <Item
+              key={itm.id}
+              item={itm}
+              index={idx}
+              popular={popular}
+              noLink={noLink}
+              overlayAlwaysVisible={overlayAlwaysVisible}
+            />
           ))}
         </div>
 
