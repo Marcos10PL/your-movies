@@ -24,7 +24,7 @@ export default function Overlay({
       )}
     >
       <div className="relative w-full h-full">
-        <div className="*:w-full *:absolute *:text-center">
+        <div className="*:w-full *:absolute *:text-center *px-1">
           <div
             className={clsx(
               "top-0 bg-gradient-to-b from-black to-transparent pb-5",
@@ -33,7 +33,7 @@ export default function Overlay({
           >
             <TopDescription item={item} />
           </div>
-          <div className="bottom-0 bg-gradient-to-t from-black to-transparent pt-20 pb-1 px-2">
+          <div className="bottom-0 bg-gradient-to-t from-black to-transparent pt-20 pb-1">
             <BottomDescription item={item} />
           </div>
         </div>

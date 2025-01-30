@@ -53,6 +53,7 @@ export default function Item({
             src={`https://image.tmdb.org/t/p/w500${posterPath}/`}
             alt={"title" in item ? item.title : item.name}
             fill
+            sizes="1x"
             className="group-hover:scale-105 will-change-transform duration-500 object-cover"
             onLoad={() => setLoading(false)}
           />

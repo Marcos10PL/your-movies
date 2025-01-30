@@ -1,6 +1,8 @@
 "use client";
 
 import Title from "@/components/carousels/title";
+import Error from "@/components/error";
+import Hr from "@/components/hr";
 import { Episode } from "@/lib/definitions";
 import Image from "next/image";
 import Link from "next/link";
@@ -8,13 +10,20 @@ import Link from "next/link";
 type SeasonProps = {
   episodes: Episode[];
   title: string;
-  id: number;
-  nr: number;
+  seasonNr: number;
 };
 
-export default function Episodes({ episodes, title, id, nr }: SeasonProps) {
+export default function Episodes({ episodes, title, seasonNr }: SeasonProps) {
+  if (
+    (episodes[0].overview === "" && episodes[0].still_path === null) ||
+    episodes.length === 0
+  ) {
+    return null;
+  }
+
   return (
     <>
+      <Hr />
       <Title title={title} />
       <div className="px-2 mt-2">
         {episodes.map(episode => {
@@ -45,7 +54,7 @@ export default function Episodes({ episodes, title, id, nr }: SeasonProps) {
               </div>
               <Link
                 className="p-2 bg-slate-950 hover:bg-gray-900 duration-150 hover:text-primary h-full text-center"
-                href={`${nr}/episode/${episode.episode_number}`}
+                href={`${seasonNr}/episode/${episode.episode_number}`}
               >
                 Show more...
               </Link>

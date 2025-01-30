@@ -76,6 +76,7 @@ export type Episode = {
   vote_count: number;
   crew: CrewMember[];
   guest_stars: CastMember[];
+  runtime: number;
 }
 
 //-------------- credits ----------------//

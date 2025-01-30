@@ -6,13 +6,16 @@ import Button from "../button";
 import type { Video } from "@/lib/definitions";
 import VideoItem from "./video";
 import Title from "../title";
+import Error from "@/components/error";
 
 type VideoCarouselProps = {
   videos: Video[];
-  title?: string;
+  title: string;
 };
 
 export default function VideoCarousel({ videos, title }: VideoCarouselProps) {
+  if (videos.length === 0) return null;
+
   const carouselRef = useRef<HTMLDivElement>(null!);
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(false);
@@ -46,7 +49,7 @@ export default function VideoCarousel({ videos, title }: VideoCarouselProps) {
 
   return (
     <div>
-      {title && <Title title={title} />}
+      <Title title={title} />
 
       <div className="relative pt-2">
         <div className="flex overflow-x-auto scrollbar-none" ref={carouselRef}>

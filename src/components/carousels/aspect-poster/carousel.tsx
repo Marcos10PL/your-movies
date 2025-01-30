@@ -5,12 +5,13 @@ import { useEffect, useRef, useState } from "react";
 import Title, { IconType } from "../title";
 import Button from "../button";
 import Item from "./item";
+import Error from "@/components/error";
 
 export type Item = Movie | TvSeries | CastMember | Season;
 
 type CarouselProps = {
   data: Item[];
-  title?: string;
+  title: string;
   icon?: IconType;
   popular?: true;
   noLink?: true;
@@ -27,6 +28,8 @@ export default function Carousel({
   noLink,
   overlayAlwaysVisible,
 }: CarouselProps) {
+  if (data.length === 0) return null;
+
   const carouselRef = useRef<HTMLDivElement>(null!);
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(false);
@@ -60,7 +63,7 @@ export default function Carousel({
 
   return (
     <div>
-      {title && <Title title={title} icon={icon} />}
+      <Title title={title} icon={icon} />
 
       <div className="relative pt-2">
         <div className="flex overflow-x-auto scrollbar-none" ref={carouselRef}>

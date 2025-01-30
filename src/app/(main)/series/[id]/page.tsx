@@ -10,6 +10,10 @@ import { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { filterCast, filterCrew, filterVideos } from "@/lib/utils";
 import Carousel from "@/components/carousels/aspect-poster/carousel";
+import VideoCarousel from "@/components/carousels/aspect-video/video-carousel";
+import Hr from "@/components/hr";
+import List from "@/components/item-details/list";
+import Crew from "@/components/item-details/crew";
 
 export const metadata: Metadata = {
   title: "TV Series",
@@ -41,7 +45,6 @@ export default async function TvSeries({ params }: TvSeriesProps) {
   );
 
   const seasons = tvSeries.seasons;
-
   return (
     <Layout
       title={tvSeries.name}
@@ -49,19 +52,59 @@ export default async function TvSeries({ params }: TvSeriesProps) {
       href="/series"
     >
       <Details
-        item={tvSeries}
+        title={tvSeries.name}
+        releaseDate={tvSeries.first_air_date}
+        overview={tvSeries.overview}
+        voteAverage={tvSeries.vote_average}
+        voteCount={tvSeries.vote_count}
+        adult={tvSeries.adult}
+        language={language?.name}
+      />
+
+      <Crew
         directors={createdBy}
         writers={writers}
         screenwriters={screenwriters}
         novel={novel}
-        language={language}
-        trailersAndTeasers={trailersAndTeasers}
-        cast={cast}
-        restOfCast={restOfCast}
-        crew={credits.crew}
-      >
-        <Carousel data={seasons} title="Seasons" overlayAlwaysVisible />
-      </Details>
+      />
+
+      {trailersAndTeasers.length > 0 && (
+        <>
+          <Hr />
+          <VideoCarousel
+            videos={trailersAndTeasers}
+            title="Trailers and Teasers"
+          />
+        </>
+      )}
+
+      {cast.length > 0 && (
+        <>
+          <Hr />
+          <Carousel data={cast} title="Cast" noLink overlayAlwaysVisible />
+        </>
+      )}
+
+      {restOfCast.length > 0 && (
+        <>
+          <Hr />
+          <List array={restOfCast} title="Rest of the cast" />
+        </>
+      )}
+
+      {credits.crew.length > 0 && (
+        <>
+          <Hr />
+          <List array={credits.crew} title="Crew" />
+        </>
+      )}
+
+      {seasons.length > 0 && (
+        <>
+          <Hr />
+          <Carousel data={seasons} title="Seasons" overlayAlwaysVisible />
+        </>
+      )}
     </Layout>
   );
 }

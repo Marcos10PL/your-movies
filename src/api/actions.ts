@@ -1,5 +1,6 @@
 import {
   Credits,
+  Episode,
   Language,
   LanguageOption,
   Movie,
@@ -191,6 +192,39 @@ export async function fetchSeasonDetails(
   try {
     const response = await fetch(
       `https://api.themoviedb.org/3/tv/${seriesId}/season/${seasonNr}?language=${language}}`,
+      {
+        ...optionsGET,
+        next: {
+          revalidate: 24 * 60 * 60,
+        },
+      }
+    );
+
+    if (!response.ok)
+      throw new Error(
+        `Failed to fetch data: ${response.status} ${response.statusText}`
+      );
+
+    const data = await response.json();
+
+    if (!data) throw new Error("No available data");
+
+    return data;
+  } catch (e) {
+    console.error(e);
+    return undefined;
+  }
+}
+
+export async function fetchEpisodeDetails(
+  seriesId: number,
+  seasonNr: number,
+  episodeNr: number,
+  language: LanguageOption = "en-US"
+): Promise<Episode | undefined> {
+  try {
+    const response = await fetch(
+      `https://api.themoviedb.org/3/tv/${seriesId}/season/${seasonNr}/episode/${episodeNr}?language=${language}}`,
       {
         ...optionsGET,
         next: {
