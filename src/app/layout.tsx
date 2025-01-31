@@ -41,7 +41,7 @@ export default function RootLayout({
             {children}
           </section>
         </main>
-        
+
         <footer className="md:hidden">
           <Footer />
         </footer>

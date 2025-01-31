@@ -1,6 +1,7 @@
 import { fetchData } from "@/api/actions";
 import Carousel from "@/components/carousels/aspect-poster/carousel";
 import Error from "@/components/error";
+import CarouselSkeleton from "@/components/skeletons/carousel-skeleton";
 import Slider from "@/components/slider/silder";
 import { today } from "@/lib/utils";
 import { Metadata } from "next";
@@ -55,7 +56,7 @@ export default async function Series() {
         return (
           <div key={key} className="py-2">
             {data ? (
-              <Suspense fallback={<div>Loading {title.toLowerCase()}...</div>}>
+              <Suspense fallback={<CarouselSkeleton title={title} />}>
                 <Component
                   data={data}
                   title={title}

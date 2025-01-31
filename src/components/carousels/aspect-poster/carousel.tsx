@@ -61,7 +61,7 @@ export default function Carousel({
   }, []);
 
   return (
-    <div>
+    <>
       <Title title={title} icon={icon} />
 
       <div className="relative pt-2">
@@ -83,6 +83,6 @@ export default function Carousel({
           <Button position="right" onClick={() => scroll(1)} />
         )}
       </div>
-    </div>
+    </>
   );
 }

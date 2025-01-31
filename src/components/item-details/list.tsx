@@ -14,16 +14,18 @@ export default function List({ array, title }: ListProps) {
         {title} - click here to expand{" "}
       </summary>
       <p className="px-2">
-        {array.map((item, index) => (
-          <span key={index}>
-            {item.name}
-            <span className="text-emerald-200">
-              {" - "}
-              {"character" in item ? item.character : item.job}
+        {array.map((item, index) => {
+          const character = "character" in item ? item.character : item.job;
+          return (
+            <span key={index}>
+              {item.name}
+              {character && (
+                <span className="text-emerald-200">{" - " + character}</span>
+              )}
+              {array.length - 1 !== index && ", "}
             </span>
-            {array.length - 1 !== index && ", "}
-          </span>
-        ))}
+          );
+        })}
       </p>
     </details>
   );

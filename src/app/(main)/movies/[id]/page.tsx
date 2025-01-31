@@ -14,7 +14,6 @@ import Hr from "@/components/hr";
 import Carousel from "@/components/carousels/aspect-poster/carousel";
 import Crew from "@/components/item-details/crew";
 import VideoCarousel from "@/components/carousels/aspect-video/video-carousel";
-import { ca } from "date-fns/locale";
 
 export const metadata: Metadata = {
   title: "Movies",
@@ -33,12 +32,13 @@ export default async function Movie({ params }: MovieProps) {
   const credits = await fetchCredits("movie", parseInt(id, 10));
   if (!credits) notFound();
 
+  
   const { cast, restOfCast } = filterCast(credits.cast);
   const { directors, writers, screenwriters, novel } = filterCrew(credits.crew);
-
+  
   const videos = await fetchVideos("movie", parseInt(id));
   const { trailersAndTeasers } = filterVideos(videos?.results || []);
-
+  
   const languages = await fetchLanguages();
   const language = languages?.find(
     lang => lang.iso_639_1 === movie.original_language

@@ -1,6 +1,7 @@
 import { fetchData } from "@/api/actions";
 import Carousel from "@/components/carousels/aspect-poster/carousel";
 import Error from "@/components/error";
+import CarouselSkeleton from "@/components/skeletons/carousel-skeleton";
 import Slider from "@/components/slider/silder";
 
 import { today, nextMonth, halfYearAgo } from "@/lib/utils";
@@ -64,10 +65,7 @@ export default async function Movies() {
         return (
           <div className="py-2" key={key}>
             {data ? (
-              <Suspense
-                key={key}
-                fallback={<div>Loading {title.toLowerCase()}...</div>}
-              >
+              <Suspense key={key} fallback={<CarouselSkeleton title={title} />}>
                 <Component
                   data={data}
                   title={title}
