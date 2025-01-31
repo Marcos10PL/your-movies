@@ -1,11 +1,12 @@
 "use client";
 
 import Title from "@/components/carousels/title";
-import Error from "@/components/error";
 import Hr from "@/components/hr";
+import Spinner from "@/components/spinner";
 import { Episode } from "@/lib/definitions";
 import Image from "next/image";
 import Link from "next/link";
+import { useState } from "react";
 
 type SeasonProps = {
   episodes: Episode[];
@@ -14,18 +15,28 @@ type SeasonProps = {
 };
 
 export default function Episodes({ episodes, title, seasonNr }: SeasonProps) {
-  if (
-    (episodes[0].overview === "" && episodes[0].still_path === null) ||
-    episodes.length === 0
-  ) {
-    return null;
+  const [loading, setLoading] = useState(true);
+
+  if (episodes.length === 0) return null;
+
+  if (episodes[0].overview === "" && episodes[0].still_path === null) {
+    return (
+      <div className="px-2">
+        <h2 className="pb-2">{title}</h2>
+        {episodes.map(episode => (
+          <p className="pb-1" key={episode.id}>
+            {episode.episode_number}. {episode.name}
+          </p>
+        ))}
+      </div>
+    );
   }
 
   return (
     <>
       <Hr />
       <Title title={title} />
-      <div className="px-2 mt-2">
+      <div className="px-2">
         {episodes.map(episode => {
           return (
             <div
@@ -34,15 +45,25 @@ export default function Episodes({ episodes, title, seasonNr }: SeasonProps) {
             >
               <div className="flex flex-col md:flex-row justify-center border-b-2 border-gray-800">
                 <div className="relative w-full aspect-video md:w-1/3 xl:w-1/5">
-                  <Image
-                    src={`https://image.tmdb.org/t/p/w500${episode.still_path}`}
-                    alt={episode.name}
-                    sizes="1x"
-                    fill
-                    className="object-cover"
-                  />
+                  {episode.still_path ? (
+                    <>
+                      {loading && <Loading />}
+                      <Image
+                        src={`https://image.tmdb.org/t/p/w500${episode.still_path}/`}
+                        alt={episode.name}
+                        fill
+                        sizes="1x"
+                        className="object-cover"
+                        onLoad={() => setLoading(false)}
+                      />
+                    </>
+                  ) : (
+                    <div className="text-center absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 transition-transform will-change-transform duration-300 group-hover:scale-105 z-50">
+                      <p className="text-white">No image available</p>
+                    </div>
+                  )}
                 </div>
-                <div className="w-2/3 px-3 py-2 xl:w-4/5">
+                <div className="md:w-2/3 px-3 py-2 xl:w-4/5">
                   <h2 className="text-primary">
                     {episode.episode_number}. {episode.name}
                   </h2>
@@ -63,5 +84,13 @@ export default function Episodes({ episodes, title, seasonNr }: SeasonProps) {
         })}
       </div>
     </>
+  );
+}
+
+function Loading() {
+  return (
+    <div className="absolute inset-0 flex items-center justify-center">
+      <Spinner />
+    </div>
   );
 }

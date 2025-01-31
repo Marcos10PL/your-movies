@@ -5,7 +5,6 @@ import { useEffect, useRef, useState } from "react";
 import Title, { IconType } from "../title";
 import Button from "../button";
 import Item from "./item";
-import Error from "@/components/error";
 
 export type Item = Movie | TvSeries | CastMember | Season;
 

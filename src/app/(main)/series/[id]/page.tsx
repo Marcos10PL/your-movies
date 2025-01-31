@@ -68,6 +68,13 @@ export default async function TvSeries({ params }: TvSeriesProps) {
         novel={novel}
       />
 
+      {seasons.length > 0 && (
+        <>
+          <Hr />
+          <Carousel data={seasons} title="Seasons" overlayAlwaysVisible />
+        </>
+      )}
+      
       {trailersAndTeasers.length > 0 && (
         <>
           <Hr />
@@ -96,13 +103,6 @@ export default async function TvSeries({ params }: TvSeriesProps) {
         <>
           <Hr />
           <List array={credits.crew} title="Crew" />
-        </>
-      )}
-
-      {seasons.length > 0 && (
-        <>
-          <Hr />
-          <Carousel data={seasons} title="Seasons" overlayAlwaysVisible />
         </>
       )}
     </Layout>

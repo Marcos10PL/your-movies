@@ -53,16 +53,24 @@ export default async function Episode({ params }: EpisodeProps) {
 
       <Crew directors={directors} writers={writers} />
 
-      <Hr />
-      <Carousel
-        data={guestStars}
-        title="Guest stars"
-        noLink
-        overlayAlwaysVisible
-      />
+      {guestStars.length > 0 && (
+        <>
+          <Hr />
+          <Carousel
+            data={guestStars}
+            title="Guest stars"
+            noLink
+            overlayAlwaysVisible
+          />
+        </>
+      )}
 
-      <Hr />
-      <List array={restOfGuestStars} title="Rest of guest stars" />
+      {restOfGuestStars.length > 0 && (
+        <>
+          <Hr />
+          <List array={restOfGuestStars} title="Rest of guest stars" />
+        </>
+      )}
     </Layout>
   );
 }

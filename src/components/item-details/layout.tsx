@@ -29,7 +29,7 @@ export default function Layout({
       </Link>
       <div className="relative flex flex-col text-lg md:text-xl xl:text-2xl">
         {backdropPath && <Backdrop title={title} backdropPath={backdropPath} />}
-        <div className="z-20 px-2 *:pb-3">{children}</div>
+        <div className="z-20 *:pb-3">{children}</div>
       </div>
     </div>
   );

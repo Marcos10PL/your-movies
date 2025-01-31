@@ -17,7 +17,7 @@ export default async function Season({ params }: SeasonProps) {
     parseInt(seasonNr, 10)
   );
   if (!season) return notFound();
-  
+
   return (
     <Layout href={`/series/${id}`}>
       <Details
@@ -29,7 +29,7 @@ export default async function Season({ params }: SeasonProps) {
       />
       <Episodes
         episodes={season.episodes}
-        title="Episodes: "
+        title={`Episodes (${season.episodes.length}): `}
         seasonNr={parseInt(seasonNr, 10)}
       />
     </Layout>
