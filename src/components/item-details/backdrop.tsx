@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import Spinner from "../spinner";
-import clsx from "clsx";
 import Image from "next/image";
 
 type BackdropProps = {
@@ -14,12 +13,7 @@ export function Backdrop({ title, backdropPath }: BackdropProps) {
   const [loading, setLoading] = useState(true);
 
   return (
-    <div
-      className={clsx(
-        `relative md:absolute top-0 w-full z-0 opacity-70`,
-        backdropPath && "aspect-video"
-      )}
-    >
+    <div className="relative md:absolute top-0 w-full z-0 opacity-70 aspect-video">
       {backdropPath && (
         <>
           {loading && (
@@ -32,7 +26,7 @@ export function Backdrop({ title, backdropPath }: BackdropProps) {
             src={`https://image.tmdb.org/t/p/w1280${backdropPath}`}
             alt={title}
             fill
-            sizes='1x'
+            sizes="1x"
             onLoad={() => setLoading(false)}
             priority
           />

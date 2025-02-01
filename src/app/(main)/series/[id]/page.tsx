@@ -4,7 +4,7 @@ import {
   fetchVideos,
   findById,
 } from "@/api/actions";
-import { Details } from "@/components/item-details/details";
+import Details from "@/components/item-details/details";
 import Layout from "@/components/item-details/layout";
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
@@ -26,20 +26,19 @@ type TvSeriesProps = {
 export default async function TvSeries({ params }: TvSeriesProps) {
   const id = (await params).id;
 
-  const tvSeries = await findById("tv", parseInt(id, 10));
-  if (!tvSeries) notFound();
+  const [tvSeries, credits, videos, languages] = await Promise.all([
+    findById("tv", parseInt(id, 10)),
+    fetchCredits("tv", parseInt(id, 10)),
+    fetchVideos("tv", parseInt(id, 10)),
+    fetchLanguages(),
+  ]);
 
-  const credits = await fetchCredits("tv", parseInt(id, 10));
-  if (!credits) notFound();
+  if (!tvSeries || !credits) notFound(); 
 
   const { cast, restOfCast } = filterCast(credits.cast);
   const { directors, writers, screenwriters, novel } = filterCrew(credits.crew);
-  const createdBy = [...tvSeries.created_by, ...directors];
-
-  const videos = await fetchVideos("tv", parseInt(id));
   const { trailersAndTeasers } = filterVideos(videos?.results || []);
-
-  const languages = await fetchLanguages();
+  const createdBy = [...tvSeries.created_by, ...directors];
   const language = languages?.find(
     lang => lang.iso_639_1 === tvSeries.original_language
   );
@@ -74,7 +73,7 @@ export default async function TvSeries({ params }: TvSeriesProps) {
           <Carousel data={seasons} title="Seasons" overlayAlwaysVisible />
         </>
       )}
-      
+
       {trailersAndTeasers.length > 0 && (
         <>
           <Hr />

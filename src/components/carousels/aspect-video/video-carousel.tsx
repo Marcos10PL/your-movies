@@ -6,7 +6,6 @@ import Button from "../button";
 import type { Video } from "@/lib/definitions";
 import VideoItem from "./video";
 import Title from "../title";
-import Error from "@/components/error";
 
 type VideoCarouselProps = {
   videos: Video[];
@@ -14,7 +13,7 @@ type VideoCarouselProps = {
 };
 
 export default function VideoCarousel({ videos, title }: VideoCarouselProps) {
-  if (videos.length === 0) return null;
+  // if (videos.length === 0) return null;
 
   const carouselRef = useRef<HTMLDivElement>(null!);
   const [canScrollLeft, setCanScrollLeft] = useState(false);

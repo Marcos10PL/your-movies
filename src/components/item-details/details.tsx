@@ -13,7 +13,7 @@ type DetailsProps = {
   noWrap?: true;
 };
 
-export function Details({
+export default function Details({
   title,
   releaseDate,
   overview,

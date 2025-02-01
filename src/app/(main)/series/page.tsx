@@ -1,74 +1,64 @@
-import { fetchData } from "@/api/actions";
 import Carousel from "@/components/carousels/aspect-poster/carousel";
-import Error from "@/components/error";
 import CarouselSkeleton from "@/components/skeletons/carousel-skeleton";
-import Slider from "@/components/slider/silder";
-import { today } from "@/lib/utils";
+import Slider from "@/components/carousels/slider/silder";
 import { Metadata } from "next";
 import { Suspense } from "react";
+import { today } from "@/lib/utils";
+import Section from "@/components/item-details/item-section";
+import { SectionProps } from "@/lib/definitions";
+import SliderSkeleton from "@/components/skeletons/slider-skeleton";
 
 export const metadata: Metadata = {
   title: "TV Series",
 };
 
-export default async function Series() {
-  const dataMap = {
-    topRated: await fetchData("tv", { sort_by: "vote_average.desc" }),
-    airingToday: await fetchData("tv", {
-      sort_by: "popularity.desc",
-      "air_date.gte": today,
-      "air_date.lte": today,
-      "vote_count.gte": 150,
-    }),
-    onTheAir: await fetchData("tv", {
-      sort_by: "popularity.desc",
-      "air_date.gte": today,
-    }),
-    popular: await fetchData("tv", { sort_by: "popularity.desc" }),
-  };
-
-  type DataKeys = keyof typeof dataMap;
-
-  type SectionsProp = {
-    key: DataKeys;
-    title: string;
-    component: React.ElementType;
-    popular?: true;
-  };
-
-  const SECTIONS: SectionsProp[] = [
-    { key: "topRated", title: "Top Rated", component: Slider },
-    { key: "airingToday", title: "Airing Today", component: Carousel },
-    { key: "onTheAir", title: "On The Air", component: Carousel },
+export default function Series() {
+  const SECTIONS: SectionProps<"tv">[] = [
     {
-      key: "popular",
+      title: "Top Rated",
+      component: Slider,
+      query: { sort_by: "vote_average.desc" },
+    },
+    {
+      title: "Airing Today",
+      component: Carousel,
+      query: {
+        sort_by: "popularity.desc",
+        "air_date.gte": today,
+        "air_date.lte": today,
+        "vote_count.gte": 50,
+      },
+    },
+    {
+      title: "On The Air",
+      component: Carousel,
+      query: { sort_by: "popularity.desc", "air_date.gte": today },
+    },
+    {
       title: "Most Popular",
       component: Carousel,
+      query: { sort_by: "popularity.desc" },
       popular: true,
     },
   ];
 
-  return (
-    <div className="text-lg md:text-xl xl:text-2xl py-2">
-      {SECTIONS.map(({ key, title, component: Component, popular }) => {
-        const data = dataMap[key];
-
-        return (
-          <div key={key} className="py-2">
-            {data ? (
-              <Suspense fallback={<CarouselSkeleton title={title} />}>
-                <Component
-                  data={data}
-                  title={title}
-                  {...(popular && { popular })}
-                />
-              </Suspense>
-            ) : (
-              <Error title={title} />
-            )}
-          </div>
-        );
-      })}
-    </div>
-  );
+  return SECTIONS.map(({ title, component, popular, query }) => (
+    <Suspense key={title}
+      fallback={
+        component === Carousel ? (
+          <CarouselSkeleton title={title} />
+        ) : (
+          <SliderSkeleton title={title} />
+        )
+      }
+    >
+      <Section
+        title={title}
+        component={component}
+        popular={popular}
+        query={query}
+        type="tv"
+      />
+    </Suspense>
+  ));
 }

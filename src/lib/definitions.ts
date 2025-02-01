@@ -48,7 +48,7 @@ export type Season = {
   poster_path: string;
   season_number: number;
   vote_average: number;
-}
+};
 
 export type SeasonDetails = {
   _id: string;
@@ -60,7 +60,7 @@ export type SeasonDetails = {
   poster_path: string;
   season_number: number;
   vote_average: number;
-}
+};
 
 export type Episode = {
   air_date: string;
@@ -77,7 +77,7 @@ export type Episode = {
   crew: CrewMember[];
   guest_stars: CastMember[];
   runtime: number;
-}
+};
 
 //-------------- credits ----------------//
 
@@ -189,6 +189,15 @@ export type SearchOptions<T extends TypeOfList> = T extends "movie"
   ? SearchOptionsMovie
   : SearchOptionsTV;
 
+//--------------------------- components ------------------------//
+
+export type SectionProps<T extends TypeOfList> = {
+  title: string;
+  component: React.ElementType;
+  popular?: true;
+  query: SearchOptions<T>;
+};
+
 //--------------------------- others ------------------------//
 
 export type MAX_RATING = 10;
@@ -230,10 +239,10 @@ export type Job =
   | "Makeup Artist"
   | "Special Effects Supervisor"
   | "Casting Director"
-  | "Series Director"    
-  | "Showrunner"         
-  | "Head Writer"        
-  | "Series Writer"      
+  | "Series Director"
+  | "Showrunner"
+  | "Head Writer"
+  | "Series Writer";
 
 export type VideoType =
   | "Trailer"

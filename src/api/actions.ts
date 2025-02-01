@@ -151,7 +151,7 @@ export async function fetchVideos<T extends TypeOfList>(
 
     return data;
   } catch (e) {
-    // console.error(e);
+    console.error(e);
     return undefined;
   }
 }

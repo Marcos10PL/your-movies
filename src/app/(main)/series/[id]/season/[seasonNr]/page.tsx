@@ -1,5 +1,5 @@
 import { fetchSeasonDetails } from "@/api/actions";
-import { Details } from "@/components/item-details/details";
+import Details from "@/components/item-details/details";
 import Layout from "@/components/item-details/layout";
 import Episodes from "@/components/item-details/tv-series/episodes";
 import { notFound } from "next/navigation";

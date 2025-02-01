@@ -20,7 +20,7 @@ export default function Overlay({
         "absolute inset-0 text-lg",
         overlayAlwaysVisible
           ? "opacity-100"
-          : "md:opacity-0 group-hover:opacity-100 duration-500"
+          : "opacity-0 group-hover:opacity-100 duration-500"
       )}
     >
       <div className="relative w-full h-full">

@@ -4,16 +4,16 @@ import {
   fetchVideos,
   findById,
 } from "@/api/actions";
-import { Details } from "@/components/item-details/details";
+import Details from "@/components/item-details/details";
 import Layout from "@/components/item-details/layout";
-import { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { filterCast, filterCrew, filterVideos } from "@/lib/utils";
 import List from "@/components/item-details/list";
 import Hr from "@/components/hr";
-import Carousel from "@/components/carousels/aspect-poster/carousel";
 import Crew from "@/components/item-details/crew";
 import VideoCarousel from "@/components/carousels/aspect-video/video-carousel";
+import { Metadata } from "next";
+import Carousel from "@/components/carousels/aspect-poster/carousel";
 
 export const metadata: Metadata = {
   title: "Movies",
@@ -26,20 +26,18 @@ type MovieProps = {
 export default async function Movie({ params }: MovieProps) {
   const id = (await params).id;
 
-  const movie = await findById("movie", parseInt(id, 10));
-  if (!movie) notFound();
+  const [movie, credits, videos, languages] = await Promise.all([
+    findById("movie", parseInt(id, 10)),
+    fetchCredits("movie", parseInt(id, 10)),
+    fetchVideos("movie", parseInt(id, 10)),
+    fetchLanguages(),
+  ]);
 
-  const credits = await fetchCredits("movie", parseInt(id, 10));
-  if (!credits) notFound();
+  if (!movie || !credits) notFound(); 
 
-  
   const { cast, restOfCast } = filterCast(credits.cast);
   const { directors, writers, screenwriters, novel } = filterCrew(credits.crew);
-  
-  const videos = await fetchVideos("movie", parseInt(id));
   const { trailersAndTeasers } = filterVideos(videos?.results || []);
-  
-  const languages = await fetchLanguages();
   const language = languages?.find(
     lang => lang.iso_639_1 === movie.original_language
   );

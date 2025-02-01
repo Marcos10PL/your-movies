@@ -19,9 +19,6 @@ export default function Panel({
         <Number index={index} dataLength={dataLength} />
         <Button position="right" onClick={() => handleItemChange(index + 1)} />
       </div>
-
-      {/* bottom */}
-      <div className="hidden md:block absolute bottom-0 w-full h-[25%] bg-gradient-to-t from-gray-950 to-transparent z-40" />
     </div>
   );
 }

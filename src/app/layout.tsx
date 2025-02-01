@@ -37,7 +37,7 @@ export default function RootLayout({
             </footer>
           </aside>
 
-          <section className="flex-grow md:overflow-y-auto scrollbar scrollbar-thumb-slate-600 scrollbar-track-slate-900">
+          <section className="flex-grow md:overflow-y-auto scrollbar scrollbar-thumb-slate-600 scrollbar-track-gray-900">
             {children}
           </section>
         </main>

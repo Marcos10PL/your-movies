@@ -2,7 +2,7 @@ import { fetchEpisodeDetails } from "@/api/actions";
 import Carousel from "@/components/carousels/aspect-poster/carousel";
 import Hr from "@/components/hr";
 import Crew from "@/components/item-details/crew";
-import { Details } from "@/components/item-details/details";
+import Details from "@/components/item-details/details";
 import Layout from "@/components/item-details/layout";
 import List from "@/components/item-details/list";
 import { filterCast } from "@/lib/utils";

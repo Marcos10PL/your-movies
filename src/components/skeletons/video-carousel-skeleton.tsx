@@ -1,6 +1,6 @@
 import Title from "@/components/carousels/title";
 
-export default function CarouselSkeleton({ title }: { title?: string }) {
+export default function VideoCarouselSkeleton({ title }: { title?: string }) {
   return (
     <>
       {title ? (
@@ -24,6 +24,6 @@ export default function CarouselSkeleton({ title }: { title?: string }) {
 
 function Item() {
   return (
-    <div className="relative min-w-[calc(50%-1rem)] md:min-w-[calc(33.3%-1rem)] lg:min-w-[calc(25%-1rem)] xl:min-w-[calc(16.66%-1rem)] xxl:min-w-[calc(12.5%-1rem)] aspect-[2/3] overflow-hidden rounded-lg border-2 border-slate-700 mx-2 animate-pulse bg-gray-800"></div>
+    <div className="relative min-w-[calc(100%-1rem)] lg:min-w-[calc(50%-1rem)] xl:min-w-[calc(33.33%-1rem)] xxl:min-w-[calc(25%-1rem)] aspect-video rounded-lg border-2 border-slate-700 mx-2 animate-pulse bg-gray-800"></div>
   );
 }

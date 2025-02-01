@@ -27,12 +27,11 @@ export default function Carousel({
   noLink,
   overlayAlwaysVisible,
 }: CarouselProps) {
-  if (data.length === 0) return null;
-
+  
   const carouselRef = useRef<HTMLDivElement>(null!);
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(false);
-
+  
   const scroll: scrollFunction = x => {
     carouselRef.current.scrollBy({
       left: x * carouselRef.current.offsetWidth,
@@ -60,8 +59,10 @@ export default function Carousel({
     };
   }, []);
 
+  if (data.length === 0) return null;
+
   return (
-    <>
+    <div>
       <Title title={title} icon={icon} />
 
       <div className="relative pt-2">
@@ -83,6 +84,6 @@ export default function Carousel({
           <Button position="right" onClick={() => scroll(1)} />
         )}
       </div>
-    </>
+    </div>
   );
 }

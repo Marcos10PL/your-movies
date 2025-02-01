@@ -10,7 +10,7 @@ import AvgRating from "@/components/avg-rating";
 import Stars from "@/components/stars";
 import Spinner from "@/components/spinner";
 import Link from "next/link";
-import Title from "../carousels/title";
+import Title from "../title";
 
 type BackdropProps = {
   data: TvSeries[] | Movie[];
@@ -27,7 +27,7 @@ export default function Slider({ data, title }: BackdropProps) {
   const timerRef = useRef<NodeJS.Timeout | null>(null);
 
   const changeAnimationDuration = 7000; // 7s
-  const fadeAnimationDuration = 700; // 0.4s
+  const fadeAnimationDuration = 700; // 0.7s
 
   useLayoutEffect(() => {
     const isOverflowing = (element: HTMLElement) => {
@@ -88,11 +88,11 @@ export default function Slider({ data, title }: BackdropProps) {
   const href = `${"title" in item ? "movies" : "series"}/${item.id}`;
 
   return (
-    <>
+    <div>
       {title && <Title title={title} />}
 
-      <div className="md:pl-2 py-1 md:text-lg">
-        <div className="relative w-full h-full overflow-hidden md:border-0 border-t-2 border-b-2 border-slate-700 bg-black">
+      <div className="pt-2 md:text-lg px-2">
+        <div className="relative w-full h-full overflow-hidden border-2 border-slate-700 rounded-lg bg-black">
           <Link
             href={href}
             className={clsx(
@@ -101,22 +101,18 @@ export default function Slider({ data, title }: BackdropProps) {
             )}
           >
             {item.backdrop_path ? (
-              <>
+              <div className="relative aspect-video md:max-w-[67%]">
                 {loading && <Loading />}
-
                 <Image
                   src={`https://image.tmdb.org/t/p/w1280${item.backdrop_path}`}
                   alt={"title" in item ? item.title : item.name}
                   key={item.backdrop_path}
-                  width={1280}
-                  height={720}
-                  className={clsx(
-                    "duration-300 will-change-transform md:max-w-[67%] group-hover:scale-105 z-30"
-                  )}
+                  fill
+                  sizes="1x"
+                  className="duration-300 will-change-transform group-hover:scale-105"
                   onLoad={() => setLoading(false)}
-                  priority
                 />
-              </>
+              </div>
             ) : (
               <div
                 className={clsx("relative md:w-2/3 aspect-video text-center")}
@@ -163,14 +159,9 @@ export default function Slider({ data, title }: BackdropProps) {
             index={index}
             handleItemChange={handleItemChange}
           />
-
-          {/* left */}
-          <div className="hidden md:block absolute top-0 left-0 w-[1%] h-full bg-gradient-to-r from-gray-950 to-transparent z-50" />
-          {/* top */}
-          <div className="hidden md:block absolute top-0 w-full h-[8%] bg-gradient-to-b from-gray-950 to-transparent z-50" />
         </div>
       </div>
-    </>
+    </div>
   );
 }
 
