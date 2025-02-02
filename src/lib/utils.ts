@@ -1,4 +1,4 @@
-import { addMonths, format, formatDistanceToNow, isFuture, subMonths } from "date-fns";
+import { addMonths, format, isFuture, subMonths, subWeeks } from "date-fns";
 import {
   CarouselItem,
   CastMember,
@@ -12,6 +12,9 @@ import {
 export const today = format(new Date(), "yyyy-MM-dd");
 export const nextMonth = format(addMonths(today, 1), "yyyy-MM-dd");
 export const halfYearAgo = format(subMonths(today, 6), "yyyy-MM-dd");
+export const yearAgo = format(subMonths(today, 12), "yyyy-MM-dd");
+export const weekAgo = format(subWeeks(today, 1), "yyyy-MM-dd");
+
 export const isFutureDate = (date: string) => isFuture(date);
 
 // --------------------- movie and series ------------------------- //

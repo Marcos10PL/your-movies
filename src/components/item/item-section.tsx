@@ -21,7 +21,7 @@ export default async function Section({
   type,
 }: SectionProps) {
   const data = await fetchData(type, query);
- 
+
   return data ? (
     <Component data={data} title={title} icon={icon} numbers={numbers} />
   ) : (

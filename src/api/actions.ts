@@ -12,6 +12,44 @@ import {
 } from "@/lib/definitions";
 import { optionsGET } from "./options";
 
+// trending
+
+export async function fetchTrending<T extends TypeOfList>(
+  type: T | "all" = "all",
+  time: "day" | "week" = "week",
+  language: LanguageOption = "en-US"
+): Promise<
+  | (T extends "tv" ? TvSeries[] : T extends "movie" ? Movie[] : TvSeries[] & Movie[])
+  | undefined
+> {
+  try {
+    const response = await fetch(
+      `https://api.themoviedb.org/3/trending/${type}/${time}?language=${language}'`,
+      {
+        ...optionsGET,
+        next: {
+          revalidate: 24 * 60 * 60,
+        },
+      }
+    );
+
+    if (!response.ok)
+      throw new Error(
+        `Failed to fetch data: ${response.status} ${response.statusText}`
+      );
+
+    const data = await response.json();
+
+    if (!data.results || data.results.length === 0) {
+      throw new Error("No available data");
+    }
+    return data.results;
+  } catch (e) {
+    console.error(e);
+    return undefined;
+  }
+}
+
 // movies and tv series
 
 export async function fetchData<T extends TypeOfList>(
@@ -36,11 +74,11 @@ export async function fetchData<T extends TypeOfList>(
     });
 
     const response = await fetch(
-      `https://api.themoviedb.org/3/discover/${type}?${language}&${queryParams.toString()}`,
+      `https://api.themoviedb.org/3/discover/${type}?language=${language}&${queryParams.toString()}`,
       {
         ...optionsGET,
         next: {
-          revalidate: 24 * 60 * 60,
+          revalidate: 0,
         },
       }
     );
@@ -163,9 +201,8 @@ export async function fetchVideos<T extends TypeOfList>(
 export async function fetchSeasonDetails(
   seriesId: number,
   seasonNr: number,
-  language: LanguageOption = "en-US",
+  language: LanguageOption = "en-US"
 ): Promise<SeasonDetails | undefined> {
-
   try {
     const response = await fetch(
       `https://api.themoviedb.org/3/tv/${seriesId}/season/${seasonNr}?language=${language}}`,
@@ -196,9 +233,8 @@ export async function fetchSeasonDetails(
 export async function fetchSeasonCredits(
   seriesId: number,
   seasonNr: number,
-  language: LanguageOption = "en-US",
+  language: LanguageOption = "en-US"
 ): Promise<Credits | undefined> {
-
   try {
     const response = await fetch(
       `https://api.themoviedb.org/3/tv/${seriesId}/season/${seasonNr}/credits?language=${language}}`,
@@ -229,9 +265,8 @@ export async function fetchSeasonCredits(
 export async function fetchSeasonVideos(
   seriesId: number,
   seasonNr: number,
-  language: LanguageOption = "en-US",
+  language: LanguageOption = "en-US"
 ): Promise<Videos | undefined> {
-
   try {
     const response = await fetch(
       `https://api.themoviedb.org/3/tv/${seriesId}/season/${seasonNr}/videos?language=${language}}`,
