@@ -1,4 +1,4 @@
-import { addMonths, format, subMonths } from "date-fns";
+import { addMonths, format, formatDistanceToNow, isFuture, subMonths } from "date-fns";
 import {
   CarouselItem,
   CastMember,
@@ -12,6 +12,7 @@ import {
 export const today = format(new Date(), "yyyy-MM-dd");
 export const nextMonth = format(addMonths(today, 1), "yyyy-MM-dd");
 export const halfYearAgo = format(subMonths(today, 6), "yyyy-MM-dd");
+export const isFutureDate = (date: string) => isFuture(date);
 
 // --------------------- movie and series ------------------------- //
 
@@ -80,7 +81,7 @@ export const mapToCarouselItem = (
   if ("episode_count" in item)
     topOverlayMessage = `${item.name} (${new Date(item.air_date).getFullYear()})`;
   if ("character" in item)
-    topOverlayMessage = item.character || "Unkown character";
+    topOverlayMessage = item.name || "Unkown name";
   if ("first_air_date" in item)
     topOverlayMessage = item.first_air_date || "Unkown date";
   if ("release_date" in item)
@@ -94,7 +95,7 @@ export const mapToCarouselItem = (
     if (item.vote_count === 0) bottomOverlayMessage = "No ratings yet";
   }
   if ("character" in item)
-    bottomOverlayMessage = item.character || "Unkown character";
+    bottomOverlayMessage = "as " + item.character || "Unkown character";
 
   return {
     id,

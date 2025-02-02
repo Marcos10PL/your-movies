@@ -8,6 +8,8 @@ export default function Loading() {
       <ItemDetailsSkeleton />
       <Hr />
       <CarouselSkeleton />
+      <Hr />
+      <CarouselSkeleton />
     </>
   );
 }

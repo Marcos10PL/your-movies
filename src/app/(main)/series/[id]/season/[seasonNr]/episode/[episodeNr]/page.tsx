@@ -1,11 +1,16 @@
-import { fetchEpisodeDetails } from "@/api/actions";
+import {
+  fetchEpisodeCredits,
+  fetchEpisodeDetails,
+  fetchEpisodeVideos,
+} from "@/api/actions";
 import Carousel from "@/components/carousels/aspect-poster/carousel";
+import VideoCarousel from "@/components/carousels/aspect-video/video-carousel";
 import Hr from "@/components/hr";
 import Crew from "@/components/item/crew";
 import Details from "@/components/item/details";
 import Layout from "@/components/item/layout";
 import List from "@/components/item/list";
-import { filterCast } from "@/lib/utils";
+import { filterCast, filterCrew, filterVideos } from "@/lib/utils";
 import { notFound } from "next/navigation";
 
 type EpisodeProps = {
@@ -13,25 +18,29 @@ type EpisodeProps = {
 };
 
 export default async function Episode({ params }: EpisodeProps) {
-  const { id, seasonNr, episodeNr } = await params;
+  const seasonNr = parseInt((await params).seasonNr, 10);
+  const seriesId = parseInt((await params).id, 10);
+  const episodeNr = parseInt((await params).episodeNr, 10);
 
-  const episode = await fetchEpisodeDetails(
-    parseInt(id, 10),
-    parseInt(seasonNr, 10),
-    parseInt(episodeNr, 10)
-  );
-  if (!episode) return notFound();
+  const [episode, credits, videos] = await Promise.all([
+    await fetchEpisodeDetails(seriesId, seasonNr, episodeNr),
+    await fetchEpisodeCredits(seriesId, seasonNr, episodeNr),
+    await fetchEpisodeVideos(seriesId, seasonNr, episodeNr),
+  ]);
 
-  const directors = episode.crew.filter(person => person.job === "Director");
-  const writers = episode.crew.filter(person => person.job === "Writer");
+  if (!episode || !credits) return notFound();
 
   const { cast: guestStars, restOfCast: restOfGuestStars } = filterCast(
     episode.guest_stars
   );
 
+  const { cast, restOfCast } = filterCast(credits.cast);
+  const { directors, writers } = filterCrew(credits.crew);
+  const { trailersAndTeasers } = filterVideos(videos?.results || []);
+
   return (
     <Layout
-      href={`/series/${id}/season/${seasonNr}`}
+      href={`/series/${seriesId}/season/${seasonNr}`}
       title={episode.name}
       backdropPath={episode.still_path}
     >
@@ -42,6 +51,16 @@ export default async function Episode({ params }: EpisodeProps) {
         voteAverage={episode.vote_average}
         voteCount={episode.vote_count}
       />
+
+      {trailersAndTeasers.length > 0 && (
+        <>
+          <Hr />
+          <VideoCarousel
+            videos={trailersAndTeasers}
+            title="Trailers and Teasers"
+          />
+        </>
+      )}
 
       <div className="px-2 *:pb-1">
         {episode.season_number !== 0 && (
@@ -67,10 +86,24 @@ export default async function Episode({ params }: EpisodeProps) {
         </>
       )}
 
+      {cast.length > 0 && (
+        <>
+          <Hr />
+          <Carousel data={cast} title="Cast" noLink overlayAlwaysVisible />
+        </>
+      )}
+
       {restOfGuestStars.length > 0 && (
         <>
           <Hr />
           <List array={restOfGuestStars} title="Rest of guest stars" />
+        </>
+      )}
+
+      {restOfCast.length > 0 && (
+        <>
+          <Hr />
+          <List array={restOfCast} title="Rest of the cast" />
         </>
       )}
     </Layout>

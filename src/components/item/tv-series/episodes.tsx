@@ -1,7 +1,6 @@
 "use client";
 
 import Title from "@/components/carousels/title";
-import Hr from "@/components/hr";
 import Spinner from "@/components/spinner";
 import { Episode } from "@/lib/definitions";
 import Image from "next/image";
@@ -12,29 +11,35 @@ type SeasonProps = {
   episodes: Episode[];
   title: string;
   seasonNr: number;
+  dateInFuture: boolean;
 };
 
-export default function Episodes({ episodes, title, seasonNr }: SeasonProps) {
+export default function Episodes({
+  episodes,
+  title,
+  seasonNr,
+  dateInFuture,
+}: SeasonProps) {
   const [loading, setLoading] = useState(true);
 
   if (episodes.length === 0) return null;
 
-  if (episodes[0].overview === "" && episodes[0].still_path === null) {
+  if (dateInFuture) {
     return (
       <div className="px-2">
-        <h2 className="pb-2">{title}</h2>
-        {episodes.map(episode => (
-          <p className="pb-1" key={episode.id}>
-            {episode.episode_number}. {episode.name}
-          </p>
-        ))}
+        <p>This season will be have {episodes.length} episodes.</p>
+        {episodes[0].name !== "Episode 1" &&
+          episodes.map(episode => (
+            <p className="pb-1" key={episode.id}>
+              {episode.episode_number}. {episode.name}
+            </p>
+          ))}
       </div>
     );
   }
 
   return (
     <>
-      <Hr />
       <Title title={title} />
       <div className="px-2">
         {episodes.map(episode => {
