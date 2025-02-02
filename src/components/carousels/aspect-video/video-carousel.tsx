@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { scrollFunction } from "../aspect-poster/carousel";
 import Button from "../button";
 import type { Video } from "@/lib/definitions";
 import VideoItem from "./video";
@@ -13,13 +12,13 @@ type VideoCarouselProps = {
 };
 
 export default function VideoCarousel({ videos, title }: VideoCarouselProps) {
-  // if (videos.length === 0) return null;
+  if (videos.length === 0) return null;
 
   const carouselRef = useRef<HTMLDivElement>(null!);
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(false);
 
-  const scroll: scrollFunction = x => {
+  const scroll = (x: -1 | 1) => {
     carouselRef.current.scrollBy({
       left: x * carouselRef.current.offsetWidth,
       behavior: "smooth",

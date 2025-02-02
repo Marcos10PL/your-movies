@@ -1,10 +1,10 @@
 import { fetchEpisodeDetails } from "@/api/actions";
 import Carousel from "@/components/carousels/aspect-poster/carousel";
 import Hr from "@/components/hr";
-import Crew from "@/components/item-details/crew";
-import Details from "@/components/item-details/details";
-import Layout from "@/components/item-details/layout";
-import List from "@/components/item-details/list";
+import Crew from "@/components/item/crew";
+import Details from "@/components/item/details";
+import Layout from "@/components/item/layout";
+import List from "@/components/item/list";
 import { filterCast } from "@/lib/utils";
 import { notFound } from "next/navigation";
 
@@ -44,11 +44,13 @@ export default async function Episode({ params }: EpisodeProps) {
       />
 
       <div className="px-2 *:pb-1">
-        {episode.season_number && <p>Season number: {episode.season_number}</p>}
-        {episode.episode_number && (
+        {episode.season_number !== 0 && (
+          <p>Season number: {episode.season_number}</p>
+        )}
+        {episode.episode_number !== 0 && (
           <p>Episode number: {episode.episode_number}</p>
         )}
-        {episode.runtime && <p>Runtime: {episode.runtime} minutes</p>}
+        {episode.runtime !== 0 && <p>Runtime: {episode.runtime} minutes</p>}
       </div>
 
       <Crew directors={directors} writers={writers} />

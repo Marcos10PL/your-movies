@@ -4,8 +4,8 @@ import Slider from "@/components/carousels/slider/silder";
 import { Metadata } from "next";
 import { Suspense } from "react";
 import { today } from "@/lib/utils";
-import Section from "@/components/item-details/item-section";
-import { SectionProps } from "@/lib/definitions";
+import Section from "@/components/item/item-section";
+import { SECTIONSProps } from "@/lib/definitions";
 import SliderSkeleton from "@/components/skeletons/slider-skeleton";
 
 export const metadata: Metadata = {
@@ -13,7 +13,7 @@ export const metadata: Metadata = {
 };
 
 export default function Series() {
-  const SECTIONS: SectionProps<"tv">[] = [
+  const SECTIONS: SECTIONSProps<"tv">[] = [
     {
       title: "Top Rated",
       component: Slider,
@@ -43,7 +43,8 @@ export default function Series() {
   ];
 
   return SECTIONS.map(({ title, component, popular, query }) => (
-    <Suspense key={title}
+    <Suspense
+      key={title}
       fallback={
         component === Carousel ? (
           <CarouselSkeleton title={title} />

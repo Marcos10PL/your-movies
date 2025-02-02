@@ -1,23 +1,21 @@
 "use client";
 
-import { CastMember, Movie, Season, TvSeries } from "@/lib/definitions";
+import { Item as Data } from "@/lib/definitions";
 import { useEffect, useRef, useState } from "react";
 import Title, { IconType } from "../title";
 import Button from "../button";
 import Item from "./item";
-
-export type Item = Movie | TvSeries | CastMember | Season;
+import { useParams } from "next/navigation";
+import { mapToCarouselItem } from "@/lib/utils";
 
 type CarouselProps = {
-  data: Item[];
+  data: Data[];
   title: string;
   icon?: IconType;
   popular?: true;
   noLink?: true;
   overlayAlwaysVisible?: true;
 };
-
-export type scrollFunction = (x: -1 | 1) => void;
 
 export default function Carousel({
   data,
@@ -27,12 +25,16 @@ export default function Carousel({
   noLink,
   overlayAlwaysVisible,
 }: CarouselProps) {
-  
+  if (data.length === 0) return null;
+
   const carouselRef = useRef<HTMLDivElement>(null!);
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(false);
-  
-  const scroll: scrollFunction = x => {
+
+  const { id: seriesId } = useParams();
+  const items = data.map(itm => mapToCarouselItem(itm, seriesId, noLink));
+
+  const scroll = (x: -1 | 1) => {
     carouselRef.current.scrollBy({
       left: x * carouselRef.current.offsetWidth,
       behavior: "smooth",
@@ -59,15 +61,13 @@ export default function Carousel({
     };
   }, []);
 
-  if (data.length === 0) return null;
-
   return (
     <div>
       <Title title={title} icon={icon} />
 
       <div className="relative pt-2">
         <div className="flex overflow-x-auto scrollbar-none" ref={carouselRef}>
-          {data.map((itm, idx) => (
+          {items.map((itm, idx) => (
             <Item
               key={itm.id}
               item={itm}

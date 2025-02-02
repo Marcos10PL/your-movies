@@ -3,12 +3,11 @@ import clsx from "clsx";
 import Spinner from "@/components/spinner";
 import Link from "next/link";
 import Image from "next/image";
-import { useParams } from "next/navigation";
-import type { Item } from "./carousel";
+import { CarouselItem } from "@/lib/definitions";
 import Overlay from "./overlay";
 
 type ItemProps = {
-  item: Item;
+  item: CarouselItem;
   index: number;
   popular?: true;
   noLink?: true;
@@ -23,22 +22,11 @@ export default function Item({
   overlayAlwaysVisible,
 }: ItemProps) {
   const [loading, setLoading] = useState(true);
-  const { id: seriesId } = useParams();
-
-  const type = "title" in item ? "movies" : "series";
-
-  let href = `/${type}/${item.id}`;
-
-  if ("episode_count" in item)
-    href = `${seriesId}/season/${item.season_number}`;
-
-  const posterPath =
-    "profile_path" in item ? item.profile_path : item.poster_path;
 
   return (
     <Link
-      href={href}
-      scroll={true}
+      href={item.href}
+      scroll
       key={item.id}
       className={clsx(
         "relative min-w-[calc(50%-1rem)] md:min-w-[calc(33.3%-1rem)] lg:min-w-[calc(25%-1rem)] xl:min-w-[calc(16.66%-1rem)] xxl:min-w-[calc(12.5%-1rem)] aspect-[2/3] overflow-hidden rounded-lg border-2 border-slate-700 duration-300 mx-2",
@@ -46,12 +34,12 @@ export default function Item({
       )}
       onClick={e => noLink && e.preventDefault()}
     >
-      {posterPath ? (
+      {item.imageUrl ? (
         <>
           {loading && <Loading />}
           <Image
-            src={`https://image.tmdb.org/t/p/w500${posterPath}/`}
-            alt={"title" in item ? item.title : item.name}
+            src={`https://image.tmdb.org/t/p/w500${item.imageUrl}/`}
+            alt={item.title}
             fill
             sizes="1x"
             className="group-hover:scale-105 will-change-transform duration-500 object-cover"
@@ -60,13 +48,14 @@ export default function Item({
         </>
       ) : (
         <div className="text-center absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 transition-transform will-change-transform duration-300 group-hover:scale-105 z-50">
-          {"title" in item ? item.title : item.name}
+          {item.title}
         </div>
       )}
 
       <Overlay
         item={item}
         popular={popular}
+        noLink={noLink}
         overlayAlwaysVisible={overlayAlwaysVisible}
       />
 

@@ -16,7 +16,7 @@ export async function fetchData<T extends TypeOfList>(
   type: T,
   searchOptions: SearchOptions<T>,
   language: LanguageOption = "en-US"
-): Promise<(T extends "tv" ? TvSeries : Movie) | undefined> {
+): Promise<(T extends "tv" ? TvSeries[] : Movie[]) | undefined> {
   try {
     searchOptions = {
       include_adult: false,

@@ -1,7 +1,7 @@
 import { fetchSeasonDetails } from "@/api/actions";
-import Details from "@/components/item-details/details";
-import Layout from "@/components/item-details/layout";
-import Episodes from "@/components/item-details/tv-series/episodes";
+import Details from "@/components/item/details";
+import Layout from "@/components/item/layout";
+import Episodes from "@/components/item/tv-series/episodes";
 import { notFound } from "next/navigation";
 
 type SeasonProps = {

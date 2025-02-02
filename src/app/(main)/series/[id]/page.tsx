@@ -4,16 +4,16 @@ import {
   fetchVideos,
   findById,
 } from "@/api/actions";
-import Details from "@/components/item-details/details";
-import Layout from "@/components/item-details/layout";
+import Details from "@/components/item/details";
+import Layout from "@/components/item/layout";
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { filterCast, filterCrew, filterVideos } from "@/lib/utils";
 import Carousel from "@/components/carousels/aspect-poster/carousel";
 import VideoCarousel from "@/components/carousels/aspect-video/video-carousel";
 import Hr from "@/components/hr";
-import List from "@/components/item-details/list";
-import Crew from "@/components/item-details/crew";
+import List from "@/components/item/list";
+import Crew from "@/components/item/crew";
 
 export const metadata: Metadata = {
   title: "TV Series",
@@ -33,7 +33,7 @@ export default async function TvSeries({ params }: TvSeriesProps) {
     fetchLanguages(),
   ]);
 
-  if (!tvSeries || !credits) notFound(); 
+  if (!tvSeries || !credits) notFound();
 
   const { cast, restOfCast } = filterCast(credits.cast);
   const { directors, writers, screenwriters, novel } = filterCrew(credits.crew);
@@ -42,8 +42,8 @@ export default async function TvSeries({ params }: TvSeriesProps) {
   const language = languages?.find(
     lang => lang.iso_639_1 === tvSeries.original_language
   );
-
   const seasons = tvSeries.seasons;
+
   return (
     <Layout
       title={tvSeries.name}
@@ -87,14 +87,14 @@ export default async function TvSeries({ params }: TvSeriesProps) {
       {cast.length > 0 && (
         <>
           <Hr />
-          <Carousel data={cast} title="Cast" noLink overlayAlwaysVisible />
+          <Carousel data={cast} title="Main cast" noLink overlayAlwaysVisible />
         </>
       )}
 
       {restOfCast.length > 0 && (
         <>
           <Hr />
-          <List array={restOfCast} title="Rest of the cast" />
+          <List array={restOfCast} title="Rest of the main cast" />
         </>
       )}
 

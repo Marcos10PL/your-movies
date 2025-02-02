@@ -4,13 +4,13 @@ import {
   fetchVideos,
   findById,
 } from "@/api/actions";
-import Details from "@/components/item-details/details";
-import Layout from "@/components/item-details/layout";
+import Details from "@/components/item/details";
+import Layout from "@/components/item/layout";
 import { notFound } from "next/navigation";
 import { filterCast, filterCrew, filterVideos } from "@/lib/utils";
-import List from "@/components/item-details/list";
+import List from "@/components/item/list";
 import Hr from "@/components/hr";
-import Crew from "@/components/item-details/crew";
+import Crew from "@/components/item/crew";
 import VideoCarousel from "@/components/carousels/aspect-video/video-carousel";
 import { Metadata } from "next";
 import Carousel from "@/components/carousels/aspect-poster/carousel";
@@ -33,7 +33,7 @@ export default async function Movie({ params }: MovieProps) {
     fetchLanguages(),
   ]);
 
-  if (!movie || !credits) notFound(); 
+  if (!movie || !credits) notFound();
 
   const { cast, restOfCast } = filterCast(credits.cast);
   const { directors, writers, screenwriters, novel } = filterCrew(credits.crew);

@@ -1,18 +1,20 @@
 import clsx from "clsx";
-import { Item } from "./carousel";
 import Stars from "@/components/stars";
 import AvgRating from "@/components/avg-rating";
+import { CarouselItem } from "@/lib/definitions";
 
 type OverlayProps = {
-  item: Item;
+  item: CarouselItem;
   popular?: true;
   overlayAlwaysVisible?: true;
+  noLink?: true;
 };
 
 export default function Overlay({
   item,
   popular,
   overlayAlwaysVisible,
+  noLink,
 }: OverlayProps) {
   return (
     <div
@@ -20,7 +22,8 @@ export default function Overlay({
         "absolute inset-0 text-lg",
         overlayAlwaysVisible
           ? "opacity-100"
-          : "opacity-0 group-hover:opacity-100 duration-500"
+          : "opacity-0 group-hover:opacity-100 duration-500",
+        overlayAlwaysVisible && !noLink && "group-hover:text-primary"
       )}
     >
       <div className="relative w-full h-full">
@@ -31,59 +34,20 @@ export default function Overlay({
               popular && "max-w-[calc(100%-2.5rem)] right-0"
             )}
           >
-            <TopDescription item={item} />
+            {item.topOverlayMessage}
           </div>
           <div className="bottom-0 bg-gradient-to-t from-black to-transparent pt-20 pb-1">
-            <BottomDescription item={item} />
+            {item.bottomOverlayMessage === "RATING" ? (
+              <div>
+                <AvgRating voteAvg={item.voteAverage} />
+                <Stars voteAvg={item.voteAverage} responsive={false} />
+              </div>
+            ) : (
+              item.bottomOverlayMessage
+            )}
           </div>
         </div>
       </div>
     </div>
   );
-}
-
-function TopDescription({ item }: { item: Item }) {
-  if ("episode_count" in item)
-    return (
-      <span className="group-hover:text-primary">
-        {item.name} ({new Date(item.air_date).getFullYear()})
-      </span>
-    );
-
-  if ("character" in item)
-    return <span>{item.name ? item.name : "Uknown name"}</span>;
-
-  if ("first_air_date" in item && item.first_air_date)
-    return <span>{item.first_air_date}</span>;
-
-  if ("release_date" in item && item.release_date)
-    return <span>{item.release_date}</span>;
-
-  return <span>Uknown date</span>;
-}
-
-function BottomDescription({ item }: { item: Item }) {
-  if ("episode_count" in item)
-    return (
-      <span className="group-hover:text-primary">
-        {item.episode_count} episodes
-      </span>
-    );
-
-  if ("vote_count" in item)
-    return item.vote_count ? (
-      <div>
-        <AvgRating voteAvg={item.vote_average} />
-        <Stars voteAvg={item.vote_average} responsive={false} />
-      </div>
-    ) : (
-      <span>No ratings yet</span>
-    );
-
-  if ("character" in item)
-    return (
-      <span className="text-emerald-200">
-        {item.character ? item.character : "Uknown character"}
-      </span>
-    );
 }

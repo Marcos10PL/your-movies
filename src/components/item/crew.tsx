@@ -19,7 +19,7 @@ export default function Crew({
     screenwriters?.length === 0 &&
     novel?.length === 0
   )
-    return;
+    return null;
 
   return (
     <div className="px-2 *:pb-1">

@@ -189,13 +189,29 @@ export type SearchOptions<T extends TypeOfList> = T extends "movie"
   ? SearchOptionsMovie
   : SearchOptionsTV;
 
-//--------------------------- components ------------------------//
+//--------------------------- for components ------------------------//
 
-export type SectionProps<T extends TypeOfList> = {
+// on movie and tv page
+export type SECTIONSProps<T extends TypeOfList> = {
   title: string;
   component: React.ElementType;
   popular?: true;
   query: SearchOptions<T>;
+};
+
+// in a carousel
+export type Item = Movie | TvSeries | CastMember | Season;
+
+export type CarouselItem = {
+  id: number;
+  title: string;
+  imageUrl: string | null;
+  href: string;
+  releaseDate: string | undefined;
+  voteCount: number;
+  voteAverage: number;
+  topOverlayMessage: string | number;
+  bottomOverlayMessage: string | number | "RATING";
 };
 
 //--------------------------- others ------------------------//
