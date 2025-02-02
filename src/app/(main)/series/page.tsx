@@ -16,6 +16,7 @@ export default function Series() {
   const SECTIONS: SECTIONSProps<"tv">[] = [
     {
       title: "Top Rated",
+      icon: "StarIcon",
       component: Slider,
       query: { sort_by: "vote_average.desc" },
     },
@@ -36,13 +37,14 @@ export default function Series() {
     },
     {
       title: "Most Popular",
+      icon: "ArrowTrendingUpIcon",
       component: Carousel,
       query: { sort_by: "popularity.desc" },
-      popular: true,
+      numbers: true,
     },
   ];
 
-  return SECTIONS.map(({ title, component, popular, query }) => (
+  return SECTIONS.map(({ title, icon, component, numbers, query }) => (
     <Suspense
       key={title}
       fallback={
@@ -55,8 +57,9 @@ export default function Series() {
     >
       <Section
         title={title}
+        icon={icon}
         component={component}
-        popular={popular}
+        numbers={numbers}
         query={query}
         type="tv"
       />

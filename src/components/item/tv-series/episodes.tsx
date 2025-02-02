@@ -39,7 +39,7 @@ export default function Episodes({
   }
 
   return (
-    <>
+    <div>
       <Title title={title} />
       <div className="px-2">
         {episodes.map(episode => {
@@ -88,7 +88,7 @@ export default function Episodes({
           );
         })}
       </div>
-    </>
+    </div>
   );
 }
 

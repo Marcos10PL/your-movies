@@ -5,14 +5,14 @@ import { CarouselItem } from "@/lib/definitions";
 
 type OverlayProps = {
   item: CarouselItem;
-  popular?: true;
+  numbers?: true;
   overlayAlwaysVisible?: true;
   noLink?: true;
 };
 
 export default function Overlay({
   item,
-  popular,
+  numbers,
   overlayAlwaysVisible,
   noLink,
 }: OverlayProps) {
@@ -31,7 +31,7 @@ export default function Overlay({
           <div
             className={clsx(
               "top-0 bg-gradient-to-b from-black to-transparent pb-5",
-              popular && "max-w-[calc(100%-2.5rem)] right-0"
+              numbers && "max-w-[calc(100%-2.5rem)] right-0"
             )}
           >
             {item.topOverlayMessage}

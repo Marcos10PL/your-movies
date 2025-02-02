@@ -8,16 +8,17 @@ import clsx from "clsx";
 import Panel from "./panel";
 import AvgRating from "@/components/avg-rating";
 import Stars from "@/components/stars";
-import Spinner from "@/components/spinner";
 import Link from "next/link";
-import Title from "../title";
+import Title, { IconType } from "../title";
+import Loading from "../loading";
 
-type BackdropProps = {
+type SliderProps = {
   data: TvSeries[] | Movie[];
-  title?: string;
+  title: string;
+  icon?: IconType;
 };
 
-export default function Slider({ data, title }: BackdropProps) {
+export default function Slider({ data, title, icon }: SliderProps) {
   const [index, setIndex] = useState(0);
   const [item, setItem] = useState(data[index]);
   const [loading, setLoading] = useState(true);
@@ -85,11 +86,14 @@ export default function Slider({ data, title }: BackdropProps) {
     itemChange(index);
   }, [index]);
 
+  const name = "title" in item ? item.title : item.name;
   const href = `${"title" in item ? "movies" : "series"}/${item.id}`;
+  const releaseDate =
+    "first_air_date" in item ? item.first_air_date : item.release_date;
 
   return (
     <div>
-      {title && <Title title={title} />}
+      <Title title={title} icon={icon} />
 
       <div className="pt-2 md:text-lg px-2">
         <div className="relative w-full h-full overflow-hidden border-2 border-slate-700 rounded-lg bg-black">
@@ -101,18 +105,24 @@ export default function Slider({ data, title }: BackdropProps) {
             )}
           >
             {item.backdrop_path ? (
-              <div className="relative aspect-video md:max-w-[67%]">
-                {loading && <Loading />}
-                <Image
-                  src={`https://image.tmdb.org/t/p/w1280${item.backdrop_path}`}
-                  alt={"title" in item ? item.title : item.name}
-                  key={item.backdrop_path}
-                  fill
-                  sizes="1x"
-                  className="duration-300 will-change-transform group-hover:scale-105"
-                  onLoad={() => setLoading(false)}
-                />
-              </div>
+              <>
+                <div className="relative aspect-video md:max-w-[67%]">
+                  {loading && <Loading />}
+                  <Image
+                    src={`https://image.tmdb.org/t/p/w1280${item.backdrop_path}`}
+                    alt={name}
+                    key={item.backdrop_path}
+                    fill
+                    sizes="1x"
+                    className="duration-300 will-change-transform group-hover:scale-105"
+                    onLoad={() => setLoading(false)}
+                  />
+                </div>
+
+                {/* gradient */}
+                <div className="hidden md:block absolute bg-gradient-to-l from-black to-transparent right-[33%] top-0 w-1/12 h-full" />
+                <div className="hidden md:block absolute bg-gradient-to-l from-black to-transparent right-[33%] top-0 w-1/12 h-full" />
+              </>
             ) : (
               <div
                 className={clsx("relative md:w-2/3 aspect-video text-center")}
@@ -125,13 +135,6 @@ export default function Slider({ data, title }: BackdropProps) {
               </div>
             )}
 
-            {item.backdrop_path && (
-              <>
-                <div className="hidden md:block absolute bg-gradient-to-l from-black to-transparent right-[33%] top-0 w-1/12 h-full" />
-                <div className="hidden md:block absolute bg-gradient-to-l from-black to-transparent right-[33%] top-0 w-1/12 h-full" />
-              </>
-            )}
-
             <div className="absolute inset-0 z-20 text-white grid grid-cols-3">
               <div className="hidden md:block md:col-span-2" />
               <div
@@ -142,12 +145,8 @@ export default function Slider({ data, title }: BackdropProps) {
                 ref={divRef}
               >
                 <Overview
-                  title={"title" in item ? item.title : item.name}
-                  date={
-                    "first_air_date" in item
-                      ? item.first_air_date
-                      : item.release_date
-                  }
+                  title={name}
+                  date={releaseDate}
                   voteAvg={item.vote_average}
                 />
               </div>
@@ -176,16 +175,8 @@ function Overview({ title, voteAvg, date }: OverviewProps) {
     <div className="flex flex-col pb-10 md:pb-0 md:justify-center gap-1 md:gap-4 xl:gap-6">
       <div className="text-white text-center">{date}</div>
       <div className="text-primary text-center">{title}</div>
-      <Stars voteAvg={voteAvg} responsive={true} />
+      <Stars voteAvg={voteAvg} responsive />
       <AvgRating voteAvg={voteAvg} />
-    </div>
-  );
-}
-
-function Loading() {
-  return (
-    <div className="absolute inset-0 rounded-lg flex items-center justify-center">
-      <Spinner />
     </div>
   );
 }

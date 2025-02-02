@@ -16,6 +16,7 @@ export default function Movies() {
   const SECTIONS: SECTIONSProps<"movie">[] = [
     {
       title: "Top Rated",
+      icon: "StarIcon",
       component: Slider,
       query: { sort_by: "vote_average.desc" },
     },
@@ -43,18 +44,19 @@ export default function Movies() {
     },
     {
       title: "Most Popular",
+      icon: "ArrowTrendingUpIcon",
       component: Carousel,
       query: { sort_by: "popularity.desc" },
-      popular: true,
+      numbers: true,
     },
   ];
 
-  return SECTIONS.map(({ title, component, popular, query }) => (
+  return SECTIONS.map(({ title, icon, component, numbers, query }) => (
     <Suspense
       key={title}
       fallback={
         component === Carousel ? (
-          <CarouselSkeleton title={title} />
+          <CarouselSkeleton title={title}/>
         ) : (
           <SliderSkeleton title={title} />
         )
@@ -62,8 +64,9 @@ export default function Movies() {
     >
       <Section
         title={title}
+        icon={icon}
         component={component}
-        popular={popular}
+        numbers={numbers}
         query={query}
         type="movie"
       />

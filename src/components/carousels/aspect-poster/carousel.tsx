@@ -12,7 +12,7 @@ type CarouselProps = {
   data: Data[];
   title: string;
   icon?: IconType;
-  popular?: true;
+  numbers?: true;
   noLink?: true;
   overlayAlwaysVisible?: true;
 };
@@ -21,7 +21,7 @@ export default function Carousel({
   data,
   title,
   icon,
-  popular,
+  numbers,
   noLink,
   overlayAlwaysVisible,
 }: CarouselProps) {
@@ -63,7 +63,7 @@ export default function Carousel({
 
   return (
     <div>
-      <Title title={title} icon={icon} />
+      {title && <Title title={title} icon={icon} />}
 
       <div className="relative pt-2">
         <div className="flex overflow-x-auto scrollbar-none" ref={carouselRef}>
@@ -72,7 +72,7 @@ export default function Carousel({
               key={itm.id}
               item={itm}
               index={idx}
-              popular={popular}
+              numbers={numbers}
               noLink={noLink}
               overlayAlwaysVisible={overlayAlwaysVisible}
             />

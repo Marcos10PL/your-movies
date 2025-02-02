@@ -1,5 +1,7 @@
 //-------------- movie ----------------//
 
+import { IconType } from "@/components/carousels/title";
+
 export type Movie = {
   adult: boolean;
   backdrop_path: string;
@@ -194,8 +196,9 @@ export type SearchOptions<T extends TypeOfList> = T extends "movie"
 // on movie and tv page
 export type SECTIONSProps<T extends TypeOfList> = {
   title: string;
+  icon?: IconType;
   component: React.ElementType;
-  popular?: true;
+  numbers?: true;
   query: SearchOptions<T>;
 };
 

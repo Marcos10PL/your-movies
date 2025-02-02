@@ -5,11 +5,12 @@ import Link from "next/link";
 import Image from "next/image";
 import { CarouselItem } from "@/lib/definitions";
 import Overlay from "./overlay";
+import Loading from "../loading";
 
 type ItemProps = {
   item: CarouselItem;
   index: number;
-  popular?: true;
+  numbers?: true;
   noLink?: true;
   overlayAlwaysVisible?: true;
 };
@@ -17,7 +18,7 @@ type ItemProps = {
 export default function Item({
   item,
   index,
-  popular,
+  numbers,
   noLink,
   overlayAlwaysVisible,
 }: ItemProps) {
@@ -54,12 +55,12 @@ export default function Item({
 
       <Overlay
         item={item}
-        popular={popular}
+        numbers={numbers}
         noLink={noLink}
         overlayAlwaysVisible={overlayAlwaysVisible}
       />
 
-      {popular && <Index index={index + 1} />}
+      {numbers && <Index index={index + 1} />}
     </Link>
   );
 }
@@ -68,14 +69,6 @@ function Index({ index }: { index: number }) {
   return (
     <div className="absolute top-0 left-0 text-2xl min-w-10 text-center py-1 bg-black border-r-2 border-b-2 rounded-br-lg border-slate-700">
       {index}
-    </div>
-  );
-}
-
-function Loading() {
-  return (
-    <div className="absolute inset-0 rounded-lg flex items-center justify-center">
-      <Spinner />
     </div>
   );
 }
