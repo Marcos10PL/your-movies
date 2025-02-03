@@ -1,74 +1,73 @@
 import Carousel from "@/components/carousels/aspect-poster/carousel";
 import Slider from "@/components/carousels/slider/silder";
-import Section from "@/components/item/item-section";
+import Section from "@/components/item-section";
 import CarouselSkeleton from "@/components/skeletons/carousel-skeleton";
 import SliderSkeleton from "@/components/skeletons/slider-skeleton";
-import { SECTIONSProps } from "@/lib/definitions";
-import { today, weekAgo, yearAgo } from "@/lib/utils";
+import { SectionPropsDiscover, SectionPropsTrending } from "@/lib/definitions";
 import { Suspense } from "react";
 
 export default async function Home() {
-  const SECTIONS: SECTIONSProps<"movie">[] = [
-    {
-      title: "Top rated movies from last year",
-      component: Carousel,
-      query: {},
-    }
-    
-    // {
-    //   title: "Upcoming",
-    //   component: Carousel,
-    //   query: {
-    //     sort_by: "popularity.desc",
-    //     with_release_type: "2|3",
-    //     "primary_release_date.gte": today,
-    //     "primary_release_date.lte": nextMonth,
-    //     "vote_count.gte": 0,
-    //   },
-    // },
-    // {
-    //   title: "Recently Released",
-    //   component: Carousel,
-    //   query: {
-    //     sort_by: "primary_release_date.desc",
-    //     with_release_type: "2|3",
-    //     "primary_release_date.gte": halfYearAgo,
-    //     "primary_release_date.lte": today,
-    //     "vote_count.gte": 200,
-    //   },
-    // },
-    // {
-    //   title: "Most Popular",
-    //   icon: "ArrowTrendingUpIcon",
-    //   component: Carousel,
-    //   query: { sort_by: "popularity.desc" },
-    //   numbers: true,
-    // },
-  ];
+  const trendingAll: SectionPropsTrending = {
+    title: "Trending this week -  TV Series and Movies",
+    component: Carousel,
+    time: "week",
+    type: "all",
+  };
+
+  const discoverMovie: SectionPropsDiscover<"movie"> = {
+    title: "Discover movies",
+    component: Slider,
+    type: "movie",
+    query: { sort_by: "popularity.desc", page: 2 },
+  };
+
+  const discoverTv: SectionPropsDiscover<"tv"> = {
+    title: "Discover series",
+    component: Slider,
+    type: "tv",
+    query: { sort_by: "popularity.desc", page: 2 },
+  };
+
+  const trendingMovie: SectionPropsTrending = {
+    title: "Trending today - Movies",
+    component: Carousel,
+    type: "movie",
+    time: "day",
+  };
+
+  const trendingTv: SectionPropsTrending = {
+    title: "Trending today - TV Series",
+    component: Carousel,
+    type: "tv",
+    time: "day",
+  };
 
   return (
-    <div className="text-lg md:text-xl xl:text-2xl *:py-2 md:*:py-3">
-      {SECTIONS.map(({ title, icon, component, numbers, query }) => (
-        <Suspense
-          key={title}
-          fallback={
-            component === Carousel ? (
-              <CarouselSkeleton title={title} />
-            ) : (
-              <SliderSkeleton title={title} />
-            )
-          }
-        >
-          <Section
-            title={title}
-            icon={icon}
-            component={component}
-            numbers={numbers}
-            query={query}
-            type="movie"
-          />
-        </Suspense>
-      ))}
-    </div>
+    <>
+      {/* trending all */}
+      <Suspense fallback={<CarouselSkeleton title={trendingAll.title} />}>
+        <Section {...trendingAll} />
+      </Suspense>
+
+      {/* discover movies */}
+      <Suspense fallback={<SliderSkeleton title={discoverMovie.title} />}>
+        <Section {...discoverMovie} />
+      </Suspense>
+
+      {/* trending today movies*/}
+      <Suspense fallback={<CarouselSkeleton title={trendingMovie.title} />}>
+        <Section {...trendingMovie} />
+      </Suspense>
+
+      {/* discover series */}
+      <Suspense fallback={<SliderSkeleton title={discoverTv.title} />}>
+        <Section {...discoverTv} />
+      </Suspense>
+
+      {/* trending today series */}
+      <Suspense fallback={<CarouselSkeleton title={trendingTv.title} />}>
+        <Section {...trendingTv} />
+      </Suspense>
+    </>
   );
 }

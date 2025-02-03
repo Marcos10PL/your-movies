@@ -1,4 +1,11 @@
-import { addMonths, format, isFuture, subMonths, subWeeks } from "date-fns";
+import {
+  addMonths,
+  format,
+  isFuture,
+  subMonths,
+  subWeeks,
+  subYears,
+} from "date-fns";
 import {
   CarouselItem,
   CastMember,
@@ -8,11 +15,13 @@ import {
 } from "./definitions";
 
 // --------------------- date functions --------------------------- //
-
 export const today = format(new Date(), "yyyy-MM-dd");
+
+export const yearsAgo = (years: number) =>
+  format(subYears(today, years), "yyyy-MM-dd");
+
 export const nextMonth = format(addMonths(today, 1), "yyyy-MM-dd");
 export const halfYearAgo = format(subMonths(today, 6), "yyyy-MM-dd");
-export const yearAgo = format(subMonths(today, 12), "yyyy-MM-dd");
 export const weekAgo = format(subWeeks(today, 1), "yyyy-MM-dd");
 
 export const isFutureDate = (date: string) => isFuture(date);
@@ -83,8 +92,7 @@ export const mapToCarouselItem = (
   let topOverlayMessage: string | number = "";
   if ("episode_count" in item)
     topOverlayMessage = `${item.name} (${new Date(item.air_date).getFullYear()})`;
-  if ("character" in item)
-    topOverlayMessage = item.name || "Unkown name";
+  if ("character" in item) topOverlayMessage = item.name || "Unkown name";
   if ("first_air_date" in item)
     topOverlayMessage = item.first_air_date || "Unkown date";
   if ("release_date" in item)

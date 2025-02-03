@@ -193,13 +193,22 @@ export type SearchOptions<T extends TypeOfList> = T extends "movie"
 
 //--------------------------- for components ------------------------//
 
-// on movie and tv page
-export type SECTIONSProps<T extends TypeOfList> = {
+// on home, movie and tv page
+type SectionProps = {
   title: string;
   icon?: IconType;
   component: React.ElementType;
   numbers?: true;
+};
+
+export type SectionPropsDiscover<T extends TypeOfList> = SectionProps & {
   query: SearchOptions<T>;
+  type: T;
+};
+
+export type SectionPropsTrending = SectionProps & {
+  type: "movie" | "tv" | "all";
+  time: "day" | "week";
 };
 
 // in a carousel

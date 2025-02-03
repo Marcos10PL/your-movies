@@ -3,22 +3,24 @@ import CarouselSkeleton from "@/components/skeletons/carousel-skeleton";
 import Slider from "@/components/carousels/slider/silder";
 import { Metadata } from "next";
 import { Suspense } from "react";
-import { today } from "@/lib/utils";
-import Section from "@/components/item/item-section";
-import { SECTIONSProps } from "@/lib/definitions";
+import { today, yearsAgo } from "@/lib/utils";
+
+import { SectionPropsDiscover } from "@/lib/definitions";
 import SliderSkeleton from "@/components/skeletons/slider-skeleton";
+import Section from "@/components/item-section";
 
 export const metadata: Metadata = {
   title: "TV Series",
 };
 
 export default function Series() {
-  const SECTIONS: SECTIONSProps<"tv">[] = [
+  const SECTION: SectionPropsDiscover<"tv">[] = [
     {
       title: "Top Rated",
       icon: "StarIcon",
       component: Slider,
       query: { sort_by: "vote_average.desc" },
+      type: "tv",
     },
     {
       title: "Airing Today",
@@ -29,11 +31,13 @@ export default function Series() {
         "air_date.lte": today,
         "vote_count.gte": 50,
       },
+      type: "tv",
     },
     {
       title: "On The Air",
       component: Carousel,
       query: { sort_by: "popularity.desc", "air_date.gte": today },
+      type: "tv",
     },
     {
       title: "Most Popular",
@@ -41,10 +45,21 @@ export default function Series() {
       component: Carousel,
       query: { sort_by: "popularity.desc" },
       numbers: true,
+      type: "tv",
+    },
+    {
+      title: "Top rated old series",
+      component: Carousel,
+      query: {
+        sort_by: "vote_average.desc",
+        "air_date.lte": yearsAgo(15),
+        "vote_count.gte": 2000,
+      },
+      type: "tv",
     },
   ];
 
-  return SECTIONS.map(({ title, icon, component, numbers, query }) => (
+  return SECTION.map(({ title, icon, component, numbers, query, type }) => (
     <Suspense
       key={title}
       fallback={
@@ -61,7 +76,7 @@ export default function Series() {
         component={component}
         numbers={numbers}
         query={query}
-        type="tv"
+        type={type}
       />
     </Suspense>
   ));

@@ -15,8 +15,8 @@ import { optionsGET } from "./options";
 // trending
 
 export async function fetchTrending<T extends TypeOfList>(
-  type: T | "all" = "all",
-  time: "day" | "week" = "week",
+  type: T | "all",
+  time: "day" | "week",
   language: LanguageOption = "en-US"
 ): Promise<
   | (T extends "tv" ? TvSeries[] : T extends "movie" ? Movie[] : TvSeries[] & Movie[])
@@ -24,7 +24,7 @@ export async function fetchTrending<T extends TypeOfList>(
 > {
   try {
     const response = await fetch(
-      `https://api.themoviedb.org/3/trending/${type}/${time}?language=${language}'`,
+      `https://api.themoviedb.org/3/trending/${type}/${time}?language=${language}`,
       {
         ...optionsGET,
         next: {
@@ -52,7 +52,7 @@ export async function fetchTrending<T extends TypeOfList>(
 
 // movies and tv series
 
-export async function fetchData<T extends TypeOfList>(
+export async function fetchDiscover<T extends TypeOfList>(
   type: T,
   searchOptions: SearchOptions<T>,
   language: LanguageOption = "en-US"

@@ -3,22 +3,24 @@ import CarouselSkeleton from "@/components/skeletons/carousel-skeleton";
 import Slider from "@/components/carousels/slider/silder";
 import { Metadata } from "next";
 import { Suspense } from "react";
-import { today, nextMonth, halfYearAgo } from "@/lib/utils";
-import Section from "@/components/item/item-section";
-import { SECTIONSProps} from "@/lib/definitions";
+import { today, nextMonth, halfYearAgo, yearsAgo } from "@/lib/utils";
+
 import SliderSkeleton from "@/components/skeletons/slider-skeleton";
+import { SectionPropsDiscover } from "@/lib/definitions";
+import Section from "@/components/item-section";
 
 export const metadata: Metadata = {
   title: "Movies",
 };
 
 export default function Movies() {
-  const SECTIONS: SECTIONSProps<"movie">[] = [
+  const SECTION: SectionPropsDiscover<"movie">[] = [
     {
       title: "Top Rated",
       icon: "StarIcon",
       component: Slider,
       query: { sort_by: "vote_average.desc" },
+      type: "movie",
     },
     {
       title: "Upcoming",
@@ -30,6 +32,7 @@ export default function Movies() {
         "primary_release_date.lte": nextMonth,
         "vote_count.gte": 0,
       },
+      type: "movie",
     },
     {
       title: "Recently Released",
@@ -41,6 +44,7 @@ export default function Movies() {
         "primary_release_date.lte": today,
         "vote_count.gte": 200,
       },
+      type: "movie",
     },
     {
       title: "Most Popular",
@@ -48,15 +52,26 @@ export default function Movies() {
       component: Carousel,
       query: { sort_by: "popularity.desc" },
       numbers: true,
+      type: "movie",
+    },
+    {
+      title: "Top rated old movies",
+      component: Carousel,
+      query: {
+        sort_by: "vote_average.desc",
+        "primary_release_date.lte": yearsAgo(15),
+        "vote_count.gte": 2000,
+      },
+      type: "movie",
     },
   ];
 
-  return SECTIONS.map(({ title, icon, component, numbers, query }) => (
+  return SECTION.map(({ title, icon, component, numbers, query, type }) => (
     <Suspense
       key={title}
       fallback={
         component === Carousel ? (
-          <CarouselSkeleton title={title}/>
+          <CarouselSkeleton title={title} />
         ) : (
           <SliderSkeleton title={title} />
         )
@@ -68,7 +83,7 @@ export default function Movies() {
         component={component}
         numbers={numbers}
         query={query}
-        type="movie"
+        type={type}
       />
     </Suspense>
   ));
