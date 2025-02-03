@@ -1,4 +1,7 @@
-import { StarIcon, ClockIcon } from "@heroicons/react/24/outline";
+import {
+  StarIcon,
+  ClockIcon,
+} from "@heroicons/react/24/outline";
 import Link from "next/link";
 
 const links = [
@@ -8,7 +11,7 @@ const links = [
 
 export default function SideNav() {
   return (
-    <nav className="md:p-5 p-0">
+    <nav className="px-4 py-4">
       <div className="flex md:flex-col justify-center items-start gap-5">
         {links.map(({ name, href, icon: Icon }) => {
           return (
