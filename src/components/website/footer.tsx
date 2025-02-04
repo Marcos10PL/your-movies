@@ -2,15 +2,15 @@ import Image from "next/image";
 
 export default function Footer() {
   return (
-    <div className="2xl text-sm p-3 text-center text-gray-300 opacity-70">
-      <div className="pt-3 flex flex-col justify-center items-center">
+    <div className="2xl text-sm p-3 text-gray-300 opacity-70">
+      <div className="pt-3 flex flex-col">
         <a href="https://www.themoviedb.org/" target="_blank">
           <Image
             src="/img/tmdb-logo.svg"
             width={100}
             height={100}
             alt="TMDB logo"
-            className="w-20 h-auto"
+            className="w-20"
           />
         </a>
         <p className="pt-1 text-teal-200">

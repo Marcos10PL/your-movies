@@ -20,7 +20,7 @@ export default function Layout({
   const router = useRouter();
 
   return (
-    <div className="py-2">
+    <div>
       <button
         className="flex items-center gap-2 hover:bg-slate-900 hover:text-primary md:rounded-md md:w-fit px-2 py-2 md:mb-2 w-full"
         onClick={() => router.back()}
