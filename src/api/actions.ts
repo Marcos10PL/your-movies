@@ -5,12 +5,65 @@ import {
   LanguageOption,
   Movie,
   SearchOptions,
+  SearchResults,
   SeasonDetails,
   TvSeries,
   TypeOfList,
   Videos,
 } from "@/lib/definitions";
 import { optionsGET } from "./options";
+
+// searching
+
+export async function fetchMulti(
+  query: string,
+  searchOptions: SearchOptions<'movie' | 'tv'> = {},
+  language: LanguageOption = "en-US"
+): Promise<SearchResults | undefined> {
+  try {
+    const defaultOptions = {
+      include_adult: false,
+      page: 1,
+    };
+
+    searchOptions = { ...defaultOptions, ...searchOptions };
+
+    const queryParams = new URLSearchParams({
+      ...Object.fromEntries(
+        Object.entries(searchOptions).map(([key, value]) => [
+          key,
+          String(value),
+        ])
+      ),
+      query,
+      language,
+    });
+
+    const url = `https://api.themoviedb.org/3/search/multi?${queryParams.toString()}`;
+
+    const response = await fetch(url, {
+      ...optionsGET,
+      next: { revalidate: 0 },
+    });
+
+    if (!response.ok) {
+      throw new Error(
+        `Failed to fetch data: ${response.status} ${response.statusText}`
+      );
+    }
+
+    const data = await response.json();
+
+    if (!data || data.results.length === 0) {
+      return undefined;
+    }
+
+    return data;
+  } catch (error) {
+    console.error("Error fetching collection:", error);
+    return undefined;
+  }
+}
 
 // trending
 
@@ -19,7 +72,11 @@ export async function fetchTrending<T extends TypeOfList>(
   time: "day" | "week",
   language: LanguageOption = "en-US"
 ): Promise<
-  | (T extends "tv" ? TvSeries[] : T extends "movie" ? Movie[] : TvSeries[] & Movie[])
+  | (T extends "tv"
+      ? TvSeries[]
+      : T extends "movie"
+        ? Movie[]
+        : TvSeries[] & Movie[])
   | undefined
 > {
   try {
@@ -58,27 +115,30 @@ export async function fetchDiscover<T extends TypeOfList>(
   language: LanguageOption = "en-US"
 ): Promise<(T extends "tv" ? TvSeries[] : Movie[]) | undefined> {
   try {
-    searchOptions = {
+    const defaultOptions = {
       include_adult: false,
       "vote_count.gte": 300,
       page: 1,
-      ...searchOptions,
     };
 
-    const queryParams = new URLSearchParams();
+    searchOptions = { ...defaultOptions, ...searchOptions };
 
-    Object.entries(searchOptions).forEach(([key, value]) => {
-      if (value !== undefined) {
-        queryParams.append(key, String(value));
-      }
+    const queryParams = new URLSearchParams({
+      ...Object.fromEntries(
+        Object.entries(searchOptions).map(([key, value]) => [
+          key,
+          String(value),
+        ])
+      ),
+      language,
     });
 
     const response = await fetch(
-      `https://api.themoviedb.org/3/discover/${type}?language=${language}&${queryParams.toString()}`,
+      `https://api.themoviedb.org/3/discover/${type}?${queryParams.toString()}`,
       {
         ...optionsGET,
         next: {
-          revalidate: 0,
+          revalidate: 60,
         },
       }
     );

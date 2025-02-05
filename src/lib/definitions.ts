@@ -1,6 +1,6 @@
-//-------------- movie ----------------//
-
 import { IconType } from "@/components/carousels/title";
+
+//-------------- movie ----------------//
 
 export type Movie = {
   adult: boolean;
@@ -190,6 +190,20 @@ type SearchOptionsTV = {
 export type SearchOptions<T extends TypeOfList> = T extends "movie"
   ? SearchOptionsMovie
   : SearchOptionsTV;
+
+// ----------------------- searching ---------------------------//
+
+export type SearchResults = {
+  page: number;
+  results: ( 
+    | (Movie & { media_type: "movie" }) 
+    | (TvSeries & { media_type: "tv" }) 
+    | (CrewMember & { media_type: "person" }) 
+    | (CastMember & { media_type: "person" })
+  )[];
+  total_pages: number;
+  total_results: number;
+};
 
 //--------------------------- for components ------------------------//
 

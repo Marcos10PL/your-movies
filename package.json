@@ -11,6 +11,7 @@
   "dependencies": {
     "@heroicons/react": "^2.1.5",
     "@types/uuid": "^10.0.0",
+    "@uidotdev/usehooks": "^2.4.1",
     "clsx": "^2.1.1",
     "date-fns": "^4.1.0",
     "inflight": "^1.0.6",

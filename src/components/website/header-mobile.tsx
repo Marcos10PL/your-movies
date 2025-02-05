@@ -20,8 +20,6 @@ export default function HeaderMobile() {
       setLastScrollY(window.scrollY);
     };
 
-    console.log(window.scrollY);
-
     window.addEventListener("scroll", handleScroll);
     return () => {
       window.removeEventListener("scroll", handleScroll);
