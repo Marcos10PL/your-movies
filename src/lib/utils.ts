@@ -156,7 +156,7 @@ export const generatePagination = (currentPage: number, totalPages: number) => {
     return [1, 2, 3, "...", totalPages - 1, totalPages];
   }
 
-  if (currentPage >= totalPages - 2) {
+  if (currentPage > totalPages - 2) {
     return [1, 2, "...", totalPages - 2, totalPages - 1, totalPages];
   }
 
@@ -169,4 +169,23 @@ export const generatePagination = (currentPage: number, totalPages: number) => {
     "...",
     totalPages,
   ];
+};
+
+export const generatePaginationMobile = (
+  currentPage: number,
+  totalPages: number
+) => {
+  if (totalPages <= 7) {
+    return Array.from({ length: totalPages }, (_, i) => i + 1);
+  }
+
+  if (currentPage < 3) {
+    return [1, 2, "...", totalPages];
+  }
+
+  if (currentPage >= totalPages - 1) {
+    return [1, "...", totalPages - 1, totalPages];
+  }
+
+  return [1, "...", currentPage, "...", totalPages];
 };

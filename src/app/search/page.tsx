@@ -23,13 +23,10 @@ export default async function Search({ searchParams }: SearchProps) {
   const resultsFiltered = movieAndSeriesArray(results);
   if (resultsFiltered.length === 0) return <div>No results found.</div>;
 
-  const pagination = generatePagination(data.page, data.total_pages);
-
   return (
     <>
       <SearchPage data={resultsFiltered} title={`Searches for "${query}":`} />
       <Pagination
-        pagination={pagination}
         href={`/search/?query=${query}`}
         currentPage={page}
         totalPages={data.total_pages}

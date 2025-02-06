@@ -20,7 +20,13 @@ type SliderProps = {
   href?: string;
 };
 
-export default function Slider({ data, title, icon, moreLink, href: hrefParam }: SliderProps) {
+export default function Slider({
+  data,
+  title,
+  icon,
+  moreLink,
+  href: hrefParam,
+}: SliderProps) {
   const [index, setIndex] = useState(0);
   const [item, setItem] = useState(data[index]);
   const [loading, setLoading] = useState(true);
@@ -182,10 +188,14 @@ type OverviewProps = {
 function Overview({ title, voteAvg, date }: OverviewProps) {
   return (
     <div className="flex flex-col pb-10 md:pb-0 md:justify-center gap-1 md:gap-4 xl:gap-6">
-      <div className="text-white text-center">{date}</div>
-      <div className="text-primary text-center">{title}</div>
+      <div className="text-white text-center hidden md:block">{date}</div>
+      <div className="text-primary text-center">
+        {title} ({new Date(date).getFullYear()})
+      </div>
       <Stars voteAvg={voteAvg} responsive />
-      <AvgRating voteAvg={voteAvg} />
+      <div className="hidden md:block">
+        <AvgRating voteAvg={voteAvg} />
+      </div>
     </div>
   );
 }

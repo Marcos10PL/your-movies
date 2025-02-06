@@ -1,7 +1,6 @@
 import { fetchDiscover, fetchMulti } from "@/api/actions";
 import Pagination from "@/components/carousels/search-page/pagination";
 import SearchPage from "@/components/carousels/search-page/search-page";
-import { generatePagination } from "@/lib/utils";
 import { MOVIES, SERIES } from "@/lib/variables";
 
 type SearchProps = {
@@ -34,13 +33,10 @@ export default async function Search({ searchParams }: SearchProps) {
 
   if (results.length === 0) return <div>No results found.</div>;
 
-  const pagination = generatePagination(data.page, data.total_pages);
-
   return (
     <>
       <SearchPage data={results} title={`${title}:`} />
       <Pagination
-        pagination={pagination}
         href={`/more/?title=${title}&type=${type}`}
         currentPage={page}
         totalPages={data.total_pages}

@@ -14,23 +14,38 @@ import SearchButton from "../search/search-button";
 const links = [
   { name: "Favourites", href: "/favourites", icon: StarIcon },
   { name: "Watchlist", href: "/watchlist", icon: ClockIcon },
+  { name: "Favourites", href: "/favourites", icon: StarIcon },
+  { name: "Watchlist", href: "/watchlist", icon: ClockIcon },
+  { name: "Favourites", href: "/favourites", icon: StarIcon },
+  { name: "Favourites", href: "/favourites", icon: StarIcon },
+  { name: "Watchlist", href: "/watchlist", icon: ClockIcon },
+  { name: "Favourites", href: "/favourites", icon: StarIcon },
+  { name: "Favourites", href: "/favourites", icon: StarIcon },
+  { name: "Watchlist", href: "/watchlist", icon: ClockIcon },
+  { name: "Favourites", href: "/favourites", icon: StarIcon },
+  { name: "Favourites", href: "/favourites", icon: StarIcon },
+  { name: "Favourites", href: "/favourites", icon: StarIcon },
+  { name: "Watchlist", href: "/watchlist", icon: ClockIcon },
+  { name: "Favourites", href: "/favourites", icon: StarIcon },
+  { name: "Favourites", href: "/favourites", icon: StarIcon },
 ];
 
 export default function SideNav() {
-  return <div>SideNav</div>;
+  return (
+    <div className="flex md:flex-col justify-center items-start gap-5 overflow-y-auto h-full">
+      Genres:
+      {links.map(({ name, href, icon: Icon, }, index) => {
+        return (
+          <Link
+            key={index}
+            href={href}
+            className="flex items-center justify-center gap-2"
+          >
+            <Icon className="w-6" />
+            <p>{name}</p>
+          </Link>
+        );
+      })}
+    </div>
+  );
 }
-
-/* <div className="flex md:flex-col justify-center items-start gap-5">
-  {links.map(({ name, href, icon: Icon }) => {
-    return (
-      <Link
-        key={name}
-        href={href}
-        className="flex items-center justify-center gap-2"
-      >
-        <Icon className="w-6" />
-        <p>{name}</p>
-      </Link>
-    );
-  })}
-</div> */
