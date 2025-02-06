@@ -1,5 +1,6 @@
 import {
   Credits,
+  DiscoverResults,
   Episode,
   Language,
   LanguageOption,
@@ -7,6 +8,7 @@ import {
   SearchOptions,
   SearchResults,
   SeasonDetails,
+  TrendingResults,
   TvSeries,
   TypeOfList,
   Videos,
@@ -17,7 +19,7 @@ import { optionsGET } from "./options";
 
 export async function fetchMulti(
   query: string,
-  searchOptions: SearchOptions<'movie' | 'tv'> = {},
+  searchOptions: SearchOptions<"movie" | "tv"> = {},
   language: LanguageOption = "en-US"
 ): Promise<SearchResults | undefined> {
   try {
@@ -29,17 +31,19 @@ export async function fetchMulti(
     searchOptions = { ...defaultOptions, ...searchOptions };
 
     const queryParams = new URLSearchParams({
+      query,
       ...Object.fromEntries(
         Object.entries(searchOptions).map(([key, value]) => [
           key,
           String(value),
         ])
       ),
-      query,
       language,
     });
 
     const url = `https://api.themoviedb.org/3/search/multi?${queryParams.toString()}`;
+
+    console.log(url);
 
     const response = await fetch(url, {
       ...optionsGET,
@@ -71,14 +75,7 @@ export async function fetchTrending<T extends TypeOfList>(
   type: T | "all",
   time: "day" | "week",
   language: LanguageOption = "en-US"
-): Promise<
-  | (T extends "tv"
-      ? TvSeries[]
-      : T extends "movie"
-        ? Movie[]
-        : TvSeries[] & Movie[])
-  | undefined
-> {
+): Promise<TrendingResults<T> | undefined> {
   try {
     const response = await fetch(
       `https://api.themoviedb.org/3/trending/${type}/${time}?language=${language}`,
@@ -97,10 +94,10 @@ export async function fetchTrending<T extends TypeOfList>(
 
     const data = await response.json();
 
-    if (!data.results || data.results.length === 0) {
+    if (!data || data.results.length === 0) {
       throw new Error("No available data");
     }
-    return data.results;
+    return data;
   } catch (e) {
     console.error(e);
     return undefined;
@@ -113,7 +110,7 @@ export async function fetchDiscover<T extends TypeOfList>(
   type: T,
   searchOptions: SearchOptions<T>,
   language: LanguageOption = "en-US"
-): Promise<(T extends "tv" ? TvSeries[] : Movie[]) | undefined> {
+): Promise<DiscoverResults<T> | undefined> {
   try {
     const defaultOptions = {
       include_adult: false,
@@ -150,10 +147,10 @@ export async function fetchDiscover<T extends TypeOfList>(
 
     const data = await response.json();
 
-    if (!data.results || data.results.length === 0) {
+    if (!data || data.results.length === 0) {
       throw new Error("No available data");
     }
-    return data.results;
+    return data;
   } catch (e) {
     console.error(e);
     return undefined;

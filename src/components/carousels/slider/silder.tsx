@@ -16,9 +16,11 @@ type SliderProps = {
   data: TvSeries[] | Movie[];
   title: string;
   icon?: IconType;
+  moreLink?: boolean;
+  href?: string;
 };
 
-export default function Slider({ data, title, icon }: SliderProps) {
+export default function Slider({ data, title, icon, moreLink, href: hrefParam }: SliderProps) {
   const [index, setIndex] = useState(0);
   const [item, setItem] = useState(data[index]);
   const [loading, setLoading] = useState(true);
@@ -93,7 +95,14 @@ export default function Slider({ data, title, icon }: SliderProps) {
 
   return (
     <div>
-      <Title title={title} icon={icon} />
+      {title && (
+        <Title
+          title={title}
+          icon={icon}
+          type={moreLink ? ("title" in data[0] ? "movie" : "tv") : undefined}
+          href={hrefParam}
+        />
+      )}
 
       <div className="pt-2 md:text-lg px-2">
         <div className="relative w-full h-full overflow-hidden border-2 border-slate-700 rounded-lg bg-black">

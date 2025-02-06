@@ -191,16 +191,37 @@ export type SearchOptions<T extends TypeOfList> = T extends "movie"
   ? SearchOptionsMovie
   : SearchOptionsTV;
 
-// ----------------------- searching ---------------------------//
+// ----------------------- api actions ---------------------------//
 
+// fetchMulti
 export type SearchResults = {
   page: number;
-  results: ( 
-    | (Movie & { media_type: "movie" }) 
-    | (TvSeries & { media_type: "tv" }) 
-    | (CrewMember & { media_type: "person" }) 
+  results: (
+    | (Movie & { media_type: "movie" })
+    | (TvSeries & { media_type: "tv" })
+    | (CrewMember & { media_type: "person" })
     | (CastMember & { media_type: "person" })
   )[];
+  total_pages: number;
+  total_results: number;
+};
+
+// fetchDiscover
+export type DiscoverResults<T extends TypeOfList> = {
+  page: number;
+  results: T extends "movie" ? Movie[] : TvSeries[];
+  total_pages: number;
+  total_results: number;
+};
+
+//fetchTrending
+export type TrendingResults<T> = {
+  page: number;
+  results: T extends "tv"
+    ? TvSeries[]
+    : T extends "movie"
+      ? Movie[]
+      : TvSeries[] & Movie[];
   total_pages: number;
   total_results: number;
 };

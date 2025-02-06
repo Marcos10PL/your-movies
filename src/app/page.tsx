@@ -51,7 +51,7 @@ export default async function Home() {
 
       {/* discover movies */}
       <Suspense fallback={<SliderSkeleton title={discoverMovie.title} />}>
-        <Section {...discoverMovie} />
+        <Section {...discoverMovie} moreLink href="/movies"/>
       </Suspense>
 
       {/* trending today movies*/}
@@ -61,7 +61,7 @@ export default async function Home() {
 
       {/* discover series */}
       <Suspense fallback={<SliderSkeleton title={discoverTv.title} />}>
-        <Section {...discoverTv} />
+        <Section {...discoverTv} moreLink href="/series" />
       </Suspense>
 
       {/* trending today series */}

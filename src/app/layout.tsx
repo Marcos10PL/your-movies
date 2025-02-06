@@ -53,7 +53,7 @@ export default function RootLayout({
           </aside>
 
           {/* BOTH */}
-          <section className="flex-grow md:overflow-y-auto scrollbar scrollbar-thumb-slate-600 scrollbar-track-gray-900 text-lg md:text-xl xl:text-2xl space-y-4 md:space-y-6 pt-2 md:pt-3">
+          <section className="flex-grow md:overflow-y-auto scrollbar scrollbar-thumb-slate-600 scrollbar-track-gray-900 text-lg md:text-xl xl:text-2xl space-y-4 md:space-y-6 py-2 md:py-3">
             {children}
           </section>
         </main>

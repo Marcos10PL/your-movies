@@ -1,11 +1,10 @@
 import { useState } from "react";
 import clsx from "clsx";
-import Spinner from "@/components/spinner";
 import Link from "next/link";
 import Image from "next/image";
 import { CarouselItem } from "@/lib/definitions";
-import Overlay from "./overlay";
-import Loading from "../loading";
+import Loading from "./loading";
+import Overlay from "./aspect-poster/overlay";
 
 type ItemProps = {
   item: CarouselItem;
@@ -28,7 +27,7 @@ export default function Item({
     <Link
       href={item.href}
       scroll
-      key={item.id}
+      key={item.id * Math.random()}
       className={clsx(
         "relative min-w-[calc(50%-1rem)] md:min-w-[calc(33.3%-1rem)] lg:min-w-[calc(25%-1rem)] xl:min-w-[calc(16.66%-1rem)] xxl:min-w-[calc(12.5%-1rem)] aspect-[2/3] overflow-hidden rounded-lg border-2 border-slate-700 duration-300 mx-2",
         noLink ? "cursor-default" : "cursor-pointer group"

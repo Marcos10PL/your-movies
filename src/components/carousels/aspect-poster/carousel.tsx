@@ -1,12 +1,12 @@
 "use client";
 
-import { Item as Data } from "@/lib/definitions";
+import { Item as Data, SearchOptions } from "@/lib/definitions";
 import { useEffect, useRef, useState } from "react";
 import Title, { IconType } from "../title";
 import Button from "../button";
-import Item from "./item";
 import { useParams } from "next/navigation";
 import { mapToCarouselItem } from "@/lib/utils";
+import Item from "../item";
 
 type CarouselProps = {
   data: Data[];
@@ -15,6 +15,8 @@ type CarouselProps = {
   numbers?: true;
   noLink?: true;
   overlayAlwaysVisible?: true;
+  moreLink?: true;
+  href?: string;
 };
 
 export default function Carousel({
@@ -24,6 +26,8 @@ export default function Carousel({
   numbers,
   noLink,
   overlayAlwaysVisible,
+  moreLink,
+  href
 }: CarouselProps) {
   if (data.length === 0) return null;
 
@@ -63,7 +67,14 @@ export default function Carousel({
 
   return (
     <div>
-      {title && <Title title={title} icon={icon} />}
+      {title && (
+        <Title
+          title={title}
+          icon={icon}
+          type={moreLink ? "title" in data[0] ? "movie" : "tv" : undefined}
+          href={href}
+        />
+      )}
 
       <div className="relative pt-2">
         <div className="flex overflow-x-auto scrollbar-none" ref={carouselRef}>
