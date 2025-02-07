@@ -45,8 +45,10 @@ export default function RootLayout({
 
         <main className="flex flex-grow flex-col md:flex-row md:overflow-hidden pt-12 md:pt-0">
           {/* DESKTOP */}
-          <aside className="w-full flex-none md:w-40 relative hidden md:block">
-            <SideNav />
+          <aside className="w-40 relative hidden md:block py-4 mr-2">
+            <section className="w-40 h-[calc(100%-13rem)] overflow-y-auto scrollbar-thin scrollbar-thumb-slate-600 scrollbar-track-transparent px-2">
+              <SideNav />
+            </section>
             <footer className="hidden md:block absolute bottom-0">
               <Footer />
             </footer>
