@@ -88,10 +88,9 @@ export default function SearchBar({ isOpen, setIsOpen }: SearchBarProps) {
   return (
     <form
       onSubmit={handleSearch}
-      className="relative flex items-center justify-center gap-1 w-full px-4 md:mt-2 lg:mt-0 lg:pl-0 z-[1000]"
+      className="relative flex items-center justify-center gap-1 w-full md:px-4 md:mt-2 lg:mt-0 lg:pl-0 z-[1000] m-auto"
       ref={searchBarRef}
     >
-
       <button
         type="submit"
         className="hover:bg-slate-800 hover:text-primary py-1 px-2 rounded-md transition-colors"
@@ -114,13 +113,13 @@ export default function SearchBar({ isOpen, setIsOpen }: SearchBarProps) {
       </button>
 
       {isSearching && (
-        <div className="absolute top-[35px] lg:top-[30px] w-[calc(100%-6.5rem)] ml-4 p-2 rounded-md bg-slate-700">
+        <div className="absolute top-[35px] lg:top-[30px] w-[calc(100%-4.5rem)] md:w-[calc(100%-6.5rem)] lg:w-[calc(100%-5.5rem)] ml-4 p-2 rounded-md bg-slate-700">
           Searching...
         </div>
       )}
 
       {resultsFiltered.length > 0 && (
-        <div className="absolute top-[35px] lg:top-[30px] w-[calc(100%-6.5rem)] lg:w-[calc(100%-5.5rem)] ml-4 p-2 rounded-md bg-slate-700">
+        <div className="absolute top-[35px] lg:top-[30px] w-[calc(100%-4.5rem)] md:w-[calc(100%-6.5rem)] lg:w-[calc(100%-5.5rem)] ml-4 p-2 rounded-md bg-slate-700 max-h-[70vh] overflow-y-auto scrollbar-thin scrollbar-thumb-slate-800 scrollbar-track-transparent">
           <div className="flex flex-col">
             {resultsFiltered.map(item => {
               const name = "title" in item ? item.title : item.name;

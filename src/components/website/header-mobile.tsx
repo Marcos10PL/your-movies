@@ -29,7 +29,7 @@ export default function HeaderMobile() {
   return (
     <div
       className={clsx(
-        "fixed z-[1000] top-0 left-0 w-full px-2 py-3 md:hidden bg-gradient-to-b from-slate-800 to-gray-950 flex justify-between items-center transition-transform duration-300",
+        "fixed z-[998] top-0 left-0 w-full px-2 py-3 md:hidden bg-gradient-to-b from-slate-800 to-gray-950 flex justify-between items-center transition-transform duration-300",
         showMenu ? "translate-y-0" : "-translate-y-full"
       )}
     >

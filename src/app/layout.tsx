@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import "@/styles/globals.css";
 import { fredoka } from "@/styles/fonts";
 
-import SideNav from "@/components/website/side-nav";
+import SideNav from "@/components/website/side-navs/side-nav-desktop";
 import Footer from "@/components/website/footer";
 import { NavbarDesktop } from "@/components/website/navbars/navbar-desktop";
 import NavbarMobile from "@/components/website/navbars/navbar-mobile";
@@ -23,9 +23,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" className="scrollbar-thin scrollbar-thumb-slate-600 scrollbar-track-gray-900">
       <body
-        className={`${fredoka.className} antialiased flex flex-col h-screen bg-gray-950`}
+        className={`${fredoka.className} antialiased flex flex-col h-screen bg-gray-950 `}
       >
         {/* DESKTOP*/}
         <header className="hidden md:block">

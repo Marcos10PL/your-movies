@@ -4,19 +4,18 @@ import { useState, useEffect } from "react";
 import { usePathname, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import clsx from "clsx";
+import { Genres } from "@/lib/definitions";
+import Spinner from "../../spinner";
 
 const API_KEY = process.env.NEXT_PUBLIC_TMDB_API_KEY;
 
 export default function SideNav() {
   const pathname = usePathname();
-
-  if (pathname !== "/movies" && pathname !== "/series") return null;
-
   const params = useSearchParams();
-  const [genres, setGenres] = useState([]);
+  const [genres, setGenres] = useState<Genres[]>([]);
+  const [loading, setLoading] = useState(true);
 
   const nameOfGenre = params.get("name");
-
   const isMovie = pathname.startsWith("/movie");
   const endpoint = isMovie
     ? "https://api.themoviedb.org/3/genre/movie/list?language=en"
@@ -26,18 +25,43 @@ export default function SideNav() {
     const fetchGenres = async () => {
       try {
         const res = await fetch(`${endpoint}&api_key=${API_KEY}`);
+
+        if (!res.ok)
+          throw new Error(
+            `Failed to fetch data: ${res.status} ${res.statusText}`
+          );
+
         const data = await res.json();
-        setGenres(data.genres || []);
-      } catch (error) {
-        console.error("Błąd pobierania gatunków:", error);
+        if (!data || data.length === 0) throw new Error("No available data");
+        else setGenres(data.genres);
+        setLoading(false);
+      } catch (e) {
+        return [];
       }
     };
 
     fetchGenres();
   }, [pathname]);
 
-  return (
-    <div className="flex flex-col gap-2 items-start">
+  if (pathname === "/") {
+    return (
+      <div className="h-full text-gray-400 py-1 space-y-6">
+        <p>Discover the best movies and TV shows all in one place!</p>
+        <p>
+          This is a platform that allows you to quickly search and browse the
+          latest movies and TV series. Whether you're looking for box office
+          hits or hidden gems, you'll find them all. Stay up-to-date with the
+          latest releases.
+        </p>
+      </div>
+    );
+  }
+
+  if (!pathname.startsWith("/movies") && !pathname.startsWith("/series"))
+    return null;
+
+  return !loading ? (
+    <div className="flex flex-col gap-1 items-start">
       {genres.map(({ id, name }) => (
         <Link
           key={id}
@@ -52,6 +76,10 @@ export default function SideNav() {
           <p>{name}</p>
         </Link>
       ))}
+    </div>
+  ) : (
+    <div className="flex items-center justify-center h-full">
+      <Spinner />
     </div>
   );
 }

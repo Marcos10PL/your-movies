@@ -330,3 +330,8 @@ export type Language = {
   english_name: string;
   name: string;
 };
+
+export type Genres = {
+  id: number;
+  name: string;
+}
