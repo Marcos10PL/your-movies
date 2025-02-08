@@ -10,6 +10,8 @@ export const links = [
   { name: "TV Series", href: "/series", icon: TvIcon },
 ];
 
+export const MAX_API_ITEMS = 20;
+
 // movies and series arrays
 export const MOVIES: SectionPropsDiscover<"movie">[] = [
   {

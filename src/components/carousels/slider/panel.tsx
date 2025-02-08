@@ -3,23 +3,24 @@ import clsx from "clsx";
 
 type PanelProps = {
   handleItemChange: (index: number) => void;
-  dataLength: number;
   index: number;
 };
 
-export default function Panel({
-  handleItemChange,
-  dataLength,
-  index,
-}: PanelProps) {
+export default function Panel({ handleItemChange, index }: PanelProps) {
   return (
-    <div className="absolute bottom-0 w-full bg-gradient-to-t from-black to-transparent z-50 py-2">
-      <div className="relative flex justify-center items-center w-full">
-        <Button position="left" onClick={() => handleItemChange(index - 1)} />
-        <Number index={index} dataLength={dataLength} />
-        <Button position="right" onClick={() => handleItemChange(index + 1)} />
+    <>
+      <div className="absolute bottom-0 w-full z-50 py-2">
+        <div className="relative flex justify-center items-center w-full gap-10">
+          <Button position="left" onClick={() => handleItemChange(index - 1)} />
+          <Button
+            position="right"
+            onClick={() => handleItemChange(index + 1)}
+          />
+        </div>
+      {/* gradient */}
       </div>
-    </div>
+      <div className="hidden md:block absolute bottom-0 w-2/3 bg-gradient-to-t from-black to-transparent h-1/3 z-40" />
+    </>
   );
 }
 
@@ -42,18 +43,5 @@ function Button({ position, onClick }: ButtonProps) {
         <ChevronRightIcon className="w-5 xl:w-10" />
       )}
     </button>
-  );
-}
-
-type NumberProps = {
-  index: number;
-  dataLength: number;
-};
-
-function Number({ index, dataLength }: NumberProps) {
-  return (
-    <div className="w-24 text-center xl:text-xl">
-      {`${index + 1} / ${dataLength}`}
-    </div>
   );
 }

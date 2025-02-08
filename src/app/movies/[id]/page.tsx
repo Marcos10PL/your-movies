@@ -65,36 +65,17 @@ export default async function Movie({ params }: MovieProps) {
         novel={novel}
       />
 
-      {trailersAndTeasers.length > 0 && (
-        <>
-          <Hr />
-          <VideoCarousel
-            videos={trailersAndTeasers}
-            title="Trailers and Teasers"
-          />
-        </>
-      )}
+      {trailersAndTeasers.length > 0 && <Hr />}
+      <VideoCarousel videos={trailersAndTeasers} title="Trailers and Teasers" />
 
-      {cast.length > 0 && (
-        <>
-          <Hr />
-          <Carousel data={cast} title="Cast" noLink overlayAlwaysVisible />
-        </>
-      )}
+      {cast.length > 0 && <Hr />}
+      <Carousel data={cast} title="Cast" noLink overlayAlwaysVisible />
 
-      {restOfCast.length > 0 && (
-        <>
-          <Hr />
-          <List array={restOfCast} title="Rest of the cast" />
-        </>
-      )}
+      {restOfCast.length > 0 && <Hr />}
+      <List array={restOfCast} title="Rest of the cast" />
 
-      {credits.crew.length > 0 && (
-        <>
-          <Hr />
-          <List array={credits.crew} title="Crew" />
-        </>
-      )}
+      {credits.crew.length > 0 && <Hr />}
+      <List array={credits.crew} title="Crew" />
     </Layout>
   );
 }

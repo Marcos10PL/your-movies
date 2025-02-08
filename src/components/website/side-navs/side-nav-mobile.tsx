@@ -1,6 +1,5 @@
 import Spinner from "@/components/spinner";
 import { Genres } from "@/lib/definitions";
-import clsx from "clsx";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -36,12 +35,13 @@ export default function SideNavMobile({ setOpen }: SideNavMobileProps) {
         else setGenres(data.genres);
         setLoading(false);
       } catch (e) {
+        console.error(e);
         return [];
       }
     };
 
     fetchGenres();
-  }, [pathname]);
+  }, [pathname, endpoint]);
 
   useEffect(() => {
     document.body.style.overflow = "hidden";

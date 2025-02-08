@@ -71,7 +71,7 @@ function Title({ title, releaseDate, originalTitle }: TitleProps) {
       <h1 className="text-3xl text-primary">
         {title}{" "}
         <span className="opacity-60 text-2xl">
-          ({new Date(releaseDate).getFullYear()})
+          {releaseDate && `(${new Date(releaseDate).getFullYear()})`}
         </span>
       </h1>
       {originalTitle && originalTitle !== title && (

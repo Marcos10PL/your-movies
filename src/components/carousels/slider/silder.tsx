@@ -2,7 +2,13 @@
 
 import { Movie, TvSeries } from "@/lib/definitions";
 
-import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import {
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  useState,
+} from "react";
 import Image from "next/image";
 import clsx from "clsx";
 import Panel from "./panel";
@@ -38,61 +44,68 @@ export default function Slider({
   const changeAnimationDuration = 7000; // 7s
   const fadeAnimationDuration = 700; // 0.7s
 
-  useLayoutEffect(() => {
-    const isOverflowing = (element: HTMLElement) => {
-      return (
-        element.scrollWidth > element.clientWidth ||
-        element.scrollHeight > element.clientHeight
-      );
-    };
+  const isOverflowing = useCallback((element: HTMLElement) => {
+    return (
+      element.scrollWidth > element.clientWidth ||
+      element.scrollHeight > element.clientHeight
+    );
+  }, []);
 
-    const handleResize = () => {
-      const div = divRef.current;
-      if (div) {
-        if (isOverflowing(div)) {
-          setOverflow(true);
-        } else {
-          setOverflow(false);
-        }
+  const handleResize = useCallback(() => {
+    const div = divRef.current;
+    if (div) {
+      if (isOverflowing(div)) {
+        setOverflow(true);
+      } else {
+        setOverflow(false);
       }
-    };
+    }
+  }, [isOverflowing]);
+
+  useLayoutEffect(() => {
     handleResize();
 
     window.addEventListener("resize", handleResize);
     return () => {
       window.removeEventListener("resize", handleResize);
     };
-  }, [item]);
+  }, [item, handleResize]);
 
-  const handleItemChange = (nextIndex: number) => {
-    if (!visible) return;
+  const handleItemChange = useCallback(
+    (nextIndex: number) => {
+      if (!visible) return;
 
-    if (nextIndex == data.length) {
-      nextIndex = 0;
-    } else if (nextIndex < 0) {
-      nextIndex = data.length - 1;
-    }
+      if (nextIndex == data.length) {
+        nextIndex = 0;
+      } else if (nextIndex < 0) {
+        nextIndex = data.length - 1;
+      }
 
-    setVisible(false);
-    setTimeout(() => {
-      setIndex(nextIndex);
-      setItem(data[nextIndex]);
-      setVisible(true);
-    }, fadeAnimationDuration);
-  };
+      setVisible(false);
+      setTimeout(() => {
+        setIndex(nextIndex);
+        setItem(data[nextIndex]);
+        setVisible(true);
+      }, fadeAnimationDuration);
+    },
+    [data, visible]
+  );
 
-  const itemChange = (nextIndex: number) => {
-    if (timerRef.current) {
-      clearTimeout(timerRef.current);
-    }
-    timerRef.current = setTimeout(() => {
-      handleItemChange(nextIndex + 1);
-    }, changeAnimationDuration);
-  };
+  const itemChange = useCallback(
+    (nextIndex: number) => {
+      if (timerRef.current) {
+        clearTimeout(timerRef.current);
+      }
+      timerRef.current = setTimeout(() => {
+        handleItemChange(nextIndex + 1);
+      }, changeAnimationDuration);
+    },
+    [handleItemChange]
+  );
 
   useEffect(() => {
     itemChange(index);
-  }, [index]);
+  }, [index, itemChange]);
 
   const name = "title" in item ? item.title : item.name;
   const href = `${"title" in item ? "movies" : "series"}/${item.id}`;
@@ -128,8 +141,7 @@ export default function Slider({
                     alt={name}
                     key={item.backdrop_path}
                     fill
-                    sizes="1x"
-                    className="duration-300 will-change-transform group-hover:scale-105"
+                    className="duration-700 will-change-transform group-hover:scale-105"
                     onLoad={() => setLoading(false)}
                   />
                 </div>
@@ -169,7 +181,6 @@ export default function Slider({
           </Link>
 
           <Panel
-            dataLength={data.length}
             index={index}
             handleItemChange={handleItemChange}
           />

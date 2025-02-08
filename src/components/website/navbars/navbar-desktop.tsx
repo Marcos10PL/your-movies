@@ -54,9 +54,9 @@ export function NavbarDesktop() {
           isOpen ? "ml-0 lg:ml-10 row-span-2 col-span-full lg:col-span-2" : 'ml-10'
         )}
       >
-        {!isOpen && <SearchButton isOpen={isOpen} setIsOpen={setIsOpen} />}
+        {!isOpen && <SearchButton setIsOpen={setIsOpen} />}
 
-        {isOpen && <SearchBar isOpen={isOpen} setIsOpen={setIsOpen} />}
+        {isOpen && <SearchBar setIsOpen={setIsOpen} />}
       </div>
     </div>
   );

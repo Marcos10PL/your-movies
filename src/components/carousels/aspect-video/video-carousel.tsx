@@ -1,10 +1,10 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
 import Button from "../button";
 import type { Video } from "@/lib/definitions";
 import VideoItem from "./video";
 import Title from "../title";
+import useCarouselButtons from "@/components/my-hooks/useCarouselBattons";
 
 type VideoCarouselProps = {
   videos: Video[];
@@ -12,38 +12,9 @@ type VideoCarouselProps = {
 };
 
 export default function VideoCarousel({ videos, title }: VideoCarouselProps) {
+  const { carouselRef, canScrollLeft, canScrollRight, scroll } = useCarouselButtons();
+  
   if (videos.length === 0) return null;
-
-  const carouselRef = useRef<HTMLDivElement>(null!);
-  const [canScrollLeft, setCanScrollLeft] = useState(false);
-  const [canScrollRight, setCanScrollRight] = useState(false);
-
-  const scroll = (x: -1 | 1) => {
-    carouselRef.current.scrollBy({
-      left: x * carouselRef.current.offsetWidth,
-      behavior: "smooth",
-    });
-  };
-
-  const updateScrollButtons = () => {
-    if (carouselRef.current) {
-      const { scrollLeft, scrollWidth, clientWidth } = carouselRef.current;
-      setCanScrollLeft(scrollLeft > 0);
-      setCanScrollRight(scrollLeft + clientWidth < scrollWidth);
-    }
-  };
-
-  useEffect(() => {
-    updateScrollButtons();
-    const handleResize = () => updateScrollButtons();
-    carouselRef.current.addEventListener("scroll", updateScrollButtons);
-    window.addEventListener("resize", handleResize);
-
-    return () => {
-      carouselRef.current?.removeEventListener("scroll", updateScrollButtons);
-      window.removeEventListener("resize", handleResize);
-    };
-  }, []);
 
   return (
     <div>

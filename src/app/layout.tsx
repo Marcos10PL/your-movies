@@ -7,6 +7,8 @@ import Footer from "@/components/website/footer";
 import { NavbarDesktop } from "@/components/website/navbars/navbar-desktop";
 import NavbarMobile from "@/components/website/navbars/navbar-mobile";
 import HeaderMobile from "@/components/website/header-mobile";
+import { Suspense } from "react";
+import Spinner from "@/components/spinner";
 
 export const metadata: Metadata = {
   title: {
@@ -23,7 +25,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="scrollbar-thin scrollbar-thumb-slate-600 scrollbar-track-gray-900">
+    <html
+      lang="en"
+      className="scrollbar-thin scrollbar-thumb-slate-600 scrollbar-track-gray-900"
+    >
       <body
         className={`${fredoka.className} antialiased flex flex-col h-screen bg-gray-950 `}
       >
@@ -47,7 +52,15 @@ export default function RootLayout({
           {/* DESKTOP */}
           <aside className="w-40 relative hidden md:block py-4 mr-2">
             <section className="w-40 h-[calc(100%-13rem)] overflow-y-auto scrollbar-thin scrollbar-thumb-slate-600 scrollbar-track-transparent px-2">
-              <SideNav />
+              <Suspense
+                fallback={
+                  <div className="flex justify-center items-center">
+                    <Spinner />
+                  </div>
+                }
+              >
+                <SideNav />
+              </Suspense>
             </section>
             <footer className="hidden md:block absolute bottom-0">
               <Footer />

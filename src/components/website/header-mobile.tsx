@@ -39,9 +39,9 @@ export default function HeaderMobile() {
         </p>
       )}
 
-      {!isOpen && <SearchButton isOpen={isOpen} setIsOpen={setIsOpen} />}
+      {!isOpen && <SearchButton setIsOpen={setIsOpen} />}
 
-      {isOpen && <SearchBar isOpen={isOpen} setIsOpen={setIsOpen} />}
+      {isOpen && <SearchBar setIsOpen={setIsOpen} />}
     </div>
   );
 }

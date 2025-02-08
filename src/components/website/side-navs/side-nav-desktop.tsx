@@ -36,12 +36,13 @@ export default function SideNav() {
         else setGenres(data.genres);
         setLoading(false);
       } catch (e) {
+        console.error(e);
         return [];
       }
     };
 
     fetchGenres();
-  }, [pathname]);
+  }, [pathname, endpoint]);
 
   if (pathname === "/") {
     return (
@@ -49,8 +50,8 @@ export default function SideNav() {
         <p>Discover the best movies and TV shows all in one place!</p>
         <p>
           This is a platform that allows you to quickly search and browse the
-          latest movies and TV series. Whether you're looking for box office
-          hits or hidden gems, you'll find them all. Stay up-to-date with the
+          latest movies and TV series. Whether you&#39;re looking for box office
+          hits or hidden gems, you&#39;ll find them all. Stay up-to-date with the
           latest releases.
         </p>
       </div>

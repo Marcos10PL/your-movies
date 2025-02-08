@@ -52,15 +52,8 @@ export default async function Episode({ params }: EpisodeProps) {
         voteCount={episode.vote_count}
       />
 
-      {trailersAndTeasers.length > 0 && (
-        <>
-          <Hr />
-          <VideoCarousel
-            videos={trailersAndTeasers}
-            title="Trailers and Teasers"
-          />
-        </>
-      )}
+      {trailersAndTeasers.length > 0 && <Hr />}
+      <VideoCarousel videos={trailersAndTeasers} title="Trailers and Teasers" />
 
       <div className="px-2 *:pb-1">
         {episode.season_number !== 0 && (
@@ -74,38 +67,22 @@ export default async function Episode({ params }: EpisodeProps) {
 
       <Crew directors={directors} writers={writers} />
 
-      {guestStars.length > 0 && (
-        <>
-          <Hr />
-          <Carousel
-            data={guestStars}
-            title="Guest stars"
-            noLink
-            overlayAlwaysVisible
-          />
-        </>
-      )}
+      {guestStars.length > 0 && <Hr />}
+      <Carousel
+        data={guestStars}
+        title="Guest stars"
+        noLink
+        overlayAlwaysVisible
+      />
 
-      {cast.length > 0 && (
-        <>
-          <Hr />
-          <Carousel data={cast} title="Cast" noLink overlayAlwaysVisible />
-        </>
-      )}
+      {cast.length > 0 && <Hr />}
+      <Carousel data={cast} title="Cast" noLink overlayAlwaysVisible />
 
-      {restOfGuestStars.length > 0 && (
-        <>
-          <Hr />
-          <List array={restOfGuestStars} title="Rest of guest stars" />
-        </>
-      )}
+      {restOfGuestStars.length > 0 && <Hr />}
+      <List array={restOfGuestStars} title="Rest of guest stars" />
 
-      {restOfCast.length > 0 && (
-        <>
-          <Hr />
-          <List array={restOfCast} title="Rest of the cast" />
-        </>
-      )}
+      {restOfCast.length > 0 && <Hr />}
+      <List array={restOfCast} title="Rest of the cast" />
     </Layout>
   );
 }

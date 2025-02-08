@@ -22,8 +22,7 @@ type TitleProps = {
 export default function Title({ title, icon, type, href }: TitleProps) {
   const Icon = icon ? iconMap[icon] : null;
 
-  let link;
-  if (type) link = type === "movie" ? "movies/" : "series/";
+  const link = type === "movie" ? "movies/" : "series/";
 
   return (
     <div className="flex justify-between items-center">

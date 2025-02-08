@@ -67,43 +67,20 @@ export default async function TvSeries({ params }: TvSeriesProps) {
         novel={novel}
       />
 
-      {seasons.length > 0 && (
-        <>
-          <Hr />
-          <Carousel data={seasons} title="Seasons" overlayAlwaysVisible />
-        </>
-      )}
+      {seasons.length > 0 && <Hr />}
+      <Carousel data={seasons} title="Seasons" overlayAlwaysVisible />
 
-      {trailersAndTeasers.length > 0 && (
-        <>
-          <Hr />
-          <VideoCarousel
-            videos={trailersAndTeasers}
-            title="Trailers and Teasers"
-          />
-        </>
-      )}
+      {trailersAndTeasers.length > 0 && <Hr />}
+      <VideoCarousel videos={trailersAndTeasers} title="Trailers and Teasers" />
 
-      {cast.length > 0 && (
-        <>
-          <Hr />
-          <Carousel data={cast} title="Main cast" noLink overlayAlwaysVisible />
-        </>
-      )}
+      {cast.length > 0 && <Hr />}
+      <Carousel data={cast} title="Main cast" noLink overlayAlwaysVisible />
 
-      {restOfCast.length > 0 && (
-        <>
-          <Hr />
-          <List array={restOfCast} title="Rest of the main cast" />
-        </>
-      )}
+      {restOfCast.length > 0 && <Hr />}
+      <List array={restOfCast} title="Rest of the main cast" />
 
-      {credits.crew.length > 0 && (
-        <>
-          <Hr />
-          <List array={credits.crew} title="Crew" />
-        </>
-      )}
+      {credits.crew.length > 0 && <Hr />}
+      <List array={credits.crew} title="Crew" />
     </Layout>
   );
 }

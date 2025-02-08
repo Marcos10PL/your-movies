@@ -1,12 +1,13 @@
 "use client";
 
-import { Item as Data, SearchOptions } from "@/lib/definitions";
-import { useEffect, useRef, useState } from "react";
+import { Item as Data } from "@/lib/definitions";
 import Title, { IconType } from "../title";
 import Button from "../button";
 import { useParams } from "next/navigation";
 import { mapToCarouselItem } from "@/lib/utils";
 import Item from "../item";
+import { MAX_API_ITEMS } from "@/lib/variables";
+import useCarouselButtons from "@/components/my-hooks/useCarouselBattons";
 
 type CarouselProps = {
   data: Data[];
@@ -27,43 +28,15 @@ export default function Carousel({
   noLink,
   overlayAlwaysVisible,
   moreLink,
-  href
+  href,
 }: CarouselProps) {
-  if (data.length === 0) return null;
-
-  const carouselRef = useRef<HTMLDivElement>(null!);
-  const [canScrollLeft, setCanScrollLeft] = useState(false);
-  const [canScrollRight, setCanScrollRight] = useState(false);
-
+  const { carouselRef, canScrollLeft, canScrollRight, scroll } =
+    useCarouselButtons();
   const { id: seriesId } = useParams();
+
   const items = data.map(itm => mapToCarouselItem(itm, seriesId, noLink));
 
-  const scroll = (x: -1 | 1) => {
-    carouselRef.current.scrollBy({
-      left: x * carouselRef.current.offsetWidth,
-      behavior: "smooth",
-    });
-  };
-
-  const updateScrollButtons = () => {
-    if (carouselRef.current) {
-      const { scrollLeft, scrollWidth, clientWidth } = carouselRef.current;
-      setCanScrollLeft(scrollLeft > 0);
-      setCanScrollRight(scrollLeft + clientWidth < scrollWidth);
-    }
-  };
-
-  useEffect(() => {
-    updateScrollButtons();
-    const handleResize = () => updateScrollButtons();
-    carouselRef.current.addEventListener("scroll", updateScrollButtons);
-    window.addEventListener("resize", handleResize);
-
-    return () => {
-      carouselRef.current?.removeEventListener("scroll", updateScrollButtons);
-      window.removeEventListener("resize", handleResize);
-    };
-  }, []);
+  if (data.length === 0) return null;
 
   return (
     <div>
@@ -71,7 +44,13 @@ export default function Carousel({
         <Title
           title={title}
           icon={icon}
-          type={moreLink ? "title" in data[0] ? "movie" : "tv" : undefined}
+          type={
+            moreLink && data.length === MAX_API_ITEMS
+              ? "title" in data[0]
+                ? "movie"
+                : "tv"
+              : undefined
+          }
           href={href}
         />
       )}

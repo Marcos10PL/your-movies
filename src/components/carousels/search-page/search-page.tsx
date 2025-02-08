@@ -23,11 +23,12 @@ export default function SearchPage({
   noLink,
   overlayAlwaysVisible,
 }: CarouselProps) {
-  if (data.length === 0) return null;
-
+  
   const { id: seriesId } = useParams();
   const items = data.map(itm => mapToCarouselItem(itm, seriesId, noLink));
-
+  
+  if (data.length === 0) return null;
+  
   return (
     <div>
       {title && <Title title={title} icon={icon} />}

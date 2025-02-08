@@ -11,7 +11,12 @@ import Details from "@/components/item/details";
 import Layout from "@/components/item/layout";
 import List from "@/components/item/list";
 import Episodes from "@/components/item/tv-series/episodes";
-import { filterCast, filterCrew, filterVideos, isFutureDate } from "@/lib/utils";
+import {
+  filterCast,
+  filterCrew,
+  filterVideos,
+  isFutureDate,
+} from "@/lib/utils";
 import { notFound } from "next/navigation";
 
 type SeasonProps = {
@@ -52,17 +57,10 @@ export default async function Season({ params }: SeasonProps) {
         novel={novel}
       />
 
-      {trailersAndTeasers.length > 0 && (
-        <>
-          <Hr />
-          <VideoCarousel
-            videos={trailersAndTeasers}
-            title="Trailers and Teasers"
-          />
-        </>
-      )}
+      {trailersAndTeasers.length > 0 && <Hr />}
+      <VideoCarousel videos={trailersAndTeasers} title="Trailers and Teasers" />
 
-      <Hr />
+      {season.episodes.length && <Hr />}
       <Episodes
         episodes={season.episodes}
         title={`Episodes (${season.episodes.length}): `}
@@ -70,26 +68,14 @@ export default async function Season({ params }: SeasonProps) {
         dateInFuture={dateInFuture}
       />
 
-      {cast.length > 0 && (
-        <>
-          <Hr />
-          <Carousel data={cast} title="Cast" noLink overlayAlwaysVisible />
-        </>
-      )}
+      {cast.length > 0 && <Hr />}
+      <Carousel data={cast} title="Cast" noLink overlayAlwaysVisible />
 
-      {restOfCast.length > 0 && (
-        <>
-          <Hr />
-          <List array={restOfCast} title="Rest of the cast" />
-        </>
-      )}
+      {restOfCast.length > 0 && <Hr />}
+      <List array={restOfCast} title="Rest of the cast" />
 
-      {credits.crew.length > 0 && (
-        <>
-          <Hr />
-          <List array={credits.crew} title="Crew" />
-        </>
-      )}
+      {credits.crew.length > 0 && <Hr />}
+      <List array={credits.crew} title="Crew" />
     </Layout>
   );
 }

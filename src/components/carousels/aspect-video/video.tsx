@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { useState } from "react";
 
 type VideoProps = {
@@ -29,10 +30,11 @@ export default function VideoItem({ videoKey, site }: VideoProps) {
         ></iframe>
       ) : (
         <div className="relative w-full h-full">
-          <img
+          <Image
             src={thumbnailUrl}
             alt="Video thumbnail"
             className="w-full h-full object-cover"
+            fill
           />
           <div className="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center">
             <svg

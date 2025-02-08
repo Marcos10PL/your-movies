@@ -1,7 +1,7 @@
 import { fetchMulti } from "@/api/actions";
 import Pagination from "@/components/carousels/search-page/pagination";
 import SearchPage from "@/components/carousels/search-page/search-page";
-import { generatePagination, movieAndSeriesArray } from "@/lib/utils";
+import { movieAndSeriesArray } from "@/lib/utils";
 
 type SearchProps = {
   searchParams: Promise<{ query?: string; page?: string }>;

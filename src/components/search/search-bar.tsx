@@ -3,18 +3,22 @@
 import { SearchResults } from "@/lib/definitions";
 import { MagnifyingGlassIcon, XCircleIcon } from "@heroicons/react/24/outline";
 import { useDebounce } from "@uidotdev/usehooks";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useEffect, useRef, useState } from "react";
-import { links } from "@/lib/variables";
+import {
+  FormEvent,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import { movieAndSeriesArray } from "@/lib/utils";
+import ResultHints from "./result-hints";
 
 type SearchBarProps = {
-  isOpen: boolean;
   setIsOpen: (isOpen: boolean) => void;
 };
 
-export default function SearchBar({ isOpen, setIsOpen }: SearchBarProps) {
+export default function SearchBar({ setIsOpen }: SearchBarProps) {
   const [query, setQuery] = useState("");
   const [isSearching, setIsSearching] = useState(false);
   const [results, setResults] = useState<SearchResults["results"]>([]);
@@ -23,27 +27,33 @@ export default function SearchBar({ isOpen, setIsOpen }: SearchBarProps) {
 
   const router = useRouter();
 
-  const handleSearch = (e: any) => {
-    e.preventDefault();
-    setIsOpen(false);
-    router.push(`/search?query=${query}&page=1`);
-  };
+  const handleSearch = useCallback(
+    (e: FormEvent) => {
+      e.preventDefault();
+      setIsOpen(false);
+      router.push(`/search?query=${query}&page=1`);
+    },
+    [query, router, setIsOpen]
+  );
 
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
+  const handleClickOutside = useCallback(
+    (event: MouseEvent) => {
       if (
         searchBarRef.current &&
         !searchBarRef.current.contains(event.target as Node)
       ) {
         setIsOpen(false);
       }
-    };
+    },
+    [setIsOpen]
+  );
 
+  useEffect(() => {
     document.addEventListener("mousedown", handleClickOutside);
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
-  }, []);
+  }, [handleClickOutside]);
 
   useEffect(() => {
     const search = async () => {
@@ -69,7 +79,8 @@ export default function SearchBar({ isOpen, setIsOpen }: SearchBarProps) {
         }
 
         setResults(data.results || []);
-      } catch (error) {
+      } catch (e) {
+        console.error(e);
         return [];
       } finally {
         setIsSearching(false);
@@ -77,11 +88,6 @@ export default function SearchBar({ isOpen, setIsOpen }: SearchBarProps) {
     };
     search();
   }, [debouncedSearchQuery]);
-
-  const icons = links.map(link => ({
-    icon: link.icon,
-    href: link.href,
-  }));
 
   const resultsFiltered = movieAndSeriesArray(results);
 
@@ -112,40 +118,21 @@ export default function SearchBar({ isOpen, setIsOpen }: SearchBarProps) {
         <XCircleIcon className="w-6 h-6" />
       </button>
 
-      {isSearching && (
-        <div className="absolute top-[35px] lg:top-[30px] w-[calc(100%-4.5rem)] md:w-[calc(100%-6.5rem)] lg:w-[calc(100%-5.5rem)] ml-4 p-2 rounded-md bg-slate-700">
-          Searching...
-        </div>
-      )}
+      {isSearching && <Searching />}
 
       {resultsFiltered.length > 0 && (
         <div className="absolute top-[35px] lg:top-[30px] w-[calc(100%-4.5rem)] md:w-[calc(100%-6.5rem)] lg:w-[calc(100%-5.5rem)] ml-4 p-2 rounded-md bg-slate-700 max-h-[70vh] overflow-y-auto scrollbar-thin scrollbar-thumb-slate-800 scrollbar-track-transparent">
-          <div className="flex flex-col">
-            {resultsFiltered.map(item => {
-              const name = "title" in item ? item.title : item.name;
-              const href =
-                "title" in item ? `/movies/${item.id}` : `/series/${item.id}`;
-              const Icon = icons.find(
-                icon => icon.href === `/${href.split("/")[1]}`
-              )?.icon;
-
-              return (
-                <Link
-                  href={href}
-                  key={item.id}
-                  onClick={() => setIsOpen(false)}
-                  className="border-b border-gray-500 last:border-b-0 last:rounded-b-md first:rounded-t-md hover:bg-gray-800 p-1 transition-colors hover:text-primary"
-                >
-                  <div className="flex items-center gap-2">
-                    {Icon && <Icon className="min-w-6 h-6" />}
-                    <p>{name}</p>
-                  </div>
-                </Link>
-              );
-            })}
-          </div>
+          <ResultHints results={resultsFiltered} setIsOpen={setIsOpen} />
         </div>
       )}
     </form>
+  );
+}
+
+function Searching() {
+  return (
+    <div className="absolute top-[35px] lg:top-[30px] w-[calc(100%-4.5rem)] md:w-[calc(100%-6.5rem)] lg:w-[calc(100%-5.5rem)] ml-4 p-2 rounded-md bg-slate-700">
+      Searching...
+    </div>
   );
 }
