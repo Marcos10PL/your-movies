@@ -4,8 +4,6 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 
-const API_KEY = process.env.TMDB_API_KEY;
-
 type SideNavMobileProps = {
   setOpen: (open: boolean) => void;
 };
