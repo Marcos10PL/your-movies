@@ -43,8 +43,6 @@ export async function fetchMulti(
 
     const url = `https://api.themoviedb.org/3/search/multi?${queryParams.toString()}`;
 
-    console.log(url);
-
     const response = await fetch(url, {
       ...optionsGET,
       next: { revalidate: 0 },
@@ -79,12 +77,7 @@ export async function fetchTrending<T extends TypeOfList>(
   try {
     const response = await fetch(
       `https://api.themoviedb.org/3/trending/${type}/${time}?language=${language}`,
-      {
-        ...optionsGET,
-        next: {
-          revalidate: 24 * 60 * 60,
-        },
-      }
+      optionsGET
     );
 
     if (!response.ok)
@@ -132,12 +125,7 @@ export async function fetchDiscover<T extends TypeOfList>(
 
     const response = await fetch(
       `https://api.themoviedb.org/3/discover/${type}?${queryParams.toString()}`,
-      {
-        ...optionsGET,
-        next: {
-          revalidate: 60,
-        },
-      }
+      optionsGET
     );
 
     if (!response.ok)
@@ -165,12 +153,7 @@ export async function findById<T extends TypeOfList>(
   try {
     const response = await fetch(
       `https://api.themoviedb.org/3/${type}/${id}?language=${language}}`,
-      {
-        ...optionsGET,
-        next: {
-          revalidate: 24 * 60 * 60,
-        },
-      }
+      optionsGET
     );
 
     if (!response.ok)
@@ -197,12 +180,7 @@ export async function fetchCredits<T extends TypeOfList>(
   try {
     const response = await fetch(
       `https://api.themoviedb.org/3/${type}/${id}/credits?language=${language}}`,
-      {
-        ...optionsGET,
-        next: {
-          revalidate: 24 * 60 * 60,
-        },
-      }
+      optionsGET
     );
 
     if (!response.ok)
@@ -229,12 +207,7 @@ export async function fetchVideos<T extends TypeOfList>(
   try {
     const response = await fetch(
       `https://api.themoviedb.org/3/${type}/${id}/videos?language=${language}}`,
-      {
-        ...optionsGET,
-        next: {
-          revalidate: 24 * 60 * 60,
-        },
-      }
+      optionsGET
     );
 
     if (!response.ok)
@@ -263,12 +236,7 @@ export async function fetchSeasonDetails(
   try {
     const response = await fetch(
       `https://api.themoviedb.org/3/tv/${seriesId}/season/${seasonNr}?language=${language}}`,
-      {
-        ...optionsGET,
-        next: {
-          revalidate: 24 * 60 * 60,
-        },
-      }
+      optionsGET
     );
 
     if (!response.ok)
@@ -295,12 +263,7 @@ export async function fetchSeasonCredits(
   try {
     const response = await fetch(
       `https://api.themoviedb.org/3/tv/${seriesId}/season/${seasonNr}/credits?language=${language}}`,
-      {
-        ...optionsGET,
-        next: {
-          revalidate: 24 * 60 * 60,
-        },
-      }
+      optionsGET
     );
 
     if (!response.ok)
@@ -327,12 +290,7 @@ export async function fetchSeasonVideos(
   try {
     const response = await fetch(
       `https://api.themoviedb.org/3/tv/${seriesId}/season/${seasonNr}/videos?language=${language}}`,
-      {
-        ...optionsGET,
-        next: {
-          revalidate: 24 * 60 * 60,
-        },
-      }
+      optionsGET
     );
 
     if (!response.ok)
@@ -362,12 +320,7 @@ export async function fetchEpisodeDetails(
   try {
     const response = await fetch(
       `https://api.themoviedb.org/3/tv/${seriesId}/season/${seasonNr}/episode/${episodeNr}?language=${language}}`,
-      {
-        ...optionsGET,
-        next: {
-          revalidate: 24 * 60 * 60,
-        },
-      }
+      optionsGET
     );
 
     if (!response.ok)
@@ -395,12 +348,7 @@ export async function fetchEpisodeCredits(
   try {
     const response = await fetch(
       `https://api.themoviedb.org/3/tv/${seriesId}/season/${seasonNr}/episode/${episodeNr}/credits?language=${language}}`,
-      {
-        ...optionsGET,
-        next: {
-          revalidate: 24 * 60 * 60,
-        },
-      }
+      optionsGET
     );
 
     if (!response.ok)
@@ -428,12 +376,7 @@ export async function fetchEpisodeVideos(
   try {
     const response = await fetch(
       `https://api.themoviedb.org/3/tv/${seriesId}/season/${seasonNr}/episode/${episodeNr}/videos?language=${language}}`,
-      {
-        ...optionsGET,
-        next: {
-          revalidate: 24 * 60 * 60,
-        },
-      }
+      optionsGET
     );
 
     if (!response.ok)
@@ -458,12 +401,7 @@ export async function fetchLanguages(): Promise<Language[] | undefined> {
   try {
     const response = await fetch(
       `https://api.themoviedb.org/3/configuration/languages`,
-      {
-        ...optionsGET,
-        next: {
-          revalidate: 24 * 60 * 60,
-        },
-      }
+      optionsGET
     );
 
     if (!response.ok)

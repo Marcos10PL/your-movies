@@ -7,8 +7,6 @@ import clsx from "clsx";
 import { Genres } from "@/lib/definitions";
 import Spinner from "../../spinner";
 
-const API_KEY = process.env.NEXT_PUBLIC_TMDB_API_KEY;
-
 export default function SideNav() {
   const pathname = usePathname();
   const params = useSearchParams();
@@ -17,14 +15,12 @@ export default function SideNav() {
 
   const nameOfGenre = params.get("name");
   const isMovie = pathname.startsWith("/movie");
-  const endpoint = isMovie
-    ? "https://api.themoviedb.org/3/genre/movie/list?language=en"
-    : "https://api.themoviedb.org/3/genre/tv/list?language=en";
+  const type = isMovie ? "movie" : "tv";
 
   useEffect(() => {
     const fetchGenres = async () => {
       try {
-        const res = await fetch(`${endpoint}&api_key=${API_KEY}`);
+        const res = await fetch(`/genre?type=${type}`);
 
         if (!res.ok)
           throw new Error(
@@ -42,7 +38,7 @@ export default function SideNav() {
     };
 
     fetchGenres();
-  }, [pathname, endpoint]);
+  }, [pathname, type]);
 
   if (pathname === "/") {
     return (

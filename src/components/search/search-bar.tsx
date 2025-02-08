@@ -4,13 +4,7 @@ import { SearchResults } from "@/lib/definitions";
 import { MagnifyingGlassIcon, XCircleIcon } from "@heroicons/react/24/outline";
 import { useDebounce } from "@uidotdev/usehooks";
 import { useRouter } from "next/navigation";
-import {
-  FormEvent,
-  useCallback,
-  useEffect,
-  useRef,
-  useState,
-} from "react";
+import { FormEvent, useCallback, useEffect, useRef, useState } from "react";
 import { movieAndSeriesArray } from "@/lib/utils";
 import ResultHints from "./result-hints";
 
@@ -62,9 +56,7 @@ export default function SearchBar({ setIsOpen }: SearchBarProps) {
       setIsSearching(true);
 
       try {
-        const res = await fetch(
-          `https://api.themoviedb.org/3/search/multi?query=${debouncedSearchQuery}&include_adult=false&page=1&language=en-US&api_key=${process.env.NEXT_PUBLIC_TMDB_API_KEY}`
-        );
+        const res = await fetch(`/multi?query=${debouncedSearchQuery}`);
 
         if (!res.ok) {
           throw new Error(

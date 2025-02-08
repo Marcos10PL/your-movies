@@ -6,6 +6,9 @@ export const optionsGET = {
     accept: "application/json",
     Authorization: `Bearer ${TMDB_API_TOKEN}`,
   },
+  next: {
+    revalidate: 24 * 60 * 60,
+  },
 };
 
 export const optionsPOST = {

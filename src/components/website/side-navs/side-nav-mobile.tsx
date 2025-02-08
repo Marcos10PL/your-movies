@@ -4,7 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 
-const API_KEY = process.env.NEXT_PUBLIC_TMDB_API_KEY;
+const API_KEY = process.env.TMDB_API_KEY;
 
 type SideNavMobileProps = {
   setOpen: (open: boolean) => void;
@@ -16,14 +16,12 @@ export default function SideNavMobile({ setOpen }: SideNavMobileProps) {
   const pathname = usePathname();
 
   const isMovie = pathname.startsWith("/movie");
-  const endpoint = isMovie
-    ? "https://api.themoviedb.org/3/genre/movie/list?language=en"
-    : "https://api.themoviedb.org/3/genre/tv/list?language=en";
+  const type = isMovie ? "movie" : "tv";
 
   useEffect(() => {
     const fetchGenres = async () => {
       try {
-        const res = await fetch(`${endpoint}&api_key=${API_KEY}`);
+        const res = await fetch(`/genre?type=${type}`);
 
         if (!res.ok)
           throw new Error(
@@ -41,7 +39,7 @@ export default function SideNavMobile({ setOpen }: SideNavMobileProps) {
     };
 
     fetchGenres();
-  }, [pathname, endpoint]);
+  }, [pathname, type]);
 
   useEffect(() => {
     document.body.style.overflow = "hidden";
