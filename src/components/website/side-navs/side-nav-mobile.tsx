@@ -1,43 +1,20 @@
+"use client";
+
+import { useGenres } from "@/components/my-hooks/useGenres";
 import Spinner from "@/components/spinner";
-import { Genres } from "@/lib/definitions";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 
 type SideNavMobileProps = {
   setOpen: (open: boolean) => void;
 };
 
 export default function SideNavMobile({ setOpen }: SideNavMobileProps) {
-  const [loading, setLoading] = useState(true);
-  const [genres, setGenres] = useState<Genres[]>([]);
   const pathname = usePathname();
+  const {genres, loading} = useGenres(pathname.startsWith('/movie') ? "movie" : "tv");
 
   const isMovie = pathname.startsWith("/movie");
-  const type = isMovie ? "movie" : "tv";
-
-  useEffect(() => {
-    const fetchGenres = async () => {
-      try {
-        const res = await fetch(`/genre?type=${type}`);
-
-        if (!res.ok)
-          throw new Error(
-            `Failed to fetch data: ${res.status} ${res.statusText}`
-          );
-
-        const data = await res.json();
-        if (!data || data.length === 0) throw new Error("No available data");
-        else setGenres(data.genres);
-        setLoading(false);
-      } catch (e) {
-        console.error(e);
-        return [];
-      }
-    };
-
-    fetchGenres();
-  }, [pathname, type]);
 
   useEffect(() => {
     document.body.style.overflow = "hidden";
@@ -46,6 +23,7 @@ export default function SideNavMobile({ setOpen }: SideNavMobileProps) {
       document.body.style.overflow = "auto";
     };
   }, []);
+
 
   return (
     <div className="fixed z-[999] w-full h-full bg-gray-900 bg-opacity-90 overflow-y-auto pt-5 pb-20 scrollbar-thin scrollbar-thumb-slate-600 scrollbar-track-transparent">

@@ -1,7 +1,5 @@
-import Spinner from "@/components/spinner";
 import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
 
 type EpisodeProps = {
   id: number;
@@ -22,8 +20,6 @@ export default function Episode({
   realeaseDate,
   seasonNr,
 }: EpisodeProps) {
-  const [loading, setLoading] = useState(true);
-
   return (
     <div
       key={id}
@@ -32,16 +28,14 @@ export default function Episode({
       <div className="flex flex-col md:flex-row justify-center border-b-2 border-gray-800">
         <div className="relative w-full aspect-video md:w-1/3 xl:w-1/5">
           {path ? (
-            <>
-              {loading && <Loading />}
-              <Image
-                src={`https://image.tmdb.org/t/p/w500${path}/`}
-                alt={name}
-                fill
-                className="object-cover"
-                onLoad={() => setLoading(false)}
-              />
-            </>
+            <Image
+              src={`https://image.tmdb.org/t/p/w500${path}/`}
+              alt={name}
+              fill
+              className="object-cover"
+              blurDataURL="/img/blur.png"
+              placeholder="blur"
+            />
           ) : (
             <div className="text-center absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 transition-transform will-change-transform duration-300 group-hover:scale-105 z-50">
               <p className="text-white">No image available</p>
@@ -66,14 +60,6 @@ export default function Episode({
       >
         Show more...
       </Link>
-    </div>
-  );
-}
-
-function Loading() {
-  return (
-    <div className="absolute inset-0 flex items-center justify-center">
-      <Spinner />
     </div>
   );
 }

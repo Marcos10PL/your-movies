@@ -35,6 +35,8 @@ export default function VideoItem({ videoKey, site }: VideoProps) {
             alt="Video thumbnail"
             className="w-full h-full object-cover"
             fill
+            blurDataURL="/img/blur.png"
+            placeholder="blur"
           />
           <div className="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center">
             <svg

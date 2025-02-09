@@ -16,7 +16,6 @@ import AvgRating from "@/components/avg-rating";
 import Stars from "@/components/stars";
 import Link from "next/link";
 import Title, { IconType } from "../title";
-import Loading from "../loading";
 
 type SliderProps = {
   data: TvSeries[] | Movie[];
@@ -35,7 +34,6 @@ export default function Slider({
 }: SliderProps) {
   const [index, setIndex] = useState(0);
   const [item, setItem] = useState(data[index]);
-  const [loading, setLoading] = useState(true);
   const [overflow, setOverflow] = useState(false);
   const [visible, setVisible] = useState(true);
   const divRef = useRef<HTMLDivElement | null>(null);
@@ -135,14 +133,14 @@ export default function Slider({
             {item.backdrop_path ? (
               <>
                 <div className="relative aspect-video md:max-w-[67%]">
-                  {loading && <Loading />}
                   <Image
                     src={`https://image.tmdb.org/t/p/w1280${item.backdrop_path}`}
                     alt={name}
                     key={item.backdrop_path}
                     fill
                     className="duration-700 will-change-transform group-hover:scale-105"
-                    onLoad={() => setLoading(false)}
+                    blurDataURL="/img/blur.png"
+                    placeholder="blur"
                   />
                 </div>
 
@@ -180,10 +178,7 @@ export default function Slider({
             </div>
           </Link>
 
-          <Panel
-            index={index}
-            handleItemChange={handleItemChange}
-          />
+          <Panel index={index} handleItemChange={handleItemChange} />
         </div>
       </div>
     </div>

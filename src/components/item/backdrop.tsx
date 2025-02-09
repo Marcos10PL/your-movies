@@ -28,6 +28,8 @@ export function Backdrop({ title, backdropPath }: BackdropProps) {
             fill
             onLoad={() => setLoading(false)}
             priority
+            blurDataURL="/img/blur.png"
+            placeholder="blur"
           />
         </>
       )}

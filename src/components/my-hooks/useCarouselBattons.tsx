@@ -38,5 +38,5 @@ export default function useCarouselButtons() {
     };
   }, [updateScrollButtons]);
 
-  return { carouselRef, canScrollLeft, canScrollRight, scroll };
+  return { carouselRef, canScrollLeft, canScrollRight, scroll } as const;
 }

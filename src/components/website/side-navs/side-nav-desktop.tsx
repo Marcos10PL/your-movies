@@ -1,44 +1,19 @@
 "use client";
 
-import { useState, useEffect } from "react";
 import { usePathname, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import clsx from "clsx";
-import { Genres } from "@/lib/definitions";
 import Spinner from "../../spinner";
+import { useGenres } from "@/components/my-hooks/useGenres";
 
 export default function SideNav() {
   const pathname = usePathname();
+  const { genres, loading } = useGenres(pathname.startsWith("/movie") ? "movie" : "tv");
+
   const params = useSearchParams();
-  const [genres, setGenres] = useState<Genres[]>([]);
-  const [loading, setLoading] = useState(true);
-
   const nameOfGenre = params.get("name");
+
   const isMovie = pathname.startsWith("/movie");
-  const type = isMovie ? "movie" : "tv";
-
-  useEffect(() => {
-    const fetchGenres = async () => {
-      try {
-        const res = await fetch(`/genre?type=${type}`);
-
-        if (!res.ok)
-          throw new Error(
-            `Failed to fetch data: ${res.status} ${res.statusText}`
-          );
-
-        const data = await res.json();
-        if (!data || data.length === 0) throw new Error("No available data");
-        else setGenres(data.genres);
-        setLoading(false);
-      } catch (e) {
-        console.error(e);
-        return [];
-      }
-    };
-
-    fetchGenres();
-  }, [pathname, type]);
 
   if (pathname === "/") {
     return (
@@ -47,8 +22,8 @@ export default function SideNav() {
         <p>
           This is a platform that allows you to quickly search and browse the
           latest movies and TV series. Whether you&#39;re looking for box office
-          hits or hidden gems, you&#39;ll find them all. Stay up-to-date with the
-          latest releases.
+          hits or hidden gems, you&#39;ll find them all. Stay up-to-date with
+          the latest releases.
         </p>
       </div>
     );

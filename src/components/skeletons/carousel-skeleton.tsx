@@ -2,7 +2,7 @@ import Title from "@/components/carousels/title";
 
 export default function CarouselSkeleton({ title }: { title?: string }) {
   return (
-    <>
+    <div>
       {title ? (
         <Title title={title} />
       ) : (
@@ -18,7 +18,7 @@ export default function CarouselSkeleton({ title }: { title?: string }) {
           <Item />
         </div>
       </div>
-    </>
+    </div>
   );
 }
 
