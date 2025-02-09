@@ -8,7 +8,7 @@ Data is sourced from the TMDB API.
 
 -- search for movies and TV series<br />
 -- detailed information about selected titles<br />
--- diffrent type of lists (top rated, most popular, upcoming, trending etc.)
+-- diffrent type of lists (top rated, most popular, upcoming, trending etc.) <br />
 -- etc.
 
 # api
