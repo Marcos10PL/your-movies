@@ -36,8 +36,8 @@ export default function Item({
           alt={item.title}
           fill
           className="group-hover:scale-105 will-change-transform duration-500 object-cover"
-          blurDataURL="/img/blur.png"
           placeholder="blur"
+          blurDataURL="/img/blur.png"
         />
       ) : (
         <div className="text-center absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 transition-transform will-change-transform duration-300 group-hover:scale-105 z-50">

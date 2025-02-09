@@ -1,3 +1,5 @@
+"use client";
+
 import { useEffect, useState } from "react";
 import useLocalStorage from "./useLocalStorage";
 import { Genres } from "@/lib/definitions";
@@ -10,38 +12,32 @@ export const useGenres = (type: "movie" | "tv") => {
   );
   const [loading, setLoading] = useState(false);
 
-  const fetchGenres = async () => {
-    try {
-      const res = await fetch(`/genre?type=${type}`);
-      if (!res.ok) throw new Error(`Błąd: ${res.status} ${res.statusText}`);
-
-      const data = await res.json();
-      if (!data || data.length === 0) throw new Error("Brak danych");
-      return data.genres;
-    } catch (e) {
-      console.error(e);
-      return [];
-    }
-  };
-
   useEffect(() => {
     if (
       (type === "movie" && genresMovie.length === 0) ||
       (type === "tv" && genresTv.length === 0)
     ) {
       setLoading(true);
-      const loadGenres = async () => {
-        const genres = await fetchGenres();
 
-        if (type === "movie") setGenresMovie(genres);
-        else setGenresTv(genres);
+      const fetchGenres = async () => {
+        try {
+          const res = await fetch(`/genre?type=${type}`);
+          if (!res.ok) throw new Error(`Błąd: ${res.status} ${res.statusText}`);
 
-        setLoading(false);
+          const data = await res.json();
+          if (!data || data.length === 0) throw new Error("Brak danych");
+          if (type === "movie") setGenresMovie(data.genres);
+          else setGenresTv(data.genres);
+        } catch (e) {
+          console.error(e);
+          return [];
+        } finally {
+          setLoading(false);
+        }
       };
-
-      loadGenres();
+      fetchGenres();
     }
-  }, [type, genresMovie, genresTv, fetchGenres, setGenresMovie, setGenresTv]);
+  }, [type, setGenresMovie, setGenresTv, genresMovie.length, genresTv.length]);
 
   const genres = type === "movie" ? genresMovie : genresTv;
 
