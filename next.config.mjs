@@ -13,6 +13,7 @@ const nextConfig = {
         pathname: "/vi/**",
       },
     ],
+    unoptimized: true,
   },
 };
 
