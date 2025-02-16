@@ -152,7 +152,7 @@ export async function findById<T extends TypeOfList>(
 ): Promise<(T extends "tv" ? TvSeries : Movie) | undefined> {
   try {
     const response = await fetch(
-      `https://api.themoviedb.org/3/${type}/${id}?language=${language}}`,
+      `https://api.themoviedb.org/3/${type}/${id}?language=${language}`,
       optionsGET
     );
 
@@ -179,7 +179,7 @@ export async function fetchCredits<T extends TypeOfList>(
 ): Promise<Credits | undefined> {
   try {
     const response = await fetch(
-      `https://api.themoviedb.org/3/${type}/${id}/credits?language=${language}}`,
+      `https://api.themoviedb.org/3/${type}/${id}/credits?language=${language}`,
       optionsGET
     );
 
@@ -206,7 +206,7 @@ export async function fetchVideos<T extends TypeOfList>(
 ): Promise<Videos | undefined> {
   try {
     const response = await fetch(
-      `https://api.themoviedb.org/3/${type}/${id}/videos?language=${language}}`,
+      `https://api.themoviedb.org/3/${type}/${id}/videos?language=${language}`,
       optionsGET
     );
 
@@ -235,7 +235,7 @@ export async function fetchSeasonDetails(
 ): Promise<SeasonDetails | undefined> {
   try {
     const response = await fetch(
-      `https://api.themoviedb.org/3/tv/${seriesId}/season/${seasonNr}?language=${language}}`,
+      `https://api.themoviedb.org/3/tv/${seriesId}/season/${seasonNr}?language=${language}`,
       optionsGET
     );
 
@@ -262,7 +262,7 @@ export async function fetchSeasonCredits(
 ): Promise<Credits | undefined> {
   try {
     const response = await fetch(
-      `https://api.themoviedb.org/3/tv/${seriesId}/season/${seasonNr}/credits?language=${language}}`,
+      `https://api.themoviedb.org/3/tv/${seriesId}/season/${seasonNr}/credits?language=${language}`,
       optionsGET
     );
 
@@ -289,7 +289,7 @@ export async function fetchSeasonVideos(
 ): Promise<Videos | undefined> {
   try {
     const response = await fetch(
-      `https://api.themoviedb.org/3/tv/${seriesId}/season/${seasonNr}/videos?language=${language}}`,
+      `https://api.themoviedb.org/3/tv/${seriesId}/season/${seasonNr}/videos?language=${language}`,
       optionsGET
     );
 
@@ -319,7 +319,7 @@ export async function fetchEpisodeDetails(
 ): Promise<Episode | undefined> {
   try {
     const response = await fetch(
-      `https://api.themoviedb.org/3/tv/${seriesId}/season/${seasonNr}/episode/${episodeNr}?language=${language}}`,
+      `https://api.themoviedb.org/3/tv/${seriesId}/season/${seasonNr}/episode/${episodeNr}?language=${language}`,
       optionsGET
     );
 
@@ -347,7 +347,7 @@ export async function fetchEpisodeCredits(
 ): Promise<Credits | undefined> {
   try {
     const response = await fetch(
-      `https://api.themoviedb.org/3/tv/${seriesId}/season/${seasonNr}/episode/${episodeNr}/credits?language=${language}}`,
+      `https://api.themoviedb.org/3/tv/${seriesId}/season/${seasonNr}/episode/${episodeNr}/credits?language=${language}`,
       optionsGET
     );
 
@@ -375,7 +375,7 @@ export async function fetchEpisodeVideos(
 ): Promise<Videos | undefined> {
   try {
     const response = await fetch(
-      `https://api.themoviedb.org/3/tv/${seriesId}/season/${seasonNr}/episode/${episodeNr}/videos?language=${language}}`,
+      `https://api.themoviedb.org/3/tv/${seriesId}/season/${seasonNr}/episode/${episodeNr}/videos?language=${language}`,
       optionsGET
     );
 
