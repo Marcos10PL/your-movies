@@ -9,7 +9,6 @@ type SearchProps = {
 
 export default async function Search({ searchParams }: SearchProps) {
   const params = await searchParams;
-  console.log(params);
   const query = params.query;
   const page = Number(params.page);
 
