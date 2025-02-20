@@ -2,6 +2,7 @@ import {
   Credits,
   DiscoverResults,
   Episode,
+  Genre,
   Language,
   LanguageOption,
   Movie,
@@ -15,12 +16,14 @@ import {
 } from "@/lib/definitions";
 import { optionsGET } from "./options";
 
+const defaultLanguage: LanguageOption = "en-US";
+
 // searching
 
 export async function fetchMulti(
   query: string,
   searchOptions: SearchOptions<"movie" | "tv"> = {},
-  language: LanguageOption = "en-US"
+  language: LanguageOption = defaultLanguage
 ): Promise<SearchResults | undefined> {
   try {
     const defaultOptions = {
@@ -45,9 +48,8 @@ export async function fetchMulti(
 
     const response = await fetch(url, {
       ...optionsGET,
-      next: { revalidate: 0 },
+      next: { revalidate: false },
     });
-
     if (!response.ok) {
       throw new Error(
         `Failed to fetch data: ${response.status} ${response.statusText}`
@@ -56,9 +58,7 @@ export async function fetchMulti(
 
     const data = await response.json();
 
-    if (!data || data.results.length === 0) {
-      return undefined;
-    }
+    if (!data) throw new Error("No available data");
 
     return data;
   } catch (error) {
@@ -72,7 +72,7 @@ export async function fetchMulti(
 export async function fetchTrending<T extends TypeOfList>(
   type: T | "all",
   time: "day" | "week",
-  language: LanguageOption = "en-US"
+  language: LanguageOption = defaultLanguage
 ): Promise<TrendingResults<T> | undefined> {
   try {
     const response = await fetch(
@@ -87,9 +87,8 @@ export async function fetchTrending<T extends TypeOfList>(
 
     const data = await response.json();
 
-    if (!data || data.results.length === 0) {
-      throw new Error("No available data");
-    }
+    if (!data) throw new Error("No available data");
+
     return data;
   } catch (e) {
     console.error(e);
@@ -102,7 +101,7 @@ export async function fetchTrending<T extends TypeOfList>(
 export async function fetchDiscover<T extends TypeOfList>(
   type: T,
   searchOptions: SearchOptions<T>,
-  language: LanguageOption = "en-US"
+  language: LanguageOption = defaultLanguage
 ): Promise<DiscoverResults<T> | undefined> {
   try {
     const defaultOptions = {
@@ -135,9 +134,8 @@ export async function fetchDiscover<T extends TypeOfList>(
 
     const data = await response.json();
 
-    if (!data || data.results.length === 0) {
-      throw new Error("No available data");
-    }
+    if (!data) throw new Error("No available data");
+
     return data;
   } catch (e) {
     console.error(e);
@@ -148,7 +146,7 @@ export async function fetchDiscover<T extends TypeOfList>(
 export async function findById<T extends TypeOfList>(
   type: T,
   id: number,
-  language: LanguageOption = "en-US"
+  language: LanguageOption = defaultLanguage
 ): Promise<(T extends "tv" ? TvSeries : Movie) | undefined> {
   try {
     const response = await fetch(
@@ -175,7 +173,7 @@ export async function findById<T extends TypeOfList>(
 export async function fetchCredits<T extends TypeOfList>(
   type: T,
   id: number,
-  language: LanguageOption = "en-US"
+  language: LanguageOption = defaultLanguage
 ): Promise<Credits | undefined> {
   try {
     const response = await fetch(
@@ -202,7 +200,7 @@ export async function fetchCredits<T extends TypeOfList>(
 export async function fetchVideos<T extends TypeOfList>(
   type: T,
   id: number,
-  language: LanguageOption = "en-US"
+  language: LanguageOption = defaultLanguage
 ): Promise<Videos | undefined> {
   try {
     const response = await fetch(
@@ -231,7 +229,7 @@ export async function fetchVideos<T extends TypeOfList>(
 export async function fetchSeasonDetails(
   seriesId: number,
   seasonNr: number,
-  language: LanguageOption = "en-US"
+  language: LanguageOption = defaultLanguage
 ): Promise<SeasonDetails | undefined> {
   try {
     const response = await fetch(
@@ -258,7 +256,7 @@ export async function fetchSeasonDetails(
 export async function fetchSeasonCredits(
   seriesId: number,
   seasonNr: number,
-  language: LanguageOption = "en-US"
+  language: LanguageOption = defaultLanguage
 ): Promise<Credits | undefined> {
   try {
     const response = await fetch(
@@ -285,7 +283,7 @@ export async function fetchSeasonCredits(
 export async function fetchSeasonVideos(
   seriesId: number,
   seasonNr: number,
-  language: LanguageOption = "en-US"
+  language: LanguageOption = defaultLanguage
 ): Promise<Videos | undefined> {
   try {
     const response = await fetch(
@@ -315,7 +313,7 @@ export async function fetchEpisodeDetails(
   seriesId: number,
   seasonNr: number,
   episodeNr: number,
-  language: LanguageOption = "en-US"
+  language: LanguageOption = defaultLanguage
 ): Promise<Episode | undefined> {
   try {
     const response = await fetch(
@@ -343,7 +341,7 @@ export async function fetchEpisodeCredits(
   seriesId: number,
   seasonNr: number,
   episodeNr: number,
-  language: LanguageOption = "en-US"
+  language: LanguageOption = defaultLanguage
 ): Promise<Credits | undefined> {
   try {
     const response = await fetch(
@@ -371,7 +369,7 @@ export async function fetchEpisodeVideos(
   seriesId: number,
   seasonNr: number,
   episodeNr: number,
-  language: LanguageOption = "en-US"
+  language: LanguageOption = defaultLanguage
 ): Promise<Videos | undefined> {
   try {
     const response = await fetch(
@@ -401,6 +399,32 @@ export async function fetchLanguages(): Promise<Language[] | undefined> {
   try {
     const response = await fetch(
       `https://api.themoviedb.org/3/configuration/languages`,
+      optionsGET
+    );
+
+    if (!response.ok)
+      throw new Error(
+        `Failed to fetch data: ${response.status} ${response.statusText}`
+      );
+
+    const data = await response.json();
+
+    if (!data) throw new Error("No available data");
+
+    return data;
+  } catch (e) {
+    console.error(e);
+    return undefined;
+  }
+}
+
+export async function fetchGenres<T extends TypeOfList>(
+  type: T,
+  language: LanguageOption = defaultLanguage
+): Promise<Genre[] | undefined> {
+  try {
+    const response = await fetch(
+      `https://api.themoviedb.org/3/genre/${type}/list?language=${language}`,
       optionsGET
     );
 

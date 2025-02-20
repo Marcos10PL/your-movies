@@ -8,12 +8,12 @@ import { useGenres } from "@/components/my-hooks/useGenres";
 
 export default function SideNav() {
   const pathname = usePathname();
-  const { genres, loading } = useGenres(pathname.startsWith("/movie") ? "movie" : "tv");
-
+  const { genresTv, genresMovie, loading } = useGenres();
   const params = useSearchParams();
   const nameOfGenre = params.get("name");
-
+  
   const isMovie = pathname.startsWith("/movie");
+  const genres = pathname.startsWith("/movies") ? genresMovie : genresTv;
 
   if (pathname === "/") {
     return (

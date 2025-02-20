@@ -24,8 +24,8 @@ type SeasonProps = {
 };
 
 export default async function Season({ params }: SeasonProps) {
-  const seasonNr = parseInt((await params).seasonNr, 10);
-  const seriesId = parseInt((await params).id, 10);
+  const seasonNr = Number((await params).seasonNr);
+  const seriesId = Number((await params).id);
 
   const [season, credits, videos] = await Promise.all([
     await fetchSeasonDetails(seriesId, seasonNr),

@@ -12,8 +12,9 @@ type SideNavMobileProps = {
 
 export default function SideNavMobile({ setOpen }: SideNavMobileProps) {
   const pathname = usePathname();
-  const {genres, loading} = useGenres(pathname.startsWith('/movie') ? "movie" : "tv");
+  const { genresTv, genresMovie, loading } = useGenres();
 
+  const genres = pathname.startsWith("/movies") ? genresMovie : genresTv;
   const isMovie = pathname.startsWith("/movie");
 
   useEffect(() => {
@@ -23,7 +24,6 @@ export default function SideNavMobile({ setOpen }: SideNavMobileProps) {
       document.body.style.overflow = "auto";
     };
   }, []);
-
 
   return (
     <div className="fixed z-[999] w-full h-full bg-gray-900 bg-opacity-90 overflow-y-auto pt-5 pb-20 scrollbar-thin scrollbar-thumb-slate-600 scrollbar-track-transparent">

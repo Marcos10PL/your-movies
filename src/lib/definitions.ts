@@ -160,7 +160,7 @@ type SortOption =
   | "vote_count.asc"
   | "vote_count.desc";
 
-export type LanguageOption = "en-US";
+export type LanguageOption = "en-US" | "pl-PL";
 
 type SearchOptionsCommon = {
   include_adult?: boolean;
@@ -331,7 +331,7 @@ export type Language = {
   name: string;
 };
 
-export type Genres = {
+export type Genre = {
   id: number;
   name: string;
 }

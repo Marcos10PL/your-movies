@@ -56,20 +56,15 @@ export default function SearchBar({ setIsOpen }: SearchBarProps) {
       setIsSearching(true);
 
       try {
-        const res = await fetch(`/multi?query=${debouncedSearchQuery}`);
+        const res = await fetch(`/api/multi?query=${debouncedSearchQuery}`);
 
         if (!res.ok) {
           throw new Error(
             `Failed to fetch data: ${res.status} ${res.statusText}`
           );
         }
-
+        
         const data = await res.json();
-
-        if (!data || data.results.length === 0) {
-          return [];
-        }
-
         setResults(data.results || []);
       } catch (e) {
         console.error(e);

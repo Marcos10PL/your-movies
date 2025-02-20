@@ -1,3 +1,5 @@
+"use client";
+
 import { useState, useEffect } from "react";
 
 export default function useLocalStorage<T>(key: string, initialValue: T) {

@@ -4,24 +4,24 @@ import SearchPage from "@/components/carousels/search-page/search-page";
 import { movieAndSeriesArray } from "@/lib/utils";
 
 type SearchProps = {
-  searchParams: Promise<{ query?: string; page?: string }>;
+  searchParams: Promise<{ query?: string; page?: number }>;
 };
 
 export default async function Search({ searchParams }: SearchProps) {
   const params = await searchParams;
+  console.log(params);
   const query = params.query;
-  const page = parseInt(params.page ?? "1", 10);
+  const page = Number(params.page);
 
-  if (!query) return <div>No results found.</div>;
+  if (!query) return <div className="px-2">Invalid query.</div>;
 
   const data = await fetchMulti(query, { page });
-  if (!data) return <div>No results found.</div>;
+  if (!data) return <div className="px-2"> Sorry, something went wrong.</div>;
 
   const results = data.results;
-  if (!results) return <div>No results found.</div>;
-
   const resultsFiltered = movieAndSeriesArray(results);
-  if (resultsFiltered.length === 0) return <div>No results found.</div>;
+  if (resultsFiltered.length === 0)
+    return <div className="px-2">No results found.</div>;
 
   return (
     <>
