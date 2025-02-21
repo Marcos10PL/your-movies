@@ -9,6 +9,7 @@ import NavbarMobile from "@/components/website/navbars/navbar-mobile";
 import HeaderMobile from "@/components/website/header-mobile";
 import { Suspense } from "react";
 import Spinner from "@/components/spinner";
+import CookiesAlert from "@/components/cookies-alert";
 
 export const metadata: Metadata = {
   title: {
@@ -51,7 +52,7 @@ export default function RootLayout({
         <main className="flex flex-grow flex-col md:flex-row md:overflow-hidden pt-12 md:pt-0">
           {/* DESKTOP */}
           <aside className="w-40 relative hidden md:block py-4 mr-2">
-            <section className="w-40 h-[calc(100%-13rem)] overflow-y-auto scrollbar-thin scrollbar-thumb-slate-600 scrollbar-track-transparent px-2">
+            <section className="w-40 h-[calc(100%-15rem)] overflow-y-auto scrollbar-thin scrollbar-thumb-slate-600 scrollbar-track-transparent px-2">
               <Suspense
                 fallback={
                   <div className="flex justify-center items-center">
@@ -77,6 +78,8 @@ export default function RootLayout({
         <footer className="md:hidden pb-14 md:pb-0">
           <Footer />
         </footer>
+
+        <CookiesAlert />
       </body>
     </html>
   );

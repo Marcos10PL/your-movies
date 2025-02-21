@@ -1,15 +1,20 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import useLocalStorage from "./useLocalStorage";
+
 import { Genre } from "@/lib/definitions";
+import useLocalStorage from "./useLocalStorage";
+import { LS_KEYS } from "@/lib/variables";
 
 export function useGenres() {
   const [genresMovie, setGenresMovie] = useLocalStorage<Genre[]>(
-    `genres-movie`,
+    LS_KEYS.genresMovie,
     []
   );
-  const [genresTv, setGenresTv] = useLocalStorage<Genre[]>(`genres-tv`, []);
+  const [genresTv, setGenresTv] = useLocalStorage<Genre[]>(
+    LS_KEYS.genresTv,
+    []
+  );
   const [loading, setLoading] = useState(genresTv.length > 0 ? false : true);
 
   useEffect(() => {

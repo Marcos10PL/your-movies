@@ -1,21 +1,25 @@
-"use client";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
 
-import { useState, useEffect } from "react";
-
-export default function useLocalStorage<T>(key: string, initialValue: T) {
-  const [storedValue, setStoredValue] = useState<T>(() => {
-    if (typeof window !== "undefined") {
-      const item = localStorage.getItem(key);
-      return item ? JSON.parse(item) : initialValue;
-    }
-    return initialValue;
-  });
+export default function useLocalStorage<T>(
+  key: string,
+  initialValue: T
+): [T, Dispatch<SetStateAction<T>>] {
+  const [isFirstLoad, setIsFirstLoad] = useState(true);
+  const [storedValue, setStoredValue] = useState(initialValue);
 
   useEffect(() => {
-    if (typeof window !== "undefined") {
-      localStorage.setItem(key, JSON.stringify(storedValue));
-    }
-  }, [key, storedValue]);
+    if (isFirstLoad) {
+      const item = window.localStorage.getItem(key);
+      if (item) setStoredValue(JSON.parse(item) as T);
 
-  return [storedValue, setStoredValue] as const;
+      setIsFirstLoad(!isFirstLoad);
+    }
+  }, [key, isFirstLoad]);
+
+  useEffect(() => {
+    if (!isFirstLoad)
+      window.localStorage.setItem(key, JSON.stringify(storedValue));
+  }, [storedValue, key, isFirstLoad]);
+
+  return [storedValue, setStoredValue];
 }

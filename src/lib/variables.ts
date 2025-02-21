@@ -109,3 +109,11 @@ export const SERIES: SectionPropsDiscover<"tv">[] = [
     type: "tv",
   },
 ];
+
+// local storage keys
+export const LS_KEYS = {
+  cookiesAccepted: "cookies-accepted",
+  cookiesOpen: "cookies-open",
+  genresMovie: "genres-movie",
+  genresTv: "genres-tv",
+} as const;

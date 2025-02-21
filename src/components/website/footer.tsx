@@ -1,9 +1,12 @@
 import Image from "next/image";
+import CookiesSwitch from "../cookies-switch";
 
 export default function Footer() {
   return (
     <div className="2xl text-sm p-3 text-gray-300 opacity-70">
-      <div className="pt-3 flex flex-col">
+      <CookiesSwitch />
+
+      <div className="pt-5 flex flex-col">
         <a href="https://www.themoviedb.org/" target="_blank">
           <Image
             src="/img/tmdb-logo.svg"
@@ -18,9 +21,8 @@ export default function Footer() {
           certified, or otherwise approved by TMDB.
         </p>
       </div>
-      <p className="pt-3">
-        2024 &copy; All rights reserved
-      </p>
+
+      <p className="pt-3">2024 &copy; All rights reserved</p>
     </div>
   );
 }
