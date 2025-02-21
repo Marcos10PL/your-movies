@@ -1,8 +1,8 @@
 "use client";
 
 import clsx from "clsx";
-import useLocalStorage from "./my-hooks/useLocalStorage";
 import { LS_KEYS } from "@/lib/variables";
+import useLocalStorage from "../my-hooks/useLocalStorage";
 
 export default function CookiesSwitch() {
   const [accepted, setAccepted] = useLocalStorage(
@@ -21,8 +21,8 @@ export default function CookiesSwitch() {
       <div className="relative">
         <div
           className={clsx(
-            "block bg-gray-400 w-9 h-5 rounded-full",
-            accepted && "bg-emerald-500"
+            "block w-9 h-5 rounded-full",
+            accepted ? "bg-emerald-500" : "bg-gray-400"
           )}
         ></div>
         <div

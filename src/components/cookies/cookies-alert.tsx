@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import useLocalStorage from "./my-hooks/useLocalStorage";
+import useLocalStorage from "../my-hooks/useLocalStorage";
 import { LS_KEYS } from "@/lib/variables";
 
 export default function CookiesAlert() {

@@ -9,7 +9,7 @@ import NavbarMobile from "@/components/website/navbars/navbar-mobile";
 import HeaderMobile from "@/components/website/header-mobile";
 import { Suspense } from "react";
 import Spinner from "@/components/spinner";
-import CookiesAlert from "@/components/cookies-alert";
+import CookiesAlert from "@/components/cookies/cookies-alert";
 
 export const metadata: Metadata = {
   title: {

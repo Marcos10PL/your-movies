@@ -1,4 +1,4 @@
-import CookiesSwitch from "@/components/cookies-switch";
+import CookiesSwitch from "@/components/cookies/cookies-switch";
 import useLocalStorage from "@/components/my-hooks/useLocalStorage";
 import { LS_KEYS } from "@/lib/variables";
 import clsx from "clsx";

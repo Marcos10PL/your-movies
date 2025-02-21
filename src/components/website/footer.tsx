@@ -1,5 +1,5 @@
 import Image from "next/image";
-import CookiesSwitch from "../cookies-switch";
+import CookiesSwitch from "../cookies/cookies-switch";
 
 export default function Footer() {
   return (
