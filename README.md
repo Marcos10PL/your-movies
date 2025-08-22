@@ -16,8 +16,8 @@ Data is sourced from the TMDB API.
 
 ## tech
 
--- Next.js (React)<br />
--- TypeScript<br />
--- Tailwind CSS<br />
+-- Next.js <br />
+-- TypeScript <br />
+-- Tailwind CSS <br />
 
 
